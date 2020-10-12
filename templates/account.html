@@ -1,0 +1,36 @@
+<html>
+    <head>Account creation page</head>
+        <body>
+            <h1>create account</h1>
+            <p>You'll be redirected to database page</p>
+            <form action="/account" method="post">
+                
+                {{ form.csrf_token }}
+                
+                {{ form.username.label }}
+                {{ form.username }}<br>
+
+                {{ form.email.label }}
+                {{ form.email }}<br>
+
+                {{ form.contact.label }}
+                {{ form.contact }}<br>
+
+                {{ form.address.label }}
+                {{ form.address }}<br>
+
+                {{ form.password.label }}
+                {{ form.password }}<br>
+                
+                {{ form.submit }}
+            
+            </form>
+    
+        
+        <a href="/info">Database</a><br>
+        <a href="/login">Login page</a><br>
+        <a href="/submission">Submit page</a>
+
+    </body>
+        
+</html>

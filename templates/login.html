@@ -1,0 +1,23 @@
+<html>
+    <head>LOGIN PAGE</head>
+        <body>
+            <h1>LOGIN YOUR INFO</h1>
+            <p>You'll be redirected to database page</p>
+            <form action="/login" method="post">
+                {{ form.csrf_token }}
+                {{ form.title.label}}
+                {{ form.title }}
+                {{ form.submit }}
+            </form>
+    
+                 
+        
+        <a href="/info">Database</a><br>
+        <a href="/account">Accounts</a><br>
+        <a href="/products">Products</a><br>
+        <a href="/newentry">Newentry</a><br>
+        <a href="/submission">Account confirmation Page</a>
+
+    </body>
+        
+</html>
