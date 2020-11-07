@@ -1,0 +1,36 @@
+<html>
+    <head>ADMIN Page</head>
+    <body>
+           <p>Add new products</p>
+        
+        <form action="/vendor" method="post">
+
+                        <input type="text" class="form-control"name="productname" value=""
+                            placeholder="ProductName">
+                    
+                        <input type="text" class="form-control"name="description" value=""
+                            placeholder="Description">
+                    
+                        <input type="number" class="form-control"name="price" value=""
+                            placeholder="Price">
+                        
+                        <input type="number" class="form-control"name="disprice" value=""
+                            placeholder="Discount Price">
+
+                        <label for="category">Choose a category:</label>
+                            <select id="category" name="category">
+                              <option value="pantry">Pantry</option>
+                              <option value="clothing">Clothing</option>
+                              <option value="homedecor">Homedecor</option>
+                              <option value="watches">Watches</option>
+                            </select>
+                        
+                        <button type="submit" value="submit" class="btn_3">
+                            ADD PRODUCT
+                        </button>
+                        
+                    
+                
+            </form>
+    </body>
+</html>
