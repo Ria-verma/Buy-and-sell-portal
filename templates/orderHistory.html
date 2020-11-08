@@ -50,7 +50,7 @@
                                 <div class="header-info-right">
                                    <ul>
                                         <li><a href="{{ url_for('myAccount')}}">My Account </a></li>
-                                        <li><a href="{{ url_for('wishlist')}}">Wish List  </a></li>
+                                        <li><a href="{{ url_for('order')}}">My Orders  </a></li>
                                         <li><a href="{{ url_for('cart') }}">Cart</a></li>
                                    </ul>
                                 </div>
@@ -75,7 +75,7 @@
                                             <li><a href="{{ url_for('home') }}">Home</a></li>
                                             <li><a href="{{ url_for('catagories') }}">Catagories</a></li>
                                             <li><a href="{{ url_for('contact') }}">Contact</a></li>
-                                            <li><a href="{{ url_for('signup') }}">Sign up</a></li>
+                                            <li><a href="{{ url_for('logout') }}">Logout</a></li>
                                         </ul>
                                     </nav>
                                 </div>
@@ -112,29 +112,26 @@
 
     <!--================login_part Area =================-->
     <div class="section-top-border">
-        
         <div class="progress-table-wrap">
             <div class="progress-table">
                 <div class="table-head">
-                    <div class="serial">Order No.</div>
-                    <div class="serial">Order Id</div>
-                    <div class="country">Product</div>
-                    <div class="visit">Date</div>
-                    <div class="percentage">status</div>
+                    <div class="serial"> Order_ID </div>
+                    <div class="serial">Product</div>
+                    <div class="serial">Quantity</div>
+                    <div class="visit">Price</div>
+                    <div class="visit">Status</div>
+                    <div class="percentage">Date</div>
                 </div>
+                {%for order in orders%}
                 <div class="table-row">
-                    <div class="serial">01</div>
-                    <div class="serial">01</div>
-                    <div class="country"> Canada</div>
-                    <div class="visit">645032</div>
-                    <div class="percentage">
-                        <!-- <div class="progress">
-                            <div class="progress-bar color-1" role="progressbar" style="width: 80%"
-                                aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div> -->
-                    </div>
-                </div>
-                
+                    <div class="serial">{{order[0]}}</div>
+                    <div class="serial" href="{{url_for('product_page',pro_id=order[2])}}">{{order[6]}}</div>
+                    <div class="serial">{{order[3]}}</div>
+                    <div class="visit">{{order[3]*order[4]}}</div>
+                    <div class="visit">Not Delivered</div>
+                    <div class="percentage">{{order[5]}} </div>
+                </div>   
+                {% endfor %}
             </div>
         </div>
     </div>

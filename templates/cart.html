@@ -42,7 +42,7 @@
                             <div class="header-info-right">
                                <ul>
                                 <li><a href="{{ url_for('myAccount')}}">My Account </a></li>
-                                <li><a href="{{ url_for('wishlist')}}">Wish List  </a></li>
+                                <li><a href="{{ url_for('order')}}">My Orders </a></li>
                                 <li><a href="{{ url_for('cart') }}">Cart</a></li>
                                </ul>
                             </div>
@@ -67,7 +67,7 @@
                                       <li><a href="{{ url_for('home') }}">Home</a></li>
                                       <li><a href="{{ url_for('catagories') }}">Catagories</a></li>
                                       <li><a href="{{ url_for('contact') }}">Contact</a></li>
-                                      <li><a href="{{ url_for('login') }}">Sign in</a></li>
+                                      <li><a href="{{ url_for('logout') }}">Logout</a></li>
                                     </ul>
                                 </nav>
                             </div>
@@ -103,6 +103,7 @@
   <!--================Cart Area =================-->
   <section class="cart_area section_padding">
     <div class="container">
+      <form action="#" method="post"></form>
       <div class="cart_inner">
         <div class="table-responsive">
           <table class="table">
@@ -133,23 +134,31 @@
                   <h5>{{item['price']}}  INR</h5>
                 </td>
                 <td>
-                 <!-- <div class="product_count">
+                 <div class="product_count">
                     <p>{{item['quantity']}}</p>
-                  </div>-->
+                  </div>
                   <div class="product_count"> 
-                  <span class="input-number-decrement"> <i class="ti-minus"></i></span>
-                    <input class="input-number" type="text" value="1" min="0" max="10">
-                    <span class="input-number-increment"> <i class="ti-plus"></i></span>
+                  <!-- <span class="input-number-decrement"> <i class="ti-minus"></i></span> -->
+                    <!-- <input class="input-number" type="text" value="{{item['quantity']}}" min="0" max="10">
+                    <input type="text" name="productname" placeholder="Product Name"
+
+                            onfocus="this.placeholder = ''" onblur="this.placeholder = '1'" required
+                            class="single-input border"> -->
+                    <!-- <span class="input-number-increment"> <i class="ti-plus"></i></span> -->
                   </div>
                 </td>
                 <td>
                   <h5>{{item['totalprice']}}  INR</h5>
                 </td>
                 <td>
-                  <a href="#" class="genric-btn info radius">Update</a>
+                  <div class="add_to_cart">
+                    <input type="submit"  name ="btn{{item['pid']}}" value="Update" class="genric-btn info radius"/>
+                </div>
                 </td>
                 <td>
-                  <a href="#" class="genric-btn danger radius">Delete</a>
+                  <div class="add_to_cart">
+                    <input type="submit"  name ="btn{{item['pid']}}" value="Delete" class="genric-btn danger radius"/>
+                </div>
                 </td>
               </tr>
             {%endfor%}  
@@ -172,6 +181,7 @@
             <a class="btn_1 checkout_btn_1" href="#">Proceed to checkout</a>
           </div>
         </div>
+      </form>
       </div>
   </section>
 
