@@ -27,10 +27,9 @@ CREATE TABLE `products` (
   `pname` varchar(45) NOT NULL,
   `price` double NOT NULL,
   `pdetails` varchar(45) DEFAULT NULL,
-  `disprice` double DEFAULT NULL,
+  `new` varchar(45) DEFAULT 'NO',
   `category` varchar(45) NOT NULL,
   `Deleted` int DEFAULT NULL,
-  `new` varchar(45) DEFAULT 'NO',
   `star1` int NOT NULL DEFAULT '0',
   `star2` int NOT NULL DEFAULT '0',
   `star3` int NOT NULL DEFAULT '0',
@@ -46,7 +45,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (1,'Men\'s short',200,'qwe',NULL,'clothing',0,NULL,0,0,0,0,0),(2,'Mens\'s top',400,'qwe',NULL,'clothing',0,NULL,0,0,0,0,0),(3,'Women\'s top',400,'qwe',320,'clothing',0,NULL,0,0,0,0,0),(4,'Grey swetshirt',500,'qwe',40,'clothing',0,NULL,0,0,0,0,0),(5,'White Cushion',500,'soft cotten made',NULL,'homedecor',0,NULL,0,0,0,0,0),(6,'Purple Cushion',500,'beautiful and useful',NULL,'homedecor',0,NULL,0,0,0,0,0),(7,'Watch 1',500,NULL,40,'watches',0,NULL,0,0,0,0,0),(8,'Watch 2',500,NULL,NULL,'watches',0,NULL,0,0,0,0,0),(9,'Green Apple',500,NULL,40,'pantry',0,NULL,0,0,0,0,0),(10,'Pantry 1',500,NULL,40,'pantry',0,NULL,0,0,0,0,0),(11,'Pantry 3',500,NULL,NULL,'pantry',0,NULL,0,0,0,0,0);
+INSERT INTO `products` VALUES (1,'Men\'s short',200,'qwe',NULL,'clothing',0,0,0,0,0,0),(2,'Mens\'s top',400,'qwe',NULL,'clothing',0,0,0,0,0,0),(3,'Women\'s top',400,'qwe',NULL,'clothing',0,0,0,0,0,0),(4,'Grey swetshirt',500,'qwe',NULL,'clothing',0,0,0,0,0,0),(5,'White Cushion',500,'soft cotten made',NULL,'homedecor',0,0,0,0,0,0),(6,'Purple Cushion',500,'beautiful and useful',NULL,'homedecor',0,0,0,0,0,0),(7,'Watch 1',500,NULL,NULL,'watches',0,0,0,0,0,0),(8,'Watch 2',500,NULL,NULL,'watches',0,0,0,0,0,0),(9,'Green Apple',500,NULL,NULL,'pantry',0,0,0,0,0,0),(10,'Pantry 1',500,NULL,NULL,'pantry',0,0,0,0,0,0),(11,'Pantry 3',500,NULL,NULL,'pantry',0,0,0,0,0,0);
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -59,4 +58,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-08 10:43:11
+-- Dump completed on 2020-11-08 18:26:37

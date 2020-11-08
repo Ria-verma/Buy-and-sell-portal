@@ -16,36 +16,31 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `price`
+-- Table structure for table `notification`
 --
 
-DROP TABLE IF EXISTS `price`;
+DROP TABLE IF EXISTS `notification`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `price` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `pid` int NOT NULL,
-  `vid` int NOT NULL,
-  `price` int NOT NULL,
-  `disprice` int DEFAULT NULL,
-  `dateAdded` date DEFAULT NULL,
-  `stock` int NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_price_1_idx` (`pid`),
-  KEY `fk_price_2_idx` (`vid`),
-  CONSTRAINT `fk_price_1` FOREIGN KEY (`pid`) REFERENCES `products` (`pid`),
-  CONSTRAINT `fk_price_2` FOREIGN KEY (`vid`) REFERENCES `seller` (`vid`)
-) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `notification` (
+  `mid` int NOT NULL,
+  `person1_id` int NOT NULL,
+  `person2_id` int NOT NULL,
+  `content` varchar(45) NOT NULL,
+  `day` varchar(45) NOT NULL,
+  `date` varchar(45) NOT NULL,
+  `time` varchar(45) NOT NULL,
+  PRIMARY KEY (`mid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `price`
+-- Dumping data for table `notification`
 --
 
-LOCK TABLES `price` WRITE;
-/*!40000 ALTER TABLE `price` DISABLE KEYS */;
-INSERT INTO `price` VALUES (1,1,1,200,200,'2001-11-01',0),(2,2,1,400,200,'2001-11-01',0),(3,3,1,400,344,'2001-11-01',0),(36,4,1,500,460,'2001-11-01',0),(37,5,1,500,490,'2001-11-01',0),(38,6,1,500,400,'2001-11-01',0),(39,7,1,500,NULL,'2001-11-01',0),(40,8,1,500,NULL,'2001-11-01',0),(41,9,1,500,NULL,'2001-11-01',0),(42,10,1,500,NULL,'2001-11-01',0),(43,11,1,400,NULL,'2001-11-01',0);
-/*!40000 ALTER TABLE `price` ENABLE KEYS */;
+LOCK TABLES `notification` WRITE;
+/*!40000 ALTER TABLE `notification` DISABLE KEYS */;
+/*!40000 ALTER TABLE `notification` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

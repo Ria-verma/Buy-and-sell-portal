@@ -29,10 +29,14 @@ CREATE TABLE `orders` (
   `quantity` int NOT NULL,
   `price` int NOT NULL,
   `datetime` datetime NOT NULL,
+  `name` varchar(45) NOT NULL,
   `delivery_status` varchar(45) NOT NULL DEFAULT 'Not Delivered',
-  `vid` int NOT NULL,
   PRIMARY KEY (`order_id`),
-  UNIQUE KEY `order_id_UNIQUE` (`order_id`)
+  UNIQUE KEY `order_id_UNIQUE` (`order_id`),
+  KEY `fk_orders_1_idx` (`user_id`),
+  KEY `fk_orders_2_idx` (`pro_id`),
+  CONSTRAINT `fk_orders_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  CONSTRAINT `fk_orders_2` FOREIGN KEY (`pro_id`) REFERENCES `products` (`pid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -42,7 +46,7 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES (7,1,3,4,344,'2020-11-07 16:25:09','Not Delivered',1),(8,1,1,1,200,'2020-11-07 17:41:11','Not Delivered',1);
+INSERT INTO `orders` VALUES (7,1,3,4,344,'2020-11-07 16:25:09','','Not Delivered'),(8,1,1,1,200,'2020-11-07 17:41:11','','Not Delivered');
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -55,4 +59,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-08 10:43:11
+-- Dump completed on 2020-11-08 18:26:37

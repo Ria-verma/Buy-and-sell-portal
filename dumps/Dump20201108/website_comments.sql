@@ -25,14 +25,14 @@ DROP TABLE IF EXISTS `comments`;
 CREATE TABLE `comments` (
   `cid` int NOT NULL,
   `pid` int NOT NULL,
-  `comment` varchar(500) NOT NULL,
-  `day` varchar(45) NOT NULL,
-  `date` date NOT NULL,
-  `time` varchar(45) NOT NULL,
   `uid` int NOT NULL,
+  `comment` varchar(500) NOT NULL,
+  `datetime` datetime NOT NULL,
   PRIMARY KEY (`cid`),
   KEY `fk_comments_1_idx` (`pid`),
-  CONSTRAINT `fk_comments_1` FOREIGN KEY (`pid`) REFERENCES `products` (`pid`)
+  KEY `fk_comments_2_idx` (`uid`),
+  CONSTRAINT `fk_comments_1` FOREIGN KEY (`pid`) REFERENCES `products` (`pid`),
+  CONSTRAINT `fk_comments_2` FOREIGN KEY (`uid`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -54,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-08 10:43:11
+-- Dump completed on 2020-11-08 18:26:37
