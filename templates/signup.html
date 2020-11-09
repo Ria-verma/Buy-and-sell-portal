@@ -47,6 +47,11 @@
                                         <li>+91-1234567890</li>
                                     </ul>
                                 </div>
+                                <div class="header-info-right">
+                                   <ul>
+                                       <li><a href="{{ url_for('cart') }}">Cart</a></li>
+                                   </ul>
+                                </div>
                             </div>
                        </div>
                    </div>
@@ -140,6 +145,15 @@
                                     <button type="submit" value="submit" class="btn_3">
                                         sign up
                                     </button>
+                                    {% with messages = get_flashed_messages() %}
+                                    {% if messages %}
+                                        <ul class=flashes>
+                                        {% for message in messages %}
+                                        <li>{{ message }}</li>
+                                        {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                    {% endwith %}
                                     
                                 </div>
                             </form>

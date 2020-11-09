@@ -109,7 +109,6 @@ def verify():
 
 
 
-
 @app.route('/signup', methods = ['GET', 'POST'])
 def signup():
     if request.method == "POST":
@@ -118,53 +117,64 @@ def signup():
         username=userDetails['username']
         email=userDetails['email']
         password=userDetails['password']
-        session["email"]=email
-        session["password"]=password
-        session["username"]=username
-        otp = random.randrange(111111, 999999)
-        session["otp"] = otp
-        Y = send_otp(email, otp)
-        return Y
+        if len(username)==0 or len(email)==0 or len(password)==0:
+            flash("Please fill the form completely!")
+            
+        else:
+            
+            cursor = mysql.connection.cursor()
+            cursor.execute('SELECT * FROM users WHERE email=%s', (email,))
+            account = cursor.fetchone()
+            row_count = cursor.rowcount
+            if row_count != 0:
+                flash("You already have an account, Please sign in")
+            else:
+                session["email"]=email
+                session["password"]=password
+                session["username"]=username
+                otp = random.randrange(111111, 999999)
+                session["otp"] = otp
+                Y = send_otp(email, otp)
+                return Y
     return render_template('signup.html')
 
 
 
 
-
-@app.route('/login', methods=['GET','POST'])
+@app.route('/login', methods = ['GET', 'POST'])
 def login():
-     if request.method == 'POST' and 'email' in request.form and 'password' in request.form:
-        # Create variables for easy access
-        email = request.form['email']
-        password = request.form['password']
-        # Check if account exists using MySQL
-        cursor = mysql.connection.cursor()
-        cursor.execute('SELECT * FROM users WHERE email= %s AND password = %s', (email, password))
-        # Fetch one record and return result
-        account = cursor.fetchone()
-        # If account exists in accounts table in out database
-        if account:
-            # Create session data, we can access this data in other routes
-            session["loggedin"] = True
-            session["id"]=account[0]
-            session["email"]=account[2]
-            session["password"]=account[3]
-            session["username"]=account[1]
-            if account[4]:
-                session['filled']=True
-                session["houseno"]=account[4]
-                session["streetname"]=account[5]
-                session["city"]=account[6]
-                session["state"]=account[7]
-                session["pincode"]=account[8]
-            else:
-                session['filled']=False
-            # session["id"] = account['id']
-            return render_template('index.html')
-        else:
-            # Account doesnt exist or username/password incorrect
-            return "please enter correct details"
-     return render_template('login.html')
+    if request.method == "POST":
+        if len(request.form['email'])==0 or len(request.form['password'])==0:
+            flash("Invalid credentials!")
+
+        else :
+            email = request.form['email']
+            password = request.form['password']
+            session["email"]=email
+            session["password"]=password
+            # Check if account exists using MySQL
+            cursor = mysql.connection.cursor()
+            cursor.execute('SELECT * FROM users WHERE email=%s AND password =%s', (email, password))
+            account = cursor.fetchone()
+            # cursor.execute('SELECT * FROM users WHERE email=%s',(email,))
+            # account1 = cursor.fetchall()
+            row_count = cursor.rowcount
+            if row_count == 0:
+                flash("You don't have an account, Please create an account!")
+
+            elif account[1]==session["email"] and session["password"]==account[2]:
+                session["loggedin"] = True
+                session["id"]=account[0]
+                session["email"]=account[1]
+                session["password"]=account[2]
+                session["username"]=account[3]
+                return render_template('index.html')
+
+            elif account[2]!=session["password"]:
+                flash("Wrong password!")
+
+
+    return render_template("login.html")
 
 
 
@@ -180,8 +190,12 @@ def logout():
 
 @app.route('/')
 def home():
-    session['loggedin']=False
-    return render_template("index.html")
+    cursor = mysql.connection.cursor()
+    cursor.execute('SELECT * FROM products WHERE category=%s',('clothing',))
+    account1 = cursor.fetchall()
+    print(account1)
+    return render_template("index.html", item1=account1)
+
 
 
 
@@ -246,29 +260,29 @@ def product_page(pro_id):
 
 @app.route('/myAccount', methods=['GET','POST'])
 def myAccount():
-    if session['filled']==True:
-        return render_template("filledaccount.html")
-    if request.method == "POST":
-        userDetails=request.form
-        houseno=userDetails['houseno']
-        streetname=userDetails['streetname']
-        city=userDetails['city']
-        state=userDetails['state'] 
-        pincode=userDetails['pincode']
-        email=session["email"]
-        session["houseno"]=houseno
-        session["streetname"]=streetname
-        session["city"]=city
-        session["state"]=state
-        session["pincode"]=pincode
-        cur = mysql.connection.cursor()
-        #cur.execute('UPDATE users SET houseno = 'houseno',streetname='streetname',city='city',state='state',pincode='pincode' WHERE (email='email')')
-        cur.execute('UPDATE website.users SET houseno = %s,streetname=%s,city=%s,state=%s,pincode=%s WHERE (email=%s)',(houseno,streetname,city,state,pincode,session["email"])) 
-        #UPDATE website.users SET houseno = 'houseno',streetname='streetname',city='city',state='state',pincode='pincode' WHERE (email='cse190001047@iiti.ac.in')
-        mysql.connection.commit()
-        cur.close()
-        session['filled']=True
-        return render_template('index.html')
+    # if session['filled']==True:
+    #     return render_template("filledaccount.html")
+    # if request.method == "POST":
+    #     userDetails=request.form
+    #     houseno=userDetails['houseno']
+    #     streetname=userDetails['streetname']
+    #     city=userDetails['city']
+    #     state=userDetails['state'] 
+    #     pincode=userDetails['pincode']
+    #     email=session["email"]
+    #     session["houseno"]=houseno
+    #     session["streetname"]=streetname
+    #     session["city"]=city
+    #     session["state"]=state
+    #     session["pincode"]=pincode
+    #     cur = mysql.connection.cursor()
+    #     #cur.execute('UPDATE users SET houseno = 'houseno',streetname='streetname',city='city',state='state',pincode='pincode' WHERE (email='email')')
+    #     cur.execute('UPDATE website.users SET houseno = %s,streetname=%s,city=%s,state=%s,pincode=%s WHERE (email=%s)',(houseno,streetname,city,state,pincode,session["email"])) 
+    #     #UPDATE website.users SET houseno = 'houseno',streetname='streetname',city='city',state='state',pincode='pincode' WHERE (email='cse190001047@iiti.ac.in')
+    #     mysql.connection.commit()
+    #     cur.close()
+    #     session['filled']=True
+    #     return render_template('index.html')
     return render_template("myAccount.html")
 
 
