@@ -162,12 +162,12 @@ def login():
             if row_count == 0:
                 flash("You don't have an account, Please create an account!")
 
-            elif account[1]==session["email"] and session["password"]==account[2]:
+            elif account[2]==session["email"] and session["password"]==account[3]:
                 session["loggedin"] = True
                 session["id"]=account[0]
-                session["email"]=account[1]
+                session["email"]=account[2]
                 session["password"]=account[2]
-                session["username"]=account[3]
+                session["username"]=account[1]
                 return render_template('index.html')
 
             elif account[2]!=session["password"]:
@@ -193,10 +193,8 @@ def home():
     cursor = mysql.connection.cursor()
     cursor.execute('SELECT * FROM products WHERE category=%s',('clothing',))
     account1 = cursor.fetchall()
-    print(account1)
-    return render_template("index.html", item1=account1)
-
-
+    return render_template('index.html',items1=account1,)
+    
 
 
 
