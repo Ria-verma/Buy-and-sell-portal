@@ -16,35 +16,40 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `seller`
+-- Table structure for table `orders`
 --
 
-DROP TABLE IF EXISTS `seller`;
+DROP TABLE IF EXISTS `orders`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `seller` (
-  `vid` int NOT NULL AUTO_INCREMENT,
-  `seller_name` varchar(45) NOT NULL,
-  `email` varchar(45) NOT NULL,
-  `description` varchar(45) DEFAULT NULL,
-  `join_date` date NOT NULL,
-  `streetname` varchar(45) NOT NULL,
-  `city` varchar(45) NOT NULL,
-  `state` varchar(45) NOT NULL,
-  `pincode` int NOT NULL,
-  `Deleted` int DEFAULT '0',
-  PRIMARY KEY (`vid`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `orders` (
+  `order_id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `pro_id` int NOT NULL,
+  `quantity` int NOT NULL,
+  `price` int NOT NULL,
+  `datetime` datetime NOT NULL,
+  `delivery_status` varchar(45) NOT NULL DEFAULT 'Not Delivered',
+  `vid` int DEFAULT NULL,
+  PRIMARY KEY (`order_id`),
+  UNIQUE KEY `order_id_UNIQUE` (`order_id`),
+  KEY `fk_orders_1_idx` (`user_id`),
+  KEY `fk_orders_2_idx` (`pro_id`),
+  KEY `fk_orders_3_idx` (`vid`),
+  CONSTRAINT `fk_orders_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  CONSTRAINT `fk_orders_2` FOREIGN KEY (`pro_id`) REFERENCES `products` (`pid`),
+  CONSTRAINT `fk_orders_3` FOREIGN KEY (`vid`) REFERENCES `seller` (`vid`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `seller`
+-- Dumping data for table `orders`
 --
 
-LOCK TABLES `seller` WRITE;
-/*!40000 ALTER TABLE `seller` DISABLE KEYS */;
-INSERT INTO `seller` VALUES (1,'Sruthi','cse190001051@iiti.ac.in','glkdfjgrdoi','2001-11-01','djsoif','jfsdoif','fdldkasjfi',43,0);
-/*!40000 ALTER TABLE `seller` ENABLE KEYS */;
+LOCK TABLES `orders` WRITE;
+/*!40000 ALTER TABLE `orders` DISABLE KEYS */;
+INSERT INTO `orders` VALUES (7,1,3,4,344,'2020-11-07 16:25:09','Not Delivered',1),(8,1,1,1,200,'2020-11-07 17:41:11','Not Delivered',1),(9,1,1,1,200,'2020-11-10 22:49:41','Not Delivered',1),(10,1,1,1,200,'2020-11-11 22:56:05','Not Delivered',1);
+/*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -56,4 +61,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-11 23:33:17
+-- Dump completed on 2020-11-12 23:22:29

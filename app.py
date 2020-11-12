@@ -223,36 +223,119 @@ def catagories():
 
 
 
+
+
 @app.route('/product_page/<int:pro_id>' , methods=['GET','POST'])
 def product_page(pro_id):
+    
     cur = mysql.connection.cursor()
+    
     cur.execute( "SELECT * FROM products WHERE pid LIKE %s", [pro_id] )
-    singleproduct = cur.fetchone()
-    cur = mysql.connection.cursor()
-    cur.execute( "SELECT * FROM price WHERE pid LIKE %s", [pro_id] )
+    firstproduct = cur.fetchone()
+    pro_name = firstproduct[1]
+    
+    cur.execute( "SELECT * FROM price WHERE pid LIKE %s ORDER BY disprice", [pro_id] )
+    rows = cur.fetchall()
+    sellerList = {}
+    for row in rows:
+        vid = int(row[2])
+        cur.execute( "SELECT * FROM seller WHERE vid = %s", [vid] )
+        vendor = cur.fetchone()
+        # Dict = {}
+        # Dict["vid"] = vid
+        # Dict["s_name"] = vendor[1]
+        # Dict["sell_at_price"] = row[4]
+        # sellerList.append(Dict)
+
+
+
+    cur.execute( "SELECT * FROM price WHERE pid LIKE %s ORDER BY disprice", [pro_id] )
     sproduct = cur.fetchone()
     minprice=sproduct[4]
-    pro_name=singleproduct[1]
+    stock = sproduct[6]
+    
+    cur.execute("SELECT* FROM cart WHERE user_id = %s AND pid = %s", [session["id"], pro_id])
+    row_cnt = cur.rowcount
+    in_cart = 0
+    
+    prod = 0
+    if row_cnt!=0:
+        prod = cur.fetchone()
+        in_cart = prod[3]
+    
+    cur.close()
+
     if request.method == 'POST':
         if request.form['btn1'] == "Add to cart":
-            userDetails=request.form
-            quan=userDetails['quantity']
-            cur = mysql.connection.cursor()
-            cur.execute("INSERT INTO cart(user_id, pid,quantity) Values(%s,%s,%s)", [session["id"],pro_id,quan])
-            mysql.connection.commit()
-            cur.close()
+            # userDetails=request.form
+            # quan=userDetails['quantity']
+            quan = 1
+            if row_cnt == 0:
+                cur = mysql.connection.cursor()
+                cur.execute("INSERT INTO cart(user_id, pid,quantity) Values(%s,%s,%s)", [session["id"],pro_id,quan])
+                mysql.connection.commit()
+                cur.close()
+            else:
+                count = prod[3] + 1
+                cur = mysql.connection.cursor()
+                cur.execute("UPDATE cart SET quantity = %s WHERE user_id = %s AND pid = %s", [count, session["id"], pro_id])
+                mysql.connection.commit()
+                cur.close()
+       
+        # elif request.form['btn1'] == "Buy now":
         else:
             now = datetime.now()
             formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
-            userDetails=request.form
-            quan=userDetails['quantity']
+            # userDetails=request.form
+            # quan=userDetails['quantity']
+            quan = 1
             cur = mysql.connection.cursor()
-            cur.execute("INSERT INTO orders(user_id, pro_id,quantity,price,datetime,pro_name) Values(%s,%s,%s,%s,%s,%s)", [session["id"],pro_id,quan,minprice,formatted_date,pro_name])
+            cur.execute("INSERT INTO orders(user_id, pro_id,quantity,price,datetime) Values(%s,%s,%s,%s,%s)", [session["id"],pro_id,quan,minprice,formatted_date])
             mysql.connection.commit()
+            cur.execute("UPDATE price SET stock = %s WHERE id = %s", [ sproduct[6]-1, sproduct[0]])
+            mysql.connection.commit()
+            #update the cart of people whose quantity of that item in cart is more than the current updated stock
+            # cur.execute("UPDATE ")
             cur.close()
             return "Your order is succesfully placed"
-    return render_template('single-product.html',singleproduct=singleproduct,minprice=minprice)
 
+        # else:
+
+    
+    if stock - in_cart <= 0:
+        return catagories()
+
+    return render_template('single-product.html',singleproduct=firstproduct,minprice=minprice, sellerList = sellerList)
+
+
+
+
+
+
+
+
+@app.route('/cart')
+def cart():
+    cur = mysql.connection.cursor()
+    cur.execute( "SELECT * FROM cart WHERE user_id LIKE %s", [session["id"]] )
+    cartitems = cur.fetchall()
+    cartlist = []
+    tprice=0
+    for item in cartitems:
+        cur = mysql.connection.cursor()
+        x=int(item[2])
+        cur.execute( "SELECT * FROM products WHERE pid LIKE %s", [x] )
+        products = cur.fetchone()
+        Dict = {}
+        Dict['proname']=products[1]
+        Dict['pid']=products[0]
+        Dict['price']=products[2]
+        Dict['quantity']=item[3]
+        Dict['category']=products[5]
+        Dict['totalprice']=item[3]*Dict['price']
+        cartlist.append(Dict)
+        tprice=tprice+Dict['totalprice']
+    return render_template('cart.html',carts=cartlist,totalprice=tprice)
 
 
 
@@ -287,29 +370,6 @@ def myAccount():
 
 
 
-
-@app.route('/cart')
-def cart():
-    cur = mysql.connection.cursor()
-    cur.execute( "SELECT * FROM cart WHERE user_id LIKE %s", [session["id"]] )
-    cartitems = cur.fetchall()
-    cartlist = []
-    tprice=0
-    for item in cartitems:
-        cur = mysql.connection.cursor()
-        x=int(item[2])
-        cur.execute( "SELECT * FROM products WHERE pid LIKE %s", [x] )
-        products = cur.fetchone()
-        Dict = {}
-        Dict['proname']=products[1]
-        Dict['pid']=products[0]
-        Dict['price']=products[2]
-        Dict['quantity']=item[3]
-        Dict['category']=products[5]
-        Dict['totalprice']=item[3]*Dict['price']
-        cartlist.append(Dict)
-        tprice=tprice+Dict['totalprice']
-    return render_template('cart.html',carts=cartlist,totalprice=tprice)
 
 
 
@@ -492,3 +552,7 @@ def verifyProduct(pro_id):
 
 if __name__=='__main__':
     app.run(debug=True)
+
+    <!-- {% for seller in sellerList %}
+                        <option value="{{seller[vid]}}">{{seller[s_name]}}</option>
+                        {% endfor %} -->

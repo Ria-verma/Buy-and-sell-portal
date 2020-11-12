@@ -16,33 +16,33 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `comments`
+-- Table structure for table `temporary_product`
 --
 
-DROP TABLE IF EXISTS `comments`;
+DROP TABLE IF EXISTS `temporary_product`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `comments` (
-  `cid` int NOT NULL,
-  `pid` int NOT NULL,
-  `uid` int NOT NULL,
-  `comment` varchar(500) NOT NULL,
-  `datetime` datetime NOT NULL,
-  PRIMARY KEY (`cid`),
-  KEY `fk_comments_1_idx` (`pid`),
-  KEY `fk_comments_2_idx` (`uid`),
-  CONSTRAINT `fk_comments_1` FOREIGN KEY (`pid`) REFERENCES `products` (`pid`),
-  CONSTRAINT `fk_comments_2` FOREIGN KEY (`uid`) REFERENCES `users` (`id`)
+CREATE TABLE `temporary_product` (
+  `rid` int NOT NULL,
+  `vid` int NOT NULL,
+  `pname` varchar(45) NOT NULL,
+  `price` varchar(45) DEFAULT NULL,
+  `pdetails` varchar(45) DEFAULT NULL,
+  `disprice` varchar(45) DEFAULT NULL,
+  `category` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`rid`),
+  KEY `fk_temporary_product_1_idx` (`vid`),
+  CONSTRAINT `fk_temporary_product_1` FOREIGN KEY (`vid`) REFERENCES `seller` (`vid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `comments`
+-- Dumping data for table `temporary_product`
 --
 
-LOCK TABLES `comments` WRITE;
-/*!40000 ALTER TABLE `comments` DISABLE KEYS */;
-/*!40000 ALTER TABLE `comments` ENABLE KEYS */;
+LOCK TABLES `temporary_product` WRITE;
+/*!40000 ALTER TABLE `temporary_product` DISABLE KEYS */;
+/*!40000 ALTER TABLE `temporary_product` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -54,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-11 23:33:17
+-- Dump completed on 2020-11-12 23:22:28

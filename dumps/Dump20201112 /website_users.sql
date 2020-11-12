@@ -27,11 +27,6 @@ CREATE TABLE `users` (
   `username` varchar(45) NOT NULL,
   `email` varchar(255) NOT NULL,
   `password` varchar(45) NOT NULL,
-  `houseno` varchar(45) DEFAULT NULL,
-  `streetname` varchar(45) DEFAULT NULL,
-  `city` varchar(45) DEFAULT NULL,
-  `state` varchar(45) DEFAULT NULL,
-  `pincode` varchar(45) DEFAULT NULL,
   `join_date` date NOT NULL,
   `Deleted` int DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -47,7 +42,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Ria','cse190001051@iiti.ac.in','19285house','',NULL,NULL,NULL,NULL,'2001-11-02',NULL);
+INSERT INTO `users` VALUES (1,'Ria','cse190001051@iiti.ac.in','19285house','2001-11-02',NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -60,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-11 23:33:17
+-- Dump completed on 2020-11-12 23:22:28
