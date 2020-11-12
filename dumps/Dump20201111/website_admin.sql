@@ -16,34 +16,28 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `user_address`
+-- Table structure for table `admin`
 --
 
-DROP TABLE IF EXISTS `user_address`;
+DROP TABLE IF EXISTS `admin`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `user_address` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `user_id` int NOT NULL,
-  `name` varchar(45) DEFAULT NULL,
-  `houseno` varchar(45) DEFAULT NULL,
-  `streetname` varchar(45) NOT NULL,
-  `city` varchar(45) NOT NULL,
-  `state` varchar(45) NOT NULL,
-  `pincode` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `user_id_idx` (`user_id`),
-  CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+CREATE TABLE `admin` (
+  `aid` int NOT NULL AUTO_INCREMENT,
+  `email` varchar(45) NOT NULL,
+  `details` varchar(45) DEFAULT NULL,
+  `password` varchar(45) NOT NULL,
+  PRIMARY KEY (`aid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `user_address`
+-- Dumping data for table `admin`
 --
 
-LOCK TABLES `user_address` WRITE;
-/*!40000 ALTER TABLE `user_address` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user_address` ENABLE KEYS */;
+LOCK TABLES `admin` WRITE;
+/*!40000 ALTER TABLE `admin` DISABLE KEYS */;
+/*!40000 ALTER TABLE `admin` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -55,4 +49,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-08 18:26:37
+-- Dump completed on 2020-11-11 23:33:17

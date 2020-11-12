@@ -16,39 +16,36 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `users`
+-- Table structure for table `price`
 --
 
-DROP TABLE IF EXISTS `users`;
+DROP TABLE IF EXISTS `price`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `users` (
+CREATE TABLE `price` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `username` varchar(45) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `password` varchar(45) NOT NULL,
-  `houseno` varchar(45) DEFAULT NULL,
-  `streetname` varchar(45) DEFAULT NULL,
-  `city` varchar(45) DEFAULT NULL,
-  `state` varchar(45) DEFAULT NULL,
-  `pincode` varchar(45) DEFAULT NULL,
-  `join_date` date NOT NULL,
-  `Deleted` int DEFAULT NULL,
+  `pid` int NOT NULL,
+  `vid` int NOT NULL,
+  `price` int NOT NULL,
+  `disprice` int DEFAULT NULL,
+  `dateAdded` date DEFAULT NULL,
+  `stock` int NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`),
-  UNIQUE KEY `email_UNIQUE` (`email`),
-  KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='contains information of users registered';
+  KEY `fk_price_1_idx` (`pid`),
+  KEY `fk_price_2_idx` (`vid`),
+  CONSTRAINT `fk_price_1` FOREIGN KEY (`pid`) REFERENCES `products` (`pid`),
+  CONSTRAINT `fk_price_2` FOREIGN KEY (`vid`) REFERENCES `seller` (`vid`)
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `users`
+-- Dumping data for table `price`
 --
 
-LOCK TABLES `users` WRITE;
-/*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Ria','cse190001051@iiti.ac.in','19285house','',NULL,NULL,NULL,NULL,'2001-11-02',NULL);
-/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+LOCK TABLES `price` WRITE;
+/*!40000 ALTER TABLE `price` DISABLE KEYS */;
+INSERT INTO `price` VALUES (1,1,1,200,200,'2001-11-01',98),(2,2,1,400,200,'2001-11-01',100),(3,3,1,400,344,'2001-11-01',100),(36,4,1,500,460,'2001-11-01',100),(37,5,1,500,490,'2001-11-01',100),(38,6,1,500,400,'2001-11-01',100),(39,7,1,500,NULL,'2001-11-01',100),(40,8,1,500,NULL,'2001-11-01',100),(41,9,1,500,NULL,'2001-11-01',100),(42,10,1,500,NULL,'2001-11-01',100),(43,11,1,400,NULL,'2001-11-01',100);
+/*!40000 ALTER TABLE `price` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -60,4 +57,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-08 18:26:37
+-- Dump completed on 2020-11-11 23:33:17

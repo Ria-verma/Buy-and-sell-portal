@@ -16,28 +16,31 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `admin`
+-- Table structure for table `notification`
 --
 
-DROP TABLE IF EXISTS `admin`;
+DROP TABLE IF EXISTS `notification`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `admin` (
-  `aid` int NOT NULL AUTO_INCREMENT,
-  `email` varchar(45) NOT NULL,
-  `details` varchar(45) DEFAULT NULL,
-  `password` varchar(45) NOT NULL,
-  PRIMARY KEY (`aid`)
+CREATE TABLE `notification` (
+  `mid` int NOT NULL,
+  `person1_id` int NOT NULL,
+  `person2_id` int NOT NULL,
+  `content` varchar(45) NOT NULL,
+  `day` varchar(45) NOT NULL,
+  `date` varchar(45) NOT NULL,
+  `time` varchar(45) NOT NULL,
+  PRIMARY KEY (`mid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `admin`
+-- Dumping data for table `notification`
 --
 
-LOCK TABLES `admin` WRITE;
-/*!40000 ALTER TABLE `admin` DISABLE KEYS */;
-/*!40000 ALTER TABLE `admin` ENABLE KEYS */;
+LOCK TABLES `notification` WRITE;
+/*!40000 ALTER TABLE `notification` DISABLE KEYS */;
+/*!40000 ALTER TABLE `notification` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -49,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-08 18:26:37
+-- Dump completed on 2020-11-11 23:33:17
