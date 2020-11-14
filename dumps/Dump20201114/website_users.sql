@@ -16,40 +16,34 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `orders`
+-- Table structure for table `users`
 --
 
-DROP TABLE IF EXISTS `orders`;
+DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `orders` (
-  `order_id` int NOT NULL AUTO_INCREMENT,
-  `user_id` int NOT NULL,
-  `pro_id` int NOT NULL,
-  `quantity` int NOT NULL,
-  `price` int NOT NULL,
-  `datetime` datetime NOT NULL,
-  `delivery_status` varchar(45) NOT NULL DEFAULT 'Not Delivered',
-  `vid` int DEFAULT NULL,
-  PRIMARY KEY (`order_id`),
-  UNIQUE KEY `order_id_UNIQUE` (`order_id`),
-  KEY `fk_orders_1_idx` (`user_id`),
-  KEY `fk_orders_2_idx` (`pro_id`),
-  KEY `fk_orders_3_idx` (`vid`),
-  CONSTRAINT `fk_orders_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-  CONSTRAINT `fk_orders_2` FOREIGN KEY (`pro_id`) REFERENCES `products` (`pid`),
-  CONSTRAINT `fk_orders_3` FOREIGN KEY (`vid`) REFERENCES `seller` (`vid`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `users` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `username` varchar(45) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(45) NOT NULL,
+  `join_date` date NOT NULL,
+  `Deleted` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  UNIQUE KEY `email_UNIQUE` (`email`),
+  KEY `username` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='contains information of users registered';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `orders`
+-- Dumping data for table `users`
 --
 
-LOCK TABLES `orders` WRITE;
-/*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES (7,1,3,4,344,'2020-11-07 16:25:09','Not Delivered',1),(8,1,1,1,200,'2020-11-07 17:41:11','Not Delivered',1),(9,1,1,1,200,'2020-11-10 22:49:41','Not Delivered',1),(10,1,1,1,200,'2020-11-11 22:56:05','Not Delivered',1);
-/*!40000 ALTER TABLE `orders` ENABLE KEYS */;
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,'Ria','cse190001051@iiti.ac.in','19285house','2001-11-02',NULL),(20,'Ria','riaverma1302@gmail.com','19285house','2020-11-14',NULL);
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -61,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-12 23:22:29
+-- Dump completed on 2020-11-14 13:24:32

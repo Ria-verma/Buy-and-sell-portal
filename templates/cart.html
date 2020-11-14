@@ -105,16 +105,16 @@
     <div class="container">
       <form action="#" method="post"></form>
       <div class="cart_inner">
-        <div class="table-responsive">
+        <div class="table-responsive text-center">
           <table class="table">
             <thead>
               <tr>
                 <th scope="col">Product</th>
                 <th scope="col">Price</th>
                 <th scope="col">Quantity</th>
+                <th scope="col">Seller</th>
                 <th scope="col">Total</th>
                 <th scope="col">Update</th>
-                <th scope="col">Delete</th>
               </tr>
             </thead>
             <tbody>
@@ -126,7 +126,7 @@
                       <img src="{{ url_for('static', filename='img/categori/'+item['category']+'/'+ item['pid']|string +'.png')}}" alt="">
                     </div>
                     <div class="media-body">
-                      <a href="{{url_for('product_page',pro_id=item['pid'])}}"><p>{{item['proname']}}</p></a>
+                      <a href="{{url_for('single_product_page',pro_id=item['pid'], v_id = item['sellerid'])}}"><p>{{item['proname']}}</p></a>
                     </div>
                   </div>
                 </td>
@@ -134,32 +134,26 @@
                   <h5>{{item['price']}}  INR</h5>
                 </td>
                 <td>
-                 <div class="product_count">
                     <p>{{item['quantity']}}</p>
-                  </div>
-                  <div class="product_count"> 
-                  <!-- <span class="input-number-decrement"> <i class="ti-minus"></i></span> -->
-                    <!-- <input class="input-number" type="text" value="{{item['quantity']}}" min="0" max="10">
-                    <input type="text" name="productname" placeholder="Product Name"
-
-                            onfocus="this.placeholder = ''" onblur="this.placeholder = '1'" required
-                            class="single-input border"> -->
-                    <!-- <span class="input-number-increment"> <i class="ti-plus"></i></span> -->
-                  </div>
+            
+                </td>
+                <td>
+                  <!-- <div class="add_to_cart">
+                    <input type="submit"  name ="btn{{item['pid']}}" value="Update" class="genric-btn info radius"/>
+                </div> -->
+                <h5>{{item['seller']}} </h5>
                 </td>
                 <td>
                   <h5>{{item['totalprice']}}  INR</h5>
                 </td>
+                
+                <div class="add_to_cart">
                 <td>
-                  <div class="add_to_cart">
-                    <input type="submit"  name ="btn{{item['pid']}}" value="Update" class="genric-btn info radius"/>
+                  <a class="genric-btn info radius col-lg-5" href="#">Decrease</a>
+                
+                  <a class="genric-btn danger radius col-lg-5" href="#">Delete</a>
+              </td>
                 </div>
-                </td>
-                <td>
-                  <div class="add_to_cart">
-                    <input type="submit"  name ="btn{{item['pid']}}" value="Delete" class="genric-btn danger radius"/>
-                </div>
-                </td>
               </tr>
             {%endfor%}  
               <tr>

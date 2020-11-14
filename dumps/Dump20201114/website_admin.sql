@@ -16,36 +16,31 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `price`
+-- Table structure for table `admin`
 --
 
-DROP TABLE IF EXISTS `price`;
+DROP TABLE IF EXISTS `admin`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `price` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `pid` int NOT NULL,
-  `vid` int NOT NULL,
-  `price` int NOT NULL,
-  `disprice` int DEFAULT NULL,
-  `dateAdded` date DEFAULT NULL,
-  `stock` int NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_price_1_idx` (`pid`),
-  KEY `fk_price_2_idx` (`vid`),
-  CONSTRAINT `fk_price_1` FOREIGN KEY (`pid`) REFERENCES `products` (`pid`),
-  CONSTRAINT `fk_price_2` FOREIGN KEY (`vid`) REFERENCES `seller` (`vid`)
-) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `admin` (
+  `aid` int NOT NULL AUTO_INCREMENT,
+  `email` varchar(45) NOT NULL,
+  `details` varchar(45) DEFAULT NULL,
+  `password` varchar(45) NOT NULL,
+  `join_date` datetime DEFAULT NULL,
+  `username` varchar(45) NOT NULL,
+  PRIMARY KEY (`aid`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `price`
+-- Dumping data for table `admin`
 --
 
-LOCK TABLES `price` WRITE;
-/*!40000 ALTER TABLE `price` DISABLE KEYS */;
-INSERT INTO `price` VALUES (1,1,1,200,200,'2001-11-01',98),(2,2,1,400,200,'2001-11-01',100),(3,3,1,400,344,'2001-11-01',100),(36,4,1,500,460,'2001-11-01',100),(37,5,1,500,490,'2001-11-01',100),(38,6,1,500,400,'2001-11-01',100),(39,7,1,500,NULL,'2001-11-01',100),(40,8,1,500,NULL,'2001-11-01',100),(41,9,1,500,NULL,'2001-11-01',100),(42,10,1,500,NULL,'2001-11-01',100),(43,11,1,400,NULL,'2001-11-01',100);
-/*!40000 ALTER TABLE `price` ENABLE KEYS */;
+LOCK TABLES `admin` WRITE;
+/*!40000 ALTER TABLE `admin` DISABLE KEYS */;
+INSERT INTO `admin` VALUES (1,'riaverma1302@gmail.com','admin','19285house','2001-11-01 00:00:00','Ria_1');
+/*!40000 ALTER TABLE `admin` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -57,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-12 23:22:28
+-- Dump completed on 2020-11-14 13:24:32

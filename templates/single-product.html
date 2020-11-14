@@ -133,26 +133,47 @@
     <div class="col-lg-8">
       <div class="single_product_text text-center">
         <h3>{{singleproduct[1]}} <br><br></h3>
-          <h4>Price: {{minprice}} INR</h4>
+        <h4>Seller: <span style="color: grey;">{{curr_seller[1]}}</span> </h4><br>
+        <h5>Price(current seller): <span style="color: grey;">{{minprice}} INR</span></h5>
+        <h5>Actual Price: <span style="color: grey;">{{minprice}} INR</span></h5>
         <p>
             Seamlessly empower fully researched growth strategies and interoperable internal or “organic” sources. Credibly innovate granular internal or “organic” sources whereas high standards in web-readiness. Credibly innovate granular internal or organic sources whereas high standards in web-readiness. Energistically scale future-proof core competencies vis-a-vis impactful experiences. Dramatically synthesize integrated schemas. with optimal networks.
         </p>
-        <form action="{{url_for('product_page', pro_id=singleproduct[0])}}" method="post">
-        <div class="card_area">
-            <div class="product_count_area">
-                <p>Quantity<br></p>
-                <div class="product_count d-inline-block">
-                    <span class="product_count_item inumber-decrement"> <i class="ti-minus"></i></span>
-                    <input class="product_count_item input-number" type="int" name="quantity" value="1" min="0" max="10">
-                    <span class="product_count_item number-increment"> <i class="ti-plus"></i></span>
+        <form action="#" method="post">
+            <div class="single-element-widget mt-10">
+                <br>
+                <h5> change seller</h5>
+                <div class="form-select border" id="default-select category"" name = "seller">
+                    <select>
+                        {% for seller in sellerList %}
+                        <option value="{{seller["vid"]}}">{{seller["s_name"]}}</option>
+                        {% endfor %}
+                    </select>
+                    <br><br><br>
+                    <input type="submit" value="Apply" name="btn1" class="btn_2"/>
                 </div>
-                <br><br>
             </div>
+            <br><br><br><br><br><br>
+                <h5>In Your Cart: {{total_in_cart}}N</h5>
+                <h5>In Your Cart(From current seller): {{in_cart}}N</h5>
+
+            <br><br><br>
+            <!-- <div class="card_area">
+                <div class="product_count_area">
+                    <p>Quantity<br></p>
+                    <div class="product_count d-inline-block">
+                        <span class="product_count_item inumber-decrement"> <i class="ti-minus"></i></span>
+                        <input class="product_count_item input-number" type="int" name="quantity" value="1" min="0" max="10">
+                        <span class="product_count_item number-increment"> <i class="ti-plus"></i></span>
+                    </div>
+            </div> -->
             <div class="add_to_cart">
+                <!-- if can add to cart  -->
                 <input type="submit" name ="btn1" value="Add to cart" class="btn_3 col-lg-3" />
+                
                 <input type="submit"  name ="btn1" value="Buy now" class="btn_3 col-lg-3"/>
             </div>
-            </form>
+        </form>
          <!---- <div class="add_to_cart"> class="btn_3 col-lg-3"
               <a href="{{url_for('product_page', pro_id=singleproduct[0])}}" class="btn_3">Add to cart</a>
               <a href="{{url_for('product_page', pro_id=singleproduct[0])}}" class="btn_3">Buy Now</a>

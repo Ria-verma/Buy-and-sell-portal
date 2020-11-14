@@ -75,7 +75,6 @@
                                             <li><a href="{{ url_for('home') }}">Home</a></li>
                                             <li><a href="{{ url_for('catagories') }}">Catagories</a></li>
                                             <li><a href="{{ url_for('contact') }}">Contact</a></li>
-                                            <li><a href="{{ url_for('signup') }}">Sign up</a></li>
                                         </ul>
                                     </nav>
                                 </div>
@@ -114,16 +113,16 @@
     <section class="login_part section_padding ">
         <div class="container">
             <div class="row align-items-center">
-                <!-- <div class="col-lg-6 col-md-6">
+                <div class="col-lg-6 col-md-6">
                     <div class="login_part_text text-center">
                         <div class="login_part_text_iner">
                             <h2>New to our Shop?</h2>
                             <p>There are advances being made in science and technology
                                 everyday, and a good example of this is the</p>
-                            <a href="#" class="btn_3">Create an Account</a>
+                            <a href="{{ url_for('signup') }}" class="btn_3">Create an Account</a>
                         </div>
                     </div>
-                </div> -->
+                </div>
                 <div class="col-lg-6 col-md-6">
                     <div class="login_part_form">
                         <div class="login_part_form_iner">
@@ -138,6 +137,15 @@
                                     <input type="password" class="form-control"name="password" value=""
                                         placeholder="Password">
                                 </div>
+                                <div class="form-select" id="default-select category" name = "category">
+                                <select name="recipent">
+                                    <option value="buyer">Buyer</option>
+                                    <option value="seller">Seller</option>
+                                    <option value="admin">Admin</option>
+                              
+                                </select>
+                                </div>
+
                                 <div class="col-md-12 form-group">
                                     
                                     <button type="submit" value="submit" class="btn_3">

@@ -108,10 +108,10 @@
 
                 <br><br><br><br>
 
-                <form action="/vendor" method="post">
+                <form action="#" method="POST" enctype="multipart/form-data">
                     <div class="mt-10">
                         <h6>Product Name</h6>
-                        <input type="text" name="productname" placeholder="Product Name"
+                        <input type="text" name="pname" placeholder="Product Name"
                             onfocus="this.placeholder = ''" onblur="this.placeholder = 'Product Name'" required
                             class="single-input border">
                     </div>
@@ -120,7 +120,7 @@
                     <div class="mt-10">
                         <br>    
                         <h6>Product description</h6>
-                        <textarea class="single-textarea border" placeholder="Description" onfocus="this.placeholder = ''"
+                        <textarea class="single-textarea border" name="pdetails" placeholder="Product Details" onfocus="this.placeholder = ''"
                             onblur="this.placeholder = 'Product description'" required></textarea>
                     </div>
 
@@ -145,8 +145,8 @@
                     <div class="single-element-widget mt-10">
                         <br>
                         <h6>Category</h6>
-                        <div class="form-select border" id="default-select category"" name = "category">
-                            <select>
+                        <div class="form-select border" id="default-select category" name = "category">
+                            <select name = "category">
                                 <option value="pantry">Pantry</option>
                                 <option value="clothing">Clothing</option>
                                 <option value="homedecor">Homedecor</option>
@@ -155,13 +155,25 @@
                             </select>
                         </div>
                     </div>
+                    <div class="mt-10">
+                        <br>
+                        <span><h6>Stock</h6></span>
+                        <input type="number" name="stock" placeholder="Discount Price"
+                            onfocus="this.placeholder = ''" onblur="this.placeholder = 'Discount Price'" required
+                            class="single-input border">
+                    </div>
 
+                    <div class="card-body" style="margin-right: 180px; margin-top: 50px;">
+                        <input type = "file" name = "file" />
+                    </div>
 
 
                     <div class="button-group-area mt-10">
                         <br>
-                        <a href="#" class="genric-btn primary circle arrow large">Add Product<span class="lnr lnr-arrow-right"></span></a>
-                        
+                       
+                        <button type="submit" value="submit" class="genric-btn primary circle arrow large">
+                            Add Product <span class="lnr lnr-arrow-right"></span>
+                        </button>
                     </div>
 
                 </form>

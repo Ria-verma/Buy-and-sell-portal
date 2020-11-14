@@ -138,11 +138,11 @@
                         <!-- card one -->
                         <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                             <div class="row">
-                                    {% for item in items1 %}
+                                    {% for item in category1 %}
                                     <div class="col-xl-4 col-lg-4 col-md-6">
                                         <div class="single-product mb-60">
                                             <div class="product-img">
-                                                <img src="{{ url_for('static', filename='img/categori/'+item[5]+'/'+ item[0]|string +'.png')}}" alt="">
+                                                <img src="{{ url_for('static', filename='img/categori/'+item['category']+'/'+ item['pid']|string +'.png')}}" alt="">
                                                 <div class="new-product">
                                                     <span>New</span>
                                                 </div>
@@ -155,13 +155,16 @@
                                                     <i class="far fa-star low-star"></i>
                                                     <i class="far fa-star low-star"></i>
                                                 </div>
-                                                <h4><a href="{{url_for('product_page',pro_id=item[0])}}" target="_blank">{{ item[1] }}</a></h4>
+                                                <h4><a href="{{url_for('single_product_page',pro_id=item['pid'], v_id = item['sellerid'])}}" target="_blank">{{ item['proname'] }}</a></h4>
                                                 <div class="price">
                                                     <ul>
-                                                        <li>{{ item[2] }} INR</li>
-                                                        {% if item[4] %}
-                                                        <li class="discount">{{item[4]}} INR</li>
+                                                        {% if item['disprice'] %}
+                                                        <li>{{ item['disprice'] }} INR</li>
+                                                        <li class="discount">{{item['price']}} INR</li>
+                                                        {% else %}
+                                                        <li>{{ item['disprice'] }} INR</li>
                                                         {% endif %}
+                                                        
                                                     </ul>
                                                 </div>
                                             </div>
@@ -176,36 +179,39 @@
                         <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                             <div class="row">
                                 
-                                    {% for item in items2 %}
-                                    <div class="col-xl-4 col-lg-4 col-md-6">
-                                        <div class="single-product mb-60">
-                                            <div class="product-img">
-                                                <img src="{{ url_for('static', filename='img/categori/'+item[5]+'/'+ item[0]|string +'.png')}}" alt="">
-                                                <div class="new-product">
-                                                    <span>New</span>
-                                                </div>
+                                {% for item in category2 %}
+                                <div class="col-xl-4 col-lg-4 col-md-6">
+                                    <div class="single-product mb-60">
+                                        <div class="product-img">
+                                            <img src="{{ url_for('static', filename='img/categori/'+item['category']+'/'+ item['pid']|string +'.png')}}" alt="">
+                                            <div class="new-product">
+                                                <span>New</span>
                                             </div>
-                                            <div class="product-caption">
-                                                <div class="product-ratting">
-                                                    <i class="far fa-star"></i>
-                                                    <i class="far fa-star"></i>
-                                                    <i class="far fa-star"></i>
-                                                    <i class="far fa-star low-star"></i>
-                                                    <i class="far fa-star low-star"></i>
-                                                </div>
-                                                <h4><a href="{{url_for('product_page',pro_id=item[0])}}" target="_blank">{{ item[1] }}</a></h4>
-                                                <div class="price">
-                                                    <ul>
-                                                        <li>{{ item[2] }} INR</li>
-                                                        {% if item[4] %}
-                                                        <li class="discount">{{item[4]}} INR</li>
-                                                        {% endif %}
-                                                    </ul>
-                                                </div>
+                                        </div>
+                                        <div class="product-caption">
+                                            <div class="product-ratting">
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star low-star"></i>
+                                                <i class="far fa-star low-star"></i>
+                                            </div>
+                                            <h4><a href="{{url_for('single_product_page',pro_id=item['pid'], v_id = item['sellerid'])}}" target="_blank">{{ item['proname'] }}</a></h4>
+                                            <div class="price">
+                                                <ul>
+                                                    {% if item['disprice'] %}
+                                                    <li>{{ item['disprice'] }} INR</li>
+                                                    <li class="discount">{{item['price']}} INR</li>
+                                                    {% else %}
+                                                    <li>{{ item['disprice'] }} INR</li>
+                                                    {% endif %}
+                                                    
+                                                </ul>
                                             </div>
                                         </div>
                                     </div>
-                                    {% endfor %}
+                                </div>
+                                {% endfor %}
                             
                             </div>
                         
@@ -214,36 +220,39 @@
                         <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
                             <div class="row">
                                 
-                                    {% for item in items3 %}
-                                    <div class="col-xl-4 col-lg-4 col-md-6">
-                                        <div class="single-product mb-60">
-                                            <div class="product-img">
-                                                <img src="{{ url_for('static', filename='img/categori/'+item[5]+'/'+ item[0]|string +'.jpg')}}" alt="">
-                                                <div class="new-product">
-                                                    <span>New</span>
-                                                </div>
+                                {% for item in category3 %}
+                                <div class="col-xl-4 col-lg-4 col-md-6">
+                                    <div class="single-product mb-60">
+                                        <div class="product-img">
+                                            <img src="{{ url_for('static', filename='img/categori/'+item['category']+'/'+ item['pid']|string +'.png')}}" alt="">
+                                            <div class="new-product">
+                                                <span>New</span>
                                             </div>
-                                            <div class="product-caption">
-                                                <div class="product-ratting">
-                                                    <i class="far fa-star"></i>
-                                                    <i class="far fa-star"></i>
-                                                    <i class="far fa-star"></i>
-                                                    <i class="far fa-star low-star"></i>
-                                                    <i class="far fa-star low-star"></i>
-                                                </div>
-                                                <h4><a href="{{url_for('product_page',pro_id=item[0])}}" target="_blank">{{ item[1] }}</a></h4>
-                                                <div class="price">
-                                                    <ul>
-                                                        <li>{{ item[2] }} INR</li>
-                                                        {% if item[4] %}
-                                                        <li class="discount">{{item[4]}} INR</li>
-                                                        {% endif %}
-                                                    </ul>
-                                                </div>
+                                        </div>
+                                        <div class="product-caption">
+                                            <div class="product-ratting">
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star low-star"></i>
+                                                <i class="far fa-star low-star"></i>
+                                            </div>
+                                            <h4><a href="{{url_for('single_product_page',pro_id=item['pid'], v_id = item['sellerid'])}}" target="_blank">{{ item['proname'] }}</a></h4>
+                                            <div class="price">
+                                                <ul>
+                                                    {% if item['disprice'] %}
+                                                    <li>{{ item['disprice'] }} INR</li>
+                                                    <li class="discount">{{item['price']}} INR</li>
+                                                    {% else %}
+                                                    <li>{{ item['disprice'] }} INR</li>
+                                                    {% endif %}
+                                                    
+                                                </ul>
                                             </div>
                                         </div>
                                     </div>
-                                    {% endfor %}
+                                </div>
+                                {% endfor %}
                                 
                             </div>
                         
@@ -252,36 +261,39 @@
                         <div class="tab-pane fade" id="nav-last" role="tabpanel" aria-labelledby="nav-last-tab">
                             <div class="row">
                             
-                                    {% for item in items4 %}
-                                    <div class="col-xl-4 col-lg-4 col-md-6">
-                                        <div class="single-product mb-60">
-                                            <div class="product-img">
-                                                <img src="{{ url_for('static', filename='img/categori/'+item[5]+'/'+ item[0]|string +'.png')}}" alt="">
-                                                <div class="new-product">
-                                                    <span>New</span>
-                                                </div>
+                                {% for item in category4 %}
+                                <div class="col-xl-4 col-lg-4 col-md-6">
+                                    <div class="single-product mb-60">
+                                        <div class="product-img">
+                                            <img src="{{ url_for('static', filename='img/categori/'+item['category']+'/'+ item['pid']|string +'.png')}}" alt="">
+                                            <div class="new-product">
+                                                <span>New</span>
                                             </div>
-                                            <div class="product-caption">
-                                                <div class="product-ratting">
-                                                    <i class="far fa-star"></i>
-                                                    <i class="far fa-star"></i>
-                                                    <i class="far fa-star"></i>
-                                                    <i class="far fa-star low-star"></i>
-                                                    <i class="far fa-star low-star"></i>
-                                                </div>
-                                                <h4><a href="{{url_for('product_page',pro_id=item[0])}}" target="_blank">{{ item[1] }}</a></h4>
-                                                <div class="price">
-                                                    <ul>
-                                                        <li>{{ item[2] }} INR</li>
-                                                        {% if item[4] %}
-                                                        <li class="discount">{{item[4]}} INR</li>
-                                                        {% endif %}
-                                                    </ul>
-                                                </div>
+                                        </div>
+                                        <div class="product-caption">
+                                            <div class="product-ratting">
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star low-star"></i>
+                                                <i class="far fa-star low-star"></i>
+                                            </div>
+                                            <h4><a href="{{url_for('single_product_page',pro_id=item['pid'], v_id = item['sellerid'])}}" target="_blank">{{ item['proname'] }}</a></h4>
+                                            <div class="price">
+                                                <ul>
+                                                    {% if item['disprice'] %}
+                                                    <li>{{ item['disprice'] }} INR</li>
+                                                    <li class="discount">{{item['price']}} INR</li>
+                                                    {% else %}
+                                                    <li>{{ item['disprice'] }} INR</li>
+                                                    {% endif %}
+                                                    
+                                                </ul>
                                             </div>
                                         </div>
                                     </div>
-                                    {% endfor %}
+                                </div>
+                                {% endfor %}
                     
                             </div>
                         

@@ -16,38 +16,34 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `products`
+-- Table structure for table `temporary_product`
 --
 
-DROP TABLE IF EXISTS `products`;
+DROP TABLE IF EXISTS `temporary_product`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `products` (
-  `pid` int NOT NULL AUTO_INCREMENT,
-  `pname` varchar(45) NOT NULL,
-  `price` double NOT NULL,
-  `pdetails` varchar(45) DEFAULT NULL,
-  `new` varchar(45) DEFAULT 'NO',
-  `category` varchar(45) NOT NULL,
-  `Deleted` int DEFAULT NULL,
-  `star1` int NOT NULL DEFAULT '0',
-  `star2` int NOT NULL DEFAULT '0',
-  `star3` int NOT NULL DEFAULT '0',
-  `star4` int NOT NULL DEFAULT '0',
-  `star5` int NOT NULL DEFAULT '0',
+CREATE TABLE `temporary_product` (
   `rid` int NOT NULL,
-  PRIMARY KEY (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `vid` int NOT NULL,
+  `pname` varchar(45) NOT NULL,
+  `price` varchar(45) DEFAULT NULL,
+  `pdetails` varchar(45) DEFAULT NULL,
+  `disprice` varchar(45) DEFAULT NULL,
+  `category` varchar(45) DEFAULT NULL,
+  `stock` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`rid`),
+  KEY `fk_temporary_product_1_idx` (`vid`),
+  CONSTRAINT `fk_temporary_product_1` FOREIGN KEY (`vid`) REFERENCES `seller` (`vid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `products`
+-- Dumping data for table `temporary_product`
 --
 
-LOCK TABLES `products` WRITE;
-/*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (1,'Men\'s short',200,'qwe',NULL,'clothing',0,0,0,0,0,0,0),(2,'Mens\'s top',400,'qwe',NULL,'clothing',0,0,0,0,0,0,0),(3,'Women\'s top',400,'qwe',NULL,'clothing',0,0,0,0,0,0,0),(4,'Grey swetshirt',500,'qwe',NULL,'clothing',0,0,0,0,0,0,0),(5,'White Cushion',500,'soft cotten made',NULL,'homedecor',0,0,0,0,0,0,0),(6,'Purple Cushion',500,'beautiful and useful',NULL,'homedecor',0,0,0,0,0,0,0),(7,'Watch 1',500,NULL,NULL,'watches',0,0,0,0,0,0,0),(8,'Watch 2',500,NULL,NULL,'watches',0,0,0,0,0,0,0),(9,'Green Apple',500,NULL,NULL,'pantry',0,0,0,0,0,0,0),(10,'Pantry 1',500,NULL,NULL,'pantry',0,0,0,0,0,0,0),(11,'Pantry 3',500,NULL,NULL,'pantry',0,0,0,0,0,0,0);
-/*!40000 ALTER TABLE `products` ENABLE KEYS */;
+LOCK TABLES `temporary_product` WRITE;
+/*!40000 ALTER TABLE `temporary_product` DISABLE KEYS */;
+/*!40000 ALTER TABLE `temporary_product` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -59,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-12 23:22:28
+-- Dump completed on 2020-11-14 13:24:32
