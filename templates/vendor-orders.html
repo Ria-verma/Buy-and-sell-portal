@@ -10,6 +10,7 @@
     <link rel="manifest" href="site.webmanifest">
     
 
+    <!-- CSS here -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.min.css')}}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/flaticon.css') }}">
@@ -34,10 +35,16 @@
                        <div class="col-xl-12">
                             <div class="row d-flex justify-content-between align-items-center">
                                 <div class="header-info-left d-flex">
-                                  <div class="select-this">
+                                    <div class="select-this">
+                                        <form action="#">
+                                            <div class="select-itms">
+                                                <select name="select" id="select1">
+                                                </select>
+                                            </div>
+                                        </form>
                                     </div>
                                     <ul class="contact-now">
-                                        <li>+91-9876543210</li>
+                                        <li>+91-1234567890</li>
                                     </ul>
                                 </div>
                                 <div class="header-info-right">
@@ -57,10 +64,10 @@
                             <!-- Logo -->
                             <div class="col-xl-1 col-lg-1 col-md-1 col-sm-3">
                                 <div class="logo">
-                                  <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='static/img/logo/logo.png')}}" alt=""></a>
+                                  <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='img/logo/logo.png')}}" alt=""></a>
                                 </div>
                             </div>
-                            <div class="col-xl-7 col-lg-8 col-md-7 col-sm-5">
+                            <div class="col-xl-6 col-lg-8 col-md-7 col-sm-5">
                                 <!-- Main-menu -->
                                 <div class="main-menu f-right d-none d-lg-block">
                                     <nav>
@@ -73,7 +80,8 @@
                                     </nav>
                                 </div>
                             </div>
-                          <!-- Mobile Menu -->
+                          
+                            <!-- Mobile Menu -->
                             <div class="col-12">
                                 <div class="mobile_menu d-block d-lg-none"></div>
                             </div>
@@ -82,17 +90,18 @@
                </div>
             </div>
        </div>
-      </header>
+        <!-- Header End -->
+    </header>
 
     <!-- slider Area Start-->
     <div class="slider-area ">
         <!-- Mobile Menu -->
-        <div class="single-slider slider-height2 d-flex align-items-center" data-background="{{ url_for('static', filename='static/img/hero/category.jpg')}}">
+        <div class="single-slider slider-height2 d-flex align-items-center" data-background="{{ url_for('static', filename='img/hero/category.jpg')}}">
             <div class="container">
                 <div class="row">
                     <div class="col-xl-12">
                         <div class="hero-cap text-center">
-                            <h2>Add a new Product</h2>
+                            <h2>Your Orders</h2>
                         </div>
                     </div>
                 </div>
@@ -101,82 +110,48 @@
     </div>
     <!-- slider Area End-->
 
-
-    <div class="container">
-        <div class="single-slider slider-height2 d-flex align-items-center">
-            <div class="col-lg-8 col-md-8">
-
-                <br><br><br><br>
-
-                <form action="#" method="POST">
-                    <div class="mt-10">
-                        <h6>Product Name</h6>
-                        <input type="text" name="pname" placeholder="Product Name"
-                            onfocus="this.placeholder = ''" onblur="this.placeholder = 'Product Name'" required
-                            class="single-input border">
+    <!--================login_part Area =================-->
+    <div class="section-top-border">
+        <div class="progress-table-wrap">
+            <div class="progress-table">
+                <div class="table-head">
+                    <div class="serial"> Order_ID </div>
+                    <div class="serial">Product</div>
+                    <div class="serial">Quantity</div>
+                    <div class="serial">Price</div>
+                    <div class="serial">Status</div>
+                    <div class="serial">Date</div>
+                    <div class="serial">Mark Delivered</div>
+                    <div class="serial">Details</div>
+                </div>
+                {%for order in orders%}
+                <div class="table-row">
+                    <div class="serial">{{order[0]}}</div>
+                    <div class="serial">
+                        <a href="{{url_for('productpagevendor',pid=order[2])}}"><p>{{order[8]}}</p></a>
                     </div>
-
-
-                    <div class="mt-10">
-                        <br>    
-                        <h6>Product description</h6>
-                        <textarea class="single-textarea border" name="pdetails" placeholder="Product Details" onfocus="this.placeholder = ''"
-                            onblur="this.placeholder = 'Product description'" required></textarea>
-                    </div>
-
-
-                    <div class="mt-10">
-                        <br>
-                        <h6>Price</h6>
-                        <input type="text" name="price" placeholder="Price"
-                            onfocus="this.placeholder = ''" onblur="this.placeholder = 'Price'" required
-                            class="single-input border">
-                    </div>
-
-
-                    <div class="mt-10">
-                        <br>
-                        <span><h6>Discount Price</h6></span>
-                        <input type="text" name="disprice" placeholder="Discount Price"
-                            onfocus="this.placeholder = ''" onblur="this.placeholder = 'Discount Price'" required
-                            class="single-input border">
-                    </div>
-
-                    <div class="single-element-widget mt-10">
-                        <br>
-                        <h6>Category</h6>
-                        <div class="form-select border" id="default-select category" name = "category">
-                            <select name = "category">
-                                <option value="pantry">Pantry</option>
-                                <option value="clothing">Clothing</option>
-                                <option value="homedecor">Homedecor</option>
-                                <option value="watches">Watches</option>
-                              
-                            </select>
+                    <div class="serial">{{order[3]}}</div>
+                    <div class="serial">{{order[3]*order[4]}}</div>
+                    <div class="serial">Not Delivered</div>
+                    <div class="serial">{{order[5]}} </div>
+                    <form action=" {{url_for('deliver',oid=order[0])}}" method="POST">
+                        <div class="serial">
+                            <input type="submit"  name ="btn1" value="Delivered" class="genric-btn info radius"/>
                         </div>
-                    </div>
-                    <div class="mt-10">
-                        <br>
-                        <span><h6>Stock</h6></span>
-                        <input type="number" name="stock" placeholder="Discount Price"
-                            onfocus="this.placeholder = ''" onblur="this.placeholder = 'Discount Price'" required
-                            class="single-input border">
-                    </div>
-
-
-                    <div class="button-group-area mt-10">
-                        <br>
-                       
-                        <button type="submit" value="submit" class="genric-btn primary circle arrow large">
-                            Add Product <span class="lnr lnr-arrow-right"></span>
-                        </button>
-                    </div>
-
                 </form>
+                <form action=" {{url_for('orderdetailsvendor',oid=order[0])}}" method="POST">
+                    <div class="serial">
+                        <input type="submit"  name ="btn1" value="Details" class="genric-btn info radius"/>
+                    </div>
+            </form>
+                </div>   
+                {% endfor %}
             </div>
         </div>
     </div>
     
+    <!--================login_part end =================-->
+
     <footer>
         <!-- Footer Start-->
             <div class="footer-area footer-padding">
@@ -221,8 +196,6 @@
 <script src="{{url_for('static',filename='js/jquery.ajaxchimp.min.js')}}"></script>
 <script src="{{url_for('static',filename='js/plugins.js')}}"></script>
 <script src="{{url_for('static',filename='js/main.js')}}"></script>
-
 </body>
 
 </html>
-

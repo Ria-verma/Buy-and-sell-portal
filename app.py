@@ -918,6 +918,57 @@ def confirmation1(pro_id, v_id, did):
 
 
 
+@app.route('/order')
+def order():
+    mycursor = mysql.connection.cursor()
+    sql = "SELECT * FROM orders WHERE user_id = %s"
+    adr = (session['id'], )
+    mycursor.execute(sql, adr)
+    myresult = mycursor.fetchall()
+    return render_template("orderHistory.html",orders=myresult) 
+
+
+
+
+@app.route('/review/<int:proid>',methods=['GET','POST'])
+def review(proid):
+    session['id']=1
+    cursor = mysql.connection.cursor()
+    cursor.execute('SELECT * FROM reviews WHERE pid=%s and uid=%s',[proid,session['id']])
+    account = cursor.fetchone()
+    cursor = mysql.connection.cursor()
+    cursor.execute('SELECT * FROM products WHERE pid=%s',[proid])
+    account1 = cursor.fetchone()
+    reviewed=False
+    if account:
+        reviewed=True
+    if request.method == "POST":
+        userDetails=request.form
+        Rating=userDetails['rating']
+        comment=userDetails['comment']
+        cursor = mysql.connection.cursor()
+        cursor.execute('SELECT COUNT(*) FROM reviews WHERE pid=%s',[proid])
+        count = cursor.fetchall()
+        now = datetime.now()
+        formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
+        cur = mysql.connection.cursor()
+        cur.execute("INSERT INTO reviews(pid,uid,rating,comment,datetime) Values(%s,%s,%s,%s,%s)", [proid,session['id'],Rating,comment,formatted_date])
+        mysql.connection.commit()
+        cur.close()
+        cursor = mysql.connection.cursor()
+        cursor.execute('SELECT rating FROM products WHERE pid=%s',[proid])
+        r = cursor.fetchone()
+        rating=((count*r)+Rating)/(count+1)
+        mycursor = mysql.connection.cursor()
+        sql = "UPDATE products SET rating = %s WHERE pid = %s"
+        val = (rating,proid)
+        mycursor.execute(sql, val)
+        mysql.connection.commit()
+        return redirect(url_for("order"))
+    return render_template('review.html',singleproduct=account1,reviewed=reviewed)
+
+
+
 
 
 
@@ -934,7 +985,47 @@ def confirmation1(pro_id, v_id, did):
 
 
 
-@app.route('/addProduct', methods=["GET", "POST"])
+# @app.route('/addProduct', methods=["GET", "POST"])
+# def addProduct():
+#     session['id']=1
+#     if request.method == 'POST':
+#         productDetails=request.form
+#         pname= productDetails['pname']
+#         category= productDetails['category']
+#         price= productDetails['price']
+#         disprice= productDetails['disprice']
+#         pdetails=productDetails['pdetails']
+#         stock=productDetails['stock']
+#         cur = mysql.connection.cursor()
+#         cur.execute("INSERT INTO temporary_product(pname, vid, category, pdetails, price, disprice,stock) VALUES(%s, %s, %s, %s, %s, %s,%s)", (pname, session['id'], category, pdetails, price, disprice,stock))
+#         mysql.connection.commit()
+#         rid=cur.execute("SELECT rid FROM temporary_product WHERE pname=%s AND vid=%s AND  category=%s AND pdetails=%s AND price=%s AND disprice,stock=%S",(pname, session['id'], category, pdetails, price, disprice,stock))
+#         cur.close()
+
+#         file = request.files['file']
+#         if (file and file.filename != ''):
+#             if (os.path.isfile('C:\\Users\\kumar\\PycharmProjects\\fllask\\static\\img\\users\\' + str(rid) + '.jpg')):
+#                 os.remove('C:\\Users\\kumar\\PycharmProjects\\fllask\\static\\img\\users\\' + str(rid) + '.jpg')
+#             l = file.filename.split('.')
+#             file.filename = str(rid) + '1' + '.' + str(l[-1])
+#             filename = secure_filename(file.filename)
+#             file.save(os.path.join('C:\\Users\\kumar\\PycharmProjects\\fllask\\static\\img\\users', filename))
+#             s = 'C:\\Users\\kumar\\PycharmProjects\\fllask\\static\\img\\users\\' + str(filename)
+#             img1 = Image.open(s)
+#             img2 = img1.convert('RGB')
+#             s = 'C:\\Users\\kumar\\PycharmProjects\\fllask\\static\\img\\users\\' + str(rid) + '.jpg'
+#             img2.save(s)
+#             os.remove('C:\\Users\\kumar\\PycharmProjects\\fllask\\static\\img\\users\\' + filename)
+#         return redirect(url_for('myProduct'))
+#     return render_template('seller.html')
+
+
+
+
+
+
+
+@app.route('/addProduct', methods=["GET", "POST"])                           
 def addProduct():
     session['id']=1
     if request.method == 'POST':
@@ -948,36 +1039,146 @@ def addProduct():
         cur = mysql.connection.cursor()
         cur.execute("INSERT INTO temporary_product(pname, vid, category, pdetails, price, disprice,stock) VALUES(%s, %s, %s, %s, %s, %s,%s)", (pname, session['id'], category, pdetails, price, disprice,stock))
         mysql.connection.commit()
-        rid=cur.execute("SELECT rid FROM temporary_product WHERE pname=%s AND vid=%s AND  category=%s AND pdetails=%s AND price=%s AND disprice,stock=%S",(pname, session['id'], category, pdetails, price, disprice,stock))
         cur.close()
-
-        file = request.files['file']
-        if (file and file.filename != ''):
-            if (os.path.isfile('C:\\Users\\kumar\\PycharmProjects\\fllask\\static\\img\\users\\' + str(rid) + '.jpg')):
-                os.remove('C:\\Users\\kumar\\PycharmProjects\\fllask\\static\\img\\users\\' + str(rid) + '.jpg')
-            l = file.filename.split('.')
-            file.filename = str(rid) + '1' + '.' + str(l[-1])
-            filename = secure_filename(file.filename)
-            file.save(os.path.join('C:\\Users\\kumar\\PycharmProjects\\fllask\\static\\img\\users', filename))
-            s = 'C:\\Users\\kumar\\PycharmProjects\\fllask\\static\\img\\users\\' + str(filename)
-            img1 = Image.open(s)
-            img2 = img1.convert('RGB')
-            s = 'C:\\Users\\kumar\\PycharmProjects\\fllask\\static\\img\\users\\' + str(rid) + '.jpg'
-            img2.save(s)
-            os.remove('C:\\Users\\kumar\\PycharmProjects\\fllask\\static\\img\\users\\' + filename)
-        return redirect(url_for('myProduct'))
+        now = datetime.now()
+        formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
+        cur = mysql.connection.cursor()
+        cur.execute("INSERT INTO notification(person1_id,pname,content,date) VALUES(%s, %s, %s, %s)", (session['id'],pname,"Pending",formatted_date))
+        mysql.connection.commit()
+        cur.close()
+        return redirect(url_for('notifications'))
     return render_template('seller.html')
 
 
 
+@app.route('/allProduct')
+def allProduct():
+    cursor = mysql.connection.cursor()
+    cursor.execute('SELECT * FROM products WHERE category=%s',('homedecor',))
+    account1 = cursor.fetchall()
+    return render_template('product_list_vendor.html', item1=account1)
 
 
 
+@app.route('/myProduct')
+def myProduct():
+    vid=1
+    cursor = mysql.connection.cursor()
+    cursor.execute('SELECT * FROM price WHERE vid=%s',[vid])
+    productlist = cursor.fetchall()
+    prodlist = []
+    for product in productlist:
+        cur = mysql.connection.cursor()
+        cur.execute( "SELECT * FROM products WHERE pid LIKE %s", [product[1]] )
+        products = cur.fetchone()
+        Dict = {}
+        Dict['proname']=products[1]
+        Dict['pid']=products[0]
+        Dict['price']=products[2]
+        Dict['disprice']=product[4]
+        Dict['category']=products[5]
+        Dict['stock']=product[6]
+        prodlist.append(Dict)
+    return render_template("myProduct.html",prodlist=prodlist)
 
 
-@app.route('/order', methods=["GET", "POST"])
-def order():
-    return "fkhjdsp"
+
+@app.route('/productsvendor/<int:pid>', methods=['POST','GET'])
+def productsvendor(pid):
+    vid=1
+    cursor = mysql.connection.cursor()
+    cursor.execute('SELECT * FROM price WHERE vid=%s and pid=%s',[vid,pid])
+    productlist = cursor.fetchone()
+    cursor = mysql.connection.cursor()
+    cursor.execute('SELECT * FROM products WHERE pid=%s',[pid])
+    product = cursor.fetchone()
+    if request.method=='POST':
+        productDetails=request.form
+        stock=productDetails['stock']
+        disprice=productDetails['disprice']
+        mycursor = mysql.connection.cursor()
+        sql = "UPDATE price SET disprice= %s,stock=%s WHERE pid = %s and vid = %s"
+        val = (disprice,stock,pid,vid)
+        mycursor.execute(sql, val)
+        mysql.connection.commit()
+        return redirect(url_for('productsvendor', pid=product[0]))
+    return render_template('productpage-vendor.html',productlist=productlist,singleproduct=product)
+
+
+
+@app.route('/deliver/<int:oid>',methods=['POST','GET'])
+def deliver(oid):
+    if request.method=='POST':
+        mycursor = mysql.connection.cursor()
+        sql = "UPDATE orders SET delivery_status = %s WHERE (order_id = %s)"
+        adr = ('Delivered',oid )
+        mycursor.execute(sql, adr)
+        mysql.connection.commit()
+        mycursor.close()
+    return redirect(url_for('myOrder'))
+
+
+@app.route('/myOrder')
+def myOrder():
+    vid=1
+    mycursor = mysql.connection.cursor()
+    sql = "SELECT * FROM orders WHERE vid = %s and delivery_status = %s ORDER BY order_id"
+    adr = (vid,'Not Delivered' )
+    mycursor.execute(sql, adr)
+    myresult = mycursor.fetchall()
+    return render_template("vendor-orders.html",orders=myresult) 
+
+
+
+@app.route('/productpagevendor/<int:pid>' ,methods=['POST','GET'])
+def productpagevendor(pid):
+    vid=1
+    cursor = mysql.connection.cursor()
+    cursor.execute('SELECT * FROM price WHERE vid=%s and pid=%s',[vid,pid])
+    productlist = cursor.fetchone()
+    cursor = mysql.connection.cursor()
+    cursor.execute('SELECT * FROM products WHERE pid=%s',[pid])
+    product = cursor.fetchone()
+    return render_template('productfororder-vendor.html',productlist=productlist,singleproduct=product)
+
+
+
+@app.route('/orderdetailsvendor/<int:oid>',methods=['POST','GET'])
+def orderdetailsvendor(oid):
+    cursor = mysql.connection.cursor()
+    cursor.execute('SELECT * FROM orders WHERE order_id=%s',[oid])
+    orderlist = cursor.fetchone()
+    cursor = mysql.connection.cursor()
+    cursor.execute('SELECT * FROM order_details WHERE oid=%s',[oid])
+    orderdetails = cursor.fetchone()
+    return render_template('orderdetails-vendor.html',orderlist = orderlist,orderdetails=orderdetails)
+
+
+
+@app.route('/vendororderhistory')
+def vendororderhistory():
+    vid=1
+    mycursor = mysql.connection.cursor()
+    sql = "SELECT * FROM orders WHERE vid = %s and delivery_status = %s"
+    adr = (vid,'Delivered' )
+    mycursor.execute(sql, adr)
+    myresult = mycursor.fetchall()
+    return render_template("orderhistory-vendor.html",orders=myresult)
+
+
+
+@app.route('/notifications')
+def notifications():
+    vid=1
+    mycursor = mysql.connection.cursor()
+    sql = "SELECT * FROM notification WHERE person1_id = %s ORDER BY date DESC"
+    adr = (vid,)
+    mycursor.execute(sql, adr)
+    myresult = mycursor.fetchall()
+    return render_template("notifications-vendor.html",messages=myresult)
+    
+
+
 
 
 
@@ -985,6 +1186,158 @@ def order():
 
 
 #--------------------------------------------------- ADMIN PAGE -------------------------------------------------
+
+
+@app.route('/allProduct_admin')
+def allProduct_admin():
+    return "eifjei"
+
+
+@app.route('/vendorList')
+def vendorList():
+    cur = mysql.connection.cursor()
+    cur.execute( "SELECT * FROM seller WHERE deleted=0" )
+    sellers = cur.fetchall()
+    return render_template("vendorList.html",sellers=sellers)
+
+
+
+@app.route('/vendorproducts/<int:vid>')
+def vendorproducts(vid):
+    cursor = mysql.connection.cursor()
+    cursor.execute('SELECT * FROM price WHERE vid=%s',[vid])
+    productlist = cursor.fetchall()
+    prodlist = []
+    for product in productlist:
+        cur = mysql.connection.cursor()
+        cur.execute( "SELECT * FROM products WHERE pid LIKE %s", [product[1]] )
+        products = cur.fetchone()
+        Dict = {}
+        Dict['vid']=vid
+        Dict['proname']=products[1]
+        Dict['pid']=products[0]
+        Dict['price']=products[2]
+        Dict['disprice']=product[4]
+        Dict['category']=products[5]
+        Dict['stock']=product[6]
+        prodlist.append(Dict)
+    return render_template("venprolist_admin.html",prodlist=prodlist)
+
+
+@app.route('/productpageadmin/<int:vid>/<int:pid>' , methods=['POST','GET'])
+def productpageadmin(vid,pid):
+    cursor = mysql.connection.cursor()
+    cursor.execute('SELECT * FROM price WHERE vid=%s and pid=%s',[vid,pid])
+    productlist = cursor.fetchone()
+    cursor = mysql.connection.cursor()
+    cursor.execute('SELECT * FROM products WHERE pid=%s',[pid])
+    product = cursor.fetchone()
+    return render_template('productpage-admin.html',productlist=productlist,singleproduct=product)
+
+
+
+@app.route('/vendororders/<int:vid>')
+def vendororders(vid):
+    cursor = mysql.connection.cursor()
+    cursor.execute('SELECT * FROM orders WHERE vid=%s',[vid])
+    orderslist = cursor.fetchall()
+    return render_template("venodelist_admin.html",odelist=orderslist)
+
+
+
+@app.route('/removevendor/<int:vid>', methods=['POST','GET'])
+def removevendor(vid):
+    mycursor = mysql.connection.cursor()
+    sql = "UPDATE seller SET deleted = %s WHERE (vid = %s)"
+    adr = (1,vid )
+    mycursor.execute(sql, adr)
+    mysql.connection.commit()
+    mycursor.close()
+    mycursor = mysql.connection.cursor()
+    sql = "DELETE FROM price WHERE vid=%s"
+    adr = (vid,)
+    mycursor.execute(sql, adr)
+    mysql.connection.commit()
+    mycursor.close()
+    return redirect(url_for('vendorList'))
+
+
+
+
+@app.route('/ordersforadmin')
+def ordersforadmin():
+    cursor = mysql.connection.cursor()
+    cursor.execute('SELECT * FROM orders ORDER BY datetime DESC')
+    orderslist = cursor.fetchall()
+    return render_template('allordersadmin.html',odelist=orderslist)
+
+
+
+
+@app.route('/buyerList')
+def buyerList():
+    return render_template("BuyerList.html")
+
+
+
+@app.route('/newProduct')
+def newProduct():
+    mycursor = mysql.connection.cursor()
+    sql = "SELECT * FROM temporary_product"
+    mycursor.execute(sql)
+    tempproducts = mycursor.fetchall()
+    return render_template("newProduct.html",tempproducts=tempproducts)
+
+
+
+@app.route('/verifyProduct/<int:req_id>' , methods=['GET','POST'])
+def verifyProduct(req_id):
+    cur = mysql.connection.cursor()
+    cur.execute( "SELECT * FROM temporary_product WHERE rid LIKE %s", [req_id] )
+    singleproduct = cur.fetchone()
+    if request.method == "POST":
+        if request.form['btn2'] == "Accept":
+            cur = mysql.connection.cursor()
+            cur.execute("INSERT INTO products(pname,price,pdetails,category) Values(%s,%s,%s,%s)", [singleproduct[2],singleproduct[3],singleproduct[4],singleproduct[6]])
+            mysql.connection.commit()
+            prodtid = cur.lastrowid
+            cur.close()
+            now = datetime.now()
+            formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
+            cur = mysql.connection.cursor()
+            cur.execute("INSERT INTO price(pid,vid,price,disprice,dateadded,stock) Values(%s,%s,%s,%s,%s,%s)", [prodtid,singleproduct[1],singleproduct[3],singleproduct[5],formatted_date,singleproduct[7]])
+            mysql.connection.commit()
+            cur.close()
+            cur = mysql.connection.cursor()
+            cur.execute("INSERT INTO notification(person1_id,pname,content,date) Values(%s,%s,%s,%s)", [singleproduct[1],singleproduct[2],"Accepted",formatted_date])
+            mysql.connection.commit()
+            cur.close()
+            cur = mysql.connection.cursor()
+            cur.execute("DELETE FROM temporary_product WHERE rid = %s",[singleproduct[0]])
+            mysql.connection.commit()
+            cur.close()
+        else:
+            now = datetime.now()
+            formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
+            cur = mysql.connection.cursor()
+            cur.execute("INSERT INTO notification(person1_id,pname,content,date) Values(%s,%s,%s,%s)", [singleproduct[1],singleproduct[2],"Rejected",formatted_date])
+            mysql.connection.commit()
+            cur.close()
+            cur = mysql.connection.cursor()
+            cur.execute("DELETE FROM temporary_product WHERE rid = %s",[singleproduct[0]])
+            mysql.connection.commit()
+            cur.close()
+        return redirect(url_for("newProduct"))
+    return render_template('verify-product.html',singleproduct=singleproduct)
+    
+    
+
+
+
+
+
+
+
 
 
 
