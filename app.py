@@ -128,6 +128,9 @@ def verify():
 
 
 
+
+
+
 @app.route('/signup', methods = ['GET', 'POST'])
 def signup():
     if request.method == "POST":
@@ -208,6 +211,7 @@ def signup():
 
 
 
+@app.route('/', methods = ['GET', 'POST'])
 @app.route('/login', methods = ['GET', 'POST'])
 def login():
     if request.method == "POST":
@@ -294,7 +298,7 @@ def login():
 @app.route('/logout')
 def logout():
     session.clear()
-    return render_template('login.html')
+    return redirect(url_for('login'))
 
 
 
@@ -302,7 +306,7 @@ def logout():
 
 
 
-@app.route('/')
+@app.route('/home')
 def home():
     cur = mysql.connection.cursor()
 
