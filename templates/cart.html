@@ -134,7 +134,7 @@
                   <h5>{{item['price']}}  INR</h5>
                 </td>
                 <td>
-                    <p>{{item['quantity']}}</p>
+                    <p></p>{{item['quantity']}}</p>
             
                 </td>
                 <td>
@@ -149,9 +149,9 @@
                 
                 <div class="add_to_cart">
                 <td>
-                  <a class="genric-btn info radius col-lg-5" href="#">Decrease</a>
+                  <a class="genric-btn info radius col-lg-5" href="{{url_for('decrease_in_cart',pro_id=item['pid'], v_id = item['sellerid'])}}">Decrease</a>
                 
-                  <a class="genric-btn danger radius col-lg-5" href="#">Delete</a>
+                  <a class="genric-btn danger radius col-lg-5" href="{{url_for('delete_in_cart',pro_id=item['pid'], v_id = item['sellerid'])}}">Delete</a>
               </td>
                 </div>
               </tr>
@@ -172,7 +172,7 @@
           </table>
           <div class="checkout_btn_inner float-right">
             
-            <a class="btn_1 checkout_btn_1" href="#">Proceed to checkout</a>
+            <a class="btn_1 checkout_btn_1" href="{{ url_for('checkout') }}">Proceed to checkout</a>
           </div>
         </div>
       </form>

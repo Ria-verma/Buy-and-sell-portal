@@ -16,38 +16,35 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `order_details`
+-- Table structure for table `rating`
 --
 
-DROP TABLE IF EXISTS `order_details`;
+DROP TABLE IF EXISTS `rating`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `order_details` (
-  `oid` int NOT NULL,
-  `first_name` varchar(45) NOT NULL,
-  `last_name` varchar(45) NOT NULL,
-  `company name` varchar(45) DEFAULT NULL,
-  `phone_no` int NOT NULL,
-  `email_address` varchar(45) NOT NULL,
-  `add1` varchar(45) NOT NULL,
-  `add2` varchar(45) DEFAULT NULL,
-  `Town/city` varchar(45) NOT NULL,
-  `District` varchar(45) DEFAULT NULL,
-  `Postcode` int DEFAULT NULL,
-  `order_notes` varchar(45) DEFAULT NULL,
-  `payment_method` int NOT NULL,
-  PRIMARY KEY (`oid`),
-  CONSTRAINT `fk_order_details_1` FOREIGN KEY (`oid`) REFERENCES `orders` (`order_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `rating` (
+  `pid` int NOT NULL AUTO_INCREMENT,
+  `pname` varchar(45) NOT NULL,
+  `price` double NOT NULL,
+  `pdetails` varchar(45) DEFAULT NULL,
+  `new` varchar(45) DEFAULT 'NO',
+  `category` varchar(45) NOT NULL,
+  `Deleted` int DEFAULT NULL,
+  `rid` int NOT NULL,
+  `rating` double DEFAULT NULL,
+  `no_of_ppl` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`pid`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `order_details`
+-- Dumping data for table `rating`
 --
 
-LOCK TABLES `order_details` WRITE;
-/*!40000 ALTER TABLE `order_details` DISABLE KEYS */;
-/*!40000 ALTER TABLE `order_details` ENABLE KEYS */;
+LOCK TABLES `rating` WRITE;
+/*!40000 ALTER TABLE `rating` DISABLE KEYS */;
+INSERT INTO `rating` VALUES (1,'Men\'s short',200,'qwe',NULL,'clothing',0,0,NULL,NULL),(2,'Mens\'s top',400,'qwe',NULL,'clothing',0,0,NULL,NULL),(3,'Women\'s top',400,'qwe',NULL,'clothing',0,0,NULL,NULL),(4,'Grey swetshirt',500,'qwe',NULL,'clothing',0,0,NULL,NULL),(5,'White Cushion',500,'soft cotten made',NULL,'homedecor',0,0,NULL,NULL),(6,'Purple Cushion',500,'beautiful and useful',NULL,'homedecor',0,0,NULL,NULL),(7,'Watch 1',500,NULL,NULL,'watches',0,0,NULL,NULL),(8,'Watch 2',500,NULL,NULL,'watches',0,0,NULL,NULL),(9,'Green Apple',500,NULL,NULL,'pantry',0,0,NULL,NULL),(10,'Pantry 1',500,NULL,NULL,'pantry',0,0,NULL,NULL),(11,'Pantry 3',500,NULL,NULL,'pantry',0,0,NULL,NULL);
+/*!40000 ALTER TABLE `rating` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -59,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-14 13:24:32
+-- Dump completed on 2020-11-15  9:46:25

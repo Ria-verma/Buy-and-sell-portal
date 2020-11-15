@@ -16,36 +16,34 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `price`
+-- Table structure for table `user_address`
 --
 
-DROP TABLE IF EXISTS `price`;
+DROP TABLE IF EXISTS `user_address`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `price` (
+CREATE TABLE `user_address` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `pid` int NOT NULL,
-  `vid` int NOT NULL,
-  `price` int NOT NULL,
-  `disprice` int DEFAULT NULL,
-  `dateAdded` date NOT NULL,
-  `stock` int NOT NULL,
+  `user_id` int NOT NULL,
+  `name` varchar(45) DEFAULT NULL,
+  `houseno` varchar(45) DEFAULT NULL,
+  `streetname` varchar(45) NOT NULL,
+  `city` varchar(45) NOT NULL,
+  `state` varchar(45) NOT NULL,
+  `pincode` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_price_1_idx` (`pid`),
-  KEY `fk_price_2_idx` (`vid`),
-  CONSTRAINT `fk_price_1` FOREIGN KEY (`pid`) REFERENCES `rating` (`pid`),
-  CONSTRAINT `fk_price_2` FOREIGN KEY (`vid`) REFERENCES `seller` (`vid`)
-) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `user_id_idx` (`user_id`),
+  CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `price`
+-- Dumping data for table `user_address`
 --
 
-LOCK TABLES `price` WRITE;
-/*!40000 ALTER TABLE `price` DISABLE KEYS */;
-INSERT INTO `price` VALUES (1,1,1,200,200,'2001-11-01',91),(2,2,1,400,200,'2001-11-01',100),(3,3,1,400,344,'2001-11-01',100),(36,4,1,500,460,'2001-11-01',100),(37,5,1,500,490,'2001-11-01',100),(38,6,1,500,400,'2001-11-01',100),(39,7,1,500,NULL,'2001-11-01',100),(40,8,1,500,NULL,'2001-11-01',100),(41,9,1,500,NULL,'2001-11-01',100),(42,10,1,500,NULL,'2001-11-01',100),(43,11,1,400,NULL,'2001-11-01',100),(44,1,2,200,100,'2001-11-01',100);
-/*!40000 ALTER TABLE `price` ENABLE KEYS */;
+LOCK TABLES `user_address` WRITE;
+/*!40000 ALTER TABLE `user_address` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user_address` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -57,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-14 13:24:32
+-- Dump completed on 2020-11-15  9:46:25

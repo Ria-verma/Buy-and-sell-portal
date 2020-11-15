@@ -30,8 +30,8 @@ CREATE TABLE `products` (
   `new` varchar(45) DEFAULT 'NO',
   `category` varchar(45) NOT NULL,
   `Deleted` int DEFAULT NULL,
-  `rating` double DEFAULT NULL,
-  `no_of_ppl` int DEFAULT NULL,
+  `rating` double DEFAULT '0',
+  `no_of_ppl` int DEFAULT '0',
   `rid` int DEFAULT NULL,
   PRIMARY KEY (`pid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -56,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-14 13:24:32
+-- Dump completed on 2020-11-15  9:46:25
