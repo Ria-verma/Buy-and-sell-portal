@@ -84,15 +84,14 @@
        </div>
       </header>
 
-    <!-- slider Area Start-->
-    <div class="slider-area ">
+      <div class="slider-area ">
         <!-- Mobile Menu -->
-        <div class="single-slider slider-height2 d-flex align-items-center" data-background="{{ url_for('static', filename='static/img/hero/category.jpg')}}">
+        <div class="single-slider slider-height2 d-flex align-items-center" data-background="{{ url_for('static', filename='img/hero/category.jpg')}}">
             <div class="container">
                 <div class="row">
                     <div class="col-xl-12">
                         <div class="hero-cap text-center">
-                            <h2>Add a new Product</h2>
+                            <h2>Add New Product</h2>
                         </div>
                     </div>
                 </div>
@@ -109,6 +108,7 @@
                 <br><br><br><br>
 
                 <form action="#" method="POST">
+                <form action="#" method="POST" enctype="multipart/form-data">
                     <div class="mt-10">
                         <h6>Product Name</h6>
                         <input type="text" name="pname" placeholder="Product Name"
@@ -162,7 +162,9 @@
                             onfocus="this.placeholder = ''" onblur="this.placeholder = 'Discount Price'" required
                             class="single-input border">
                     </div>
-
+                    <div class="card-body" style="margin-right: 180px; margin-top: 50px;">
+                        <input type = "file" name = "file" />
+                    </div>
 
                     <div class="button-group-area mt-10">
                         <br>
@@ -172,6 +174,7 @@
                         </button>
                     </div>
 
+                </form>
                 </form>
             </div>
         </div>

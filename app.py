@@ -5,7 +5,6 @@ from datetime import datetime
 import random
 import os
 from werkzeug.utils import secure_filename
-from PIL import Image
 app=Flask(__name__)
 
 #Configure db
@@ -64,7 +63,7 @@ def forgotPassword():
         session["otp"] = otp
         Y = send_otp_for_forgotPassword(email, otp)
         return Y
-    return render_template('forgot_password.html')   
+    return render_template('user/forgot_password.html')   
 
 
 
@@ -84,10 +83,10 @@ def verify_to_reset_password():
                 cur.close()
                 session['loggedin']=True
                 session['filled']=False
-                return render_template('index.html')
+                return render_template('user/index.html')
             else:
                 return "otp is wrong"
-    return render_template('verify_to_reset.html') 
+    return render_template('user/verify_to_reset.html') 
 
 
 
@@ -119,10 +118,10 @@ def verify():
                 cur.close()
                 session['loggedin']=True
                 session['filled']=False
-                return render_template('index.html')
+                return render_template('user/index.html')
             else:
                 return "otp is wrong"
-    return render_template('verify.html')   
+    return render_template('user/verify.html')   
 
 
 
@@ -133,6 +132,7 @@ def verify():
 
 @app.route('/signup', methods = ['GET', 'POST'])
 def signup():
+    session.clear()
     if request.method == "POST":
         #Fetch form data
         userDetails=request.form
@@ -196,7 +196,7 @@ def signup():
                     session["otp"] = otp
                     Y = send_otp(email, otp)
                     return Y
-    return render_template('signup.html')
+    return render_template('user/signup.html')
 
 
 
@@ -214,6 +214,7 @@ def signup():
 @app.route('/', methods = ['GET', 'POST'])
 @app.route('/login', methods = ['GET', 'POST'])
 def login():
+    session.clear()
     if request.method == "POST":
         if len(request.form['email'])==0 or len(request.form['password'])==0:
             flash("Invalid credentials!")
@@ -242,7 +243,7 @@ def login():
                     session["loggedin"] = True
                     session["id"]=account[0]
                     session["username"]=account[1]
-                    return render_template('index.html')
+                    return render_template('user/index.html')
 
                 elif account[2]!=password:
                     print(password)
@@ -288,7 +289,7 @@ def login():
                     print(account)
                     flash("Wrong password!")
 
-    return render_template("login.html")
+    return render_template("user/login.html")
 
 
 
@@ -330,7 +331,7 @@ def home():
             Dict['sellerid']=seller[0]
             Dict['disprice']=row[4]
             category1.append(Dict)
-    return render_template('index.html',category1 = category1,)
+    return render_template('user/index.html',category1 = category1,)
     
 
 
@@ -340,7 +341,7 @@ def home():
 
 @app.route('/contact')
 def contact():
-    return render_template("contact.html")
+    return render_template("user/contact.html")
 
 
 
@@ -451,7 +452,7 @@ def catagories():
             Dict['disprice']=row[4]
             category4.append(Dict)
     #print(account)
-    return render_template('Catagori.html',category1 = category1,category2 = category2,category3 = category3,category4 = category4)
+    return render_template('user/Catagori.html',category1 = category1,category2 = category2,category3 = category3,category4 = category4)
     
 
 
@@ -478,18 +479,6 @@ def update_cart(user_id):
             mysql.connection.commit()
 
     cur.close()
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -569,28 +558,28 @@ def single_product_page(pro_id, v_id):
                 mysql.connection.commit()
                 cur.close()
             else:
+                total_in_cart -= in_cart
                 count = min(curr_price[6],in_cart + 1)
+                in_cart = count
+                total_in_cart += count
                 cur = mysql.connection.cursor()
                 #vid here too
                 cur.execute("UPDATE cart SET quantity = %s WHERE user_id = %s AND pid = %s AND vid = %s", [count, session["id"], pro_id, v_id])
                 mysql.connection.commit()
-                cur.close()
+                cur.close()                    
+
+            return render_template('user/single-product.html',singleproduct=curr_product,minprice=curr_price[4], sellerList = sellerList, curr_seller=curr_seller, in_cart = in_cart, total_in_cart = total_in_cart)
        
        #ye "elif" me error aa raha tha.....but "else" is working fine
         elif request.form['btn1'] == "Buy now":
         
-            #Updating stock of seller
-            # cur.execute("UPDATE price SET stock = %s WHERE id = %s", [ curr_price[6]-1, curr_price[0]])
-            # mysql.connection.commit()
-            # cur.close()
             return redirect(url_for('checkout1', v_id=v_id, pro_id=pro_id))
 
         else:
 
             return redirect(url_for('single_product_page', v_id=v_id, pro_id=pro_id))
             
-    return render_template('single-product.html',singleproduct=curr_product,minprice=curr_price[4], sellerList = sellerList, curr_seller=curr_seller, in_cart = in_cart, total_in_cart = total_in_cart)
-
+    return render_template('user/single-product.html',singleproduct=curr_product,minprice=curr_price[4], sellerList = sellerList, curr_seller=curr_seller, in_cart = in_cart, total_in_cart = total_in_cart)
 
 
 
@@ -656,9 +645,7 @@ def cart():
             Dict['category']=products[5]
             cartlist.append(Dict)
             tprice=tprice+Dict['totalprice']
-    return render_template('cart.html',carts=cartlist,totalprice=tprice)
-
-
+    return render_template('user/cart.html',carts=cartlist,totalprice=tprice)
 
 
 
@@ -687,7 +674,40 @@ def checkout():
 
         # if len(request.form['first'])==0 or len(request.form['last'])==0 or len(request.form['number'])==0 or len(request.form['email'])==0 or len(request.form['add1'])==0 or len(request.form['add2'])==0 or len(request.form['city'])==0 or len(request.form['district'])==0 or len(request.form['zip'])==0:
         #     flash("Please Fill all the necessary details!")
-        # else :
+        # else:
+        if len(first_name) == 0:
+            flash("Please enter first name!")
+        
+        if len(last_name) == 0:
+            flash("Please enter last name!")
+        
+        if len(number) == 0:
+            flash("Please enter last name!")
+
+        if len(email) == 0:
+            flash("Please enter email!")
+
+        if len(add1) == 0:
+            flash("Invalid!")
+
+        if len(add2) == 0:
+            flash("Invalid!")
+
+        if len(city) == 0:
+            flash("Invalid!")
+
+        if len(district) == 0:
+            flash("Invalid!")
+
+        if len(Postcode) == 0:
+            flash("Invalid!")
+
+        if len(payment_method) == 0:
+            flash("Invalid!")
+
+        
+
+
         cur = mysql.connection.cursor()
         now = datetime.now()
         formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
@@ -737,7 +757,8 @@ def checkout():
             cartlist.append(Dict)
             tprice=tprice+Dict['totalprice']
             print(tprice)
-    return render_template("checkout.html", carts=cartlist, totalprice=tprice)
+    return render_template("user/checkout.html", carts=cartlist, totalprice=tprice)
+
 
 
 
@@ -806,7 +827,7 @@ def checkout1(pro_id, v_id):
         cartlist.append(Dict)
         tprice=tprice+Dict['totalprice']
         print(tprice)
-    return render_template("checkout.html", carts=cartlist, totalprice=tprice)
+    return render_template("user/checkout.html", carts=cartlist, totalprice=tprice)
 
 
 
@@ -859,7 +880,7 @@ def confirmation(did):
 
 
 
-    return render_template("confirmation.html", carts= cartlist, totalprice = tprice, totalquantity= tquantity, details = details)
+    return render_template("user/confirmation.html", carts= cartlist, totalprice = tprice, totalquantity= tquantity, details = details)
 
 
 
@@ -912,7 +933,7 @@ def confirmation1(pro_id, v_id, did):
     cur.execute("INSERT INTO orders( user_id, pro_id, quantity, price, datetime, vid, did) Values( %s, %s, %s, %s, %s, %s, %s)", [ session["id"], item[2], item[3], curr_price[3], formatted_date, item[4], details[0]])
     mysql.connection.commit()
 
-    return render_template("confirmation.html", carts= cartlist, totalprice = tprice, totalquantity= tquantity, details = details)
+    return render_template("user/confirmation.html", carts= cartlist, totalprice = tprice, totalquantity= tquantity, details = details)
 
 
 
@@ -925,14 +946,29 @@ def order():
     adr = (session['id'], )
     mycursor.execute(sql, adr)
     myresult = mycursor.fetchall()
-    return render_template("orderHistory.html",orders=myresult) 
+    orderlist=[]
+    for result in myresult:
+        cursor = mysql.connection.cursor()
+        cursor.execute('SELECT * FROM products WHERE pid=%s',[result[2]])
+        account = cursor.fetchone()
+        Dict={}
+        Dict['id']=result[0]
+        Dict['pname']=account[1]
+        Dict['quantity']=result[3]
+        Dict['price']=result[4]
+        Dict['status']=result[6]
+        Dict['date']=result[5]
+        Dict['category']=account[5]
+        orderlist.append(Dict)
+    return render_template("user/orderHistory.html",orders=orderlist) 
+
+
 
 
 
 
 @app.route('/review/<int:proid>',methods=['GET','POST'])
 def review(proid):
-    session['id']=1
     cursor = mysql.connection.cursor()
     cursor.execute('SELECT * FROM reviews WHERE pid=%s and uid=%s',[proid,session['id']])
     account = cursor.fetchone()
@@ -947,8 +983,8 @@ def review(proid):
         Rating=userDetails['rating']
         comment=userDetails['comment']
         cursor = mysql.connection.cursor()
-        cursor.execute('SELECT COUNT(*) FROM reviews WHERE pid=%s',[proid])
-        count = cursor.fetchall()
+        cursor.execute('SELECT * FROM reviews WHERE pid=%s',[proid])
+        count = cursor.rowcount
         now = datetime.now()
         formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
         cur = mysql.connection.cursor()
@@ -956,16 +992,16 @@ def review(proid):
         mysql.connection.commit()
         cur.close()
         cursor = mysql.connection.cursor()
-        cursor.execute('SELECT rating FROM products WHERE pid=%s',[proid])
+        cursor.execute('SELECT * FROM products WHERE pid=%s',[proid])
         r = cursor.fetchone()
-        rating=((count*r)+Rating)/(count+1)
+        rating=((count*r[7])+int(Rating))/(count+1)
         mycursor = mysql.connection.cursor()
         sql = "UPDATE products SET rating = %s WHERE pid = %s"
         val = (rating,proid)
         mycursor.execute(sql, val)
         mysql.connection.commit()
         return redirect(url_for("order"))
-    return render_template('review.html',singleproduct=account1,reviewed=reviewed)
+    return render_template('user/review.html',singleproduct=account1,reviewed=reviewed)
 
 
 
@@ -1025,6 +1061,7 @@ def review(proid):
 
 
 
+
 @app.route('/addProduct', methods=["GET", "POST"])                           
 def addProduct():
     session['id']=1
@@ -1037,17 +1074,35 @@ def addProduct():
         pdetails=productDetails['pdetails']
         stock=productDetails['stock']
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO temporary_product(pname, vid, category, pdetails, price, disprice,stock) VALUES(%s, %s, %s, %s, %s, %s,%s)", (pname, session['id'], category, pdetails, price, disprice,stock))
-        mysql.connection.commit()
-        cur.close()
         now = datetime.now()
         formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
         cur = mysql.connection.cursor()
+        cur.execute("INSERT INTO temporary_product(pname, vid, category, pdetails, price, disprice,stock, datetime) VALUES(%s, %s, %s, %s, %s, %s,%s, %s)", (pname, session['id'], category, pdetails, price, disprice,stock, formatted_date))
+        mysql.connection.commit()
         cur.execute("INSERT INTO notification(person1_id,pname,content,date) VALUES(%s, %s, %s, %s)", (session['id'],pname,"Pending",formatted_date))
         mysql.connection.commit()
+
+        rid=cur.execute("SELECT rid FROM temporary_product WHERE pname=%s AND vid=%s AND  category=%s AND pdetails=%s AND price=%s AND disprice=%s AND stock=%s AND datetime=%s",(pname, session['id'], category, pdetails, price, disprice,stock, formatted_date))
         cur.close()
+
+        file = request.files['file']
+        if (file and file.filename != ''):
+            if (os.path.isfile('home\\ria\\Project\\Doubts\\static\\img\\categori\\temporaryProduct' + str(rid) + '.png')):
+                os.remove('home\\ria\\Project\\Doubts\\static\\img\\categori\\temporaryProduct' + str(rid) + '.jpg')
+            l = file.filename.split('.')
+            file.filename = str(rid) + '1' + '.' + str(l[-1])
+            filename = secure_filename(file.filename)
+            file.save(os.path.join('home\\ria\\Project\\Doubts\\static\\img\\categori\\temporaryProduct', filename))
+            s = 'home\\ria\\Project\\Doubts\\static\\img\\categori\\temporaryProduct' + str(filename)
+            img1 = Image.open(s)
+            img2 = img1.convert('RGB')
+            s = 'home\\ria\\Project\\Doubts\\static\\img\\categori\\temporaryProduct' + str(rid) + '.jpg'
+            img2.save(s)
+            os.remove('home\\ria\\Project\\Doubts\\static\\img\\categori\\temporaryProduct' + filename)
         return redirect(url_for('notifications'))
-    return render_template('seller.html')
+    return render_template('vendor/seller.html')
+
+
 
 
 
@@ -1056,15 +1111,14 @@ def allProduct():
     cursor = mysql.connection.cursor()
     cursor.execute('SELECT * FROM products WHERE category=%s',('homedecor',))
     account1 = cursor.fetchall()
-    return render_template('product_list_vendor.html', item1=account1)
+    return render_template('vendor/product_list_vendor.html', item1=account1)
 
 
 
 @app.route('/myProduct')
 def myProduct():
-    vid=1
     cursor = mysql.connection.cursor()
-    cursor.execute('SELECT * FROM price WHERE vid=%s',[vid])
+    cursor.execute('SELECT * FROM price WHERE vid=%s',[session['id']])
     productlist = cursor.fetchall()
     prodlist = []
     for product in productlist:
@@ -1079,15 +1133,14 @@ def myProduct():
         Dict['category']=products[5]
         Dict['stock']=product[6]
         prodlist.append(Dict)
-    return render_template("myProduct.html",prodlist=prodlist)
+    return render_template("vendor/myProduct.html",prodlist=prodlist)
 
 
 
 @app.route('/productsvendor/<int:pid>', methods=['POST','GET'])
 def productsvendor(pid):
-    vid=1
     cursor = mysql.connection.cursor()
-    cursor.execute('SELECT * FROM price WHERE vid=%s and pid=%s',[vid,pid])
+    cursor.execute('SELECT * FROM price WHERE vid=%s and pid=%s',[session['id'],pid])
     productlist = cursor.fetchone()
     cursor = mysql.connection.cursor()
     cursor.execute('SELECT * FROM products WHERE pid=%s',[pid])
@@ -1098,11 +1151,11 @@ def productsvendor(pid):
         disprice=productDetails['disprice']
         mycursor = mysql.connection.cursor()
         sql = "UPDATE price SET disprice= %s,stock=%s WHERE pid = %s and vid = %s"
-        val = (disprice,stock,pid,vid)
+        val = (disprice,stock,pid,session['id'])
         mycursor.execute(sql, val)
         mysql.connection.commit()
         return redirect(url_for('productsvendor', pid=product[0]))
-    return render_template('productpage-vendor.html',productlist=productlist,singleproduct=product)
+    return render_template('vendor/productpage-vendor.html',productlist=productlist,singleproduct=product)
 
 
 
@@ -1120,26 +1173,24 @@ def deliver(oid):
 
 @app.route('/myOrder')
 def myOrder():
-    vid=1
     mycursor = mysql.connection.cursor()
     sql = "SELECT * FROM orders WHERE vid = %s and delivery_status = %s ORDER BY order_id"
-    adr = (vid,'Not Delivered' )
+    adr = (session['id'],'Not Delivered' )
     mycursor.execute(sql, adr)
     myresult = mycursor.fetchall()
-    return render_template("vendor-orders.html",orders=myresult) 
+    return render_template("vendor/vendor-orders.html",orders=myresult) 
 
 
 
 @app.route('/productpagevendor/<int:pid>' ,methods=['POST','GET'])
 def productpagevendor(pid):
-    vid=1
     cursor = mysql.connection.cursor()
-    cursor.execute('SELECT * FROM price WHERE vid=%s and pid=%s',[vid,pid])
+    cursor.execute('SELECT * FROM price WHERE vid=%s and pid=%s',[session['id'],pid])
     productlist = cursor.fetchone()
     cursor = mysql.connection.cursor()
     cursor.execute('SELECT * FROM products WHERE pid=%s',[pid])
     product = cursor.fetchone()
-    return render_template('productfororder-vendor.html',productlist=productlist,singleproduct=product)
+    return render_template('vendor/productfororder-vendor.html',productlist=productlist,singleproduct=product)
 
 
 
@@ -1151,31 +1202,29 @@ def orderdetailsvendor(oid):
     cursor = mysql.connection.cursor()
     cursor.execute('SELECT * FROM order_details WHERE oid=%s',[oid])
     orderdetails = cursor.fetchone()
-    return render_template('orderdetails-vendor.html',orderlist = orderlist,orderdetails=orderdetails)
+    return render_template('vendor/orderdetails-vendor.html',orderlist = orderlist,orderdetails=orderdetails)
 
 
 
 @app.route('/vendororderhistory')
 def vendororderhistory():
-    vid=1
     mycursor = mysql.connection.cursor()
     sql = "SELECT * FROM orders WHERE vid = %s and delivery_status = %s"
-    adr = (vid,'Delivered' )
+    adr = (session['id'],'Delivered' )
     mycursor.execute(sql, adr)
     myresult = mycursor.fetchall()
-    return render_template("orderhistory-vendor.html",orders=myresult)
+    return render_template("vendor/orderhistory-vendor.html",orders=myresult)
 
 
 
 @app.route('/notifications')
 def notifications():
-    vid=1
     mycursor = mysql.connection.cursor()
     sql = "SELECT * FROM notification WHERE person1_id = %s ORDER BY date DESC"
-    adr = (vid,)
+    adr = (session['id'],)
     mycursor.execute(sql, adr)
     myresult = mycursor.fetchall()
-    return render_template("notifications-vendor.html",messages=myresult)
+    return render_template("vendor/notifications-vendor.html",messages=myresult)
     
 
 
@@ -1193,12 +1242,13 @@ def allProduct_admin():
     return "eifjei"
 
 
+
 @app.route('/vendorList')
 def vendorList():
     cur = mysql.connection.cursor()
     cur.execute( "SELECT * FROM seller WHERE deleted=0" )
     sellers = cur.fetchall()
-    return render_template("vendorList.html",sellers=sellers)
+    return render_template("admin/vendorList.html",sellers=sellers)
 
 
 
@@ -1221,7 +1271,7 @@ def vendorproducts(vid):
         Dict['category']=products[5]
         Dict['stock']=product[6]
         prodlist.append(Dict)
-    return render_template("venprolist_admin.html",prodlist=prodlist)
+    return render_template("admin/venprolist_admin.html",prodlist=prodlist)
 
 
 @app.route('/productpageadmin/<int:vid>/<int:pid>' , methods=['POST','GET'])
@@ -1232,7 +1282,7 @@ def productpageadmin(vid,pid):
     cursor = mysql.connection.cursor()
     cursor.execute('SELECT * FROM products WHERE pid=%s',[pid])
     product = cursor.fetchone()
-    return render_template('productpage-admin.html',productlist=productlist,singleproduct=product)
+    return render_template('admin/productpage-admin.html',productlist=productlist,singleproduct=product)
 
 
 
@@ -1241,7 +1291,7 @@ def vendororders(vid):
     cursor = mysql.connection.cursor()
     cursor.execute('SELECT * FROM orders WHERE vid=%s',[vid])
     orderslist = cursor.fetchall()
-    return render_template("venodelist_admin.html",odelist=orderslist)
+    return render_template("admin/venodelist_admin.html",odelist=orderslist)
 
 
 
@@ -1269,14 +1319,14 @@ def ordersforadmin():
     cursor = mysql.connection.cursor()
     cursor.execute('SELECT * FROM orders ORDER BY datetime DESC')
     orderslist = cursor.fetchall()
-    return render_template('allordersadmin.html',odelist=orderslist)
+    return render_template('admin/allordersadmin.html',odelist=orderslist)
 
 
 
 
 @app.route('/buyerList')
 def buyerList():
-    return render_template("BuyerList.html")
+    return render_template("admin/BuyerList.html")
 
 
 
@@ -1286,7 +1336,7 @@ def newProduct():
     sql = "SELECT * FROM temporary_product"
     mycursor.execute(sql)
     tempproducts = mycursor.fetchall()
-    return render_template("newProduct.html",tempproducts=tempproducts)
+    return render_template("admin/newProduct.html",tempproducts=tempproducts)
 
 
 
@@ -1328,7 +1378,7 @@ def verifyProduct(req_id):
             mysql.connection.commit()
             cur.close()
         return redirect(url_for("newProduct"))
-    return render_template('verify-product.html',singleproduct=singleproduct)
+    return render_template('admin/verify-product.html',singleproduct=singleproduct)
     
     
 

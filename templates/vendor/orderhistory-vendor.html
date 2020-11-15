@@ -67,7 +67,7 @@
                                   <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='img/logo/logo.png')}}" alt=""></a>
                                 </div>
                             </div>
-                            <div class="col-xl-6 col-lg-8 col-md-7 col-sm-5">
+                            <div class="col-xl-7 col-lg-8 col-md-7 col-sm-5">
                                 <!-- Main-menu -->
                                 <div class="main-menu f-right d-none d-lg-block">
                                     <nav>
@@ -121,29 +121,15 @@
                     <div class="serial">Price</div>
                     <div class="serial">Status</div>
                     <div class="serial">Date</div>
-                    <div class="serial">Mark Delivered</div>
-                    <div class="serial">Details</div>
                 </div>
                 {%for order in orders%}
                 <div class="table-row">
                     <div class="serial">{{order[0]}}</div>
-                    <div class="serial">
-                        <a href="{{url_for('productpagevendor',pid=order[2])}}"><p>{{order[8]}}</p></a>
-                    </div>
+                    <div class="serial" href="{{url_for('product_page',pro_id=order[2])}}">{{order[6]}}</div>
                     <div class="serial">{{order[3]}}</div>
                     <div class="serial">{{order[3]*order[4]}}</div>
-                    <div class="serial">Not Delivered</div>
+                    <div class="serial">Delivered</div>
                     <div class="serial">{{order[5]}} </div>
-                    <form action=" {{url_for('deliver',oid=order[0])}}" method="POST">
-                        <div class="serial">
-                            <input type="submit"  name ="btn1" value="Delivered" class="genric-btn info radius"/>
-                        </div>
-                </form>
-                <form action=" {{url_for('orderdetailsvendor',oid=order[0])}}" method="POST">
-                    <div class="serial">
-                        <input type="submit"  name ="btn1" value="Details" class="genric-btn info radius"/>
-                    </div>
-            </form>
                 </div>   
                 {% endfor %}
             </div>
@@ -162,7 +148,7 @@
                              <div class="single-footer-caption mb-30">
                                   <!-- logo -->
                                  <div class="footer-logo">
-                                     <a href="index.html"><img src="{{ url_for('static', filename='static/img/logo/logo2_footer.png')}}" alt=""></a>
+                                     <a href="index.html"><img src="{{ url_for('static', filename='img/logo/logo2_footer.png')}}" alt=""></a>
                                  </div>
                                  <div class="footer-tittle">
                                      <div class="footer-pera">
@@ -196,6 +182,7 @@
 <script src="{{url_for('static',filename='js/jquery.ajaxchimp.min.js')}}"></script>
 <script src="{{url_for('static',filename='js/plugins.js')}}"></script>
 <script src="{{url_for('static',filename='js/main.js')}}"></script>
+
 </body>
 
 </html>

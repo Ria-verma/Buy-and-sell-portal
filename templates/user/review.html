@@ -45,16 +45,13 @@
                                     <ul class="contact-now">
                                         <li>+91-9876543210</li>
                                     </ul>
-                                </div>
-                                {%if session['loggedin']%}
+                                </div>                  
                                 <div class="header-info-right">
                                    <ul>
-                                    <li><a href="{{ url_for('myAccount')}}">My Account </a></li>
-                                    <li><a href="{{ url_for('order')}}">My Orders</a></li>
+                                    <li><a href="{{ url_for('logout') }}">Logout({{session['username']}})</a></li>                                                                       
                                     <li><a href="{{ url_for('cart') }}">Cart</a></li>
                                    </ul>
-                                </div>
-                                {%endif%}
+                                </div>                               
                             </div>
                        </div>
                    </div>
@@ -73,15 +70,10 @@
                                 <div class="main-menu f-right d-none d-lg-block">
                                     <nav>
                                         <ul id="navigation">
-                                            <li><a href="#">Home</a></li>
+                                            <li><a href="{{ url_for('home') }}">Home</a></li>
                                             <li><a href="{{ url_for('catagories') }}">Catagories</a></li>
-                                            <li><a href="{{ url_for('contact') }}">Contact</a></li>
-                                            {%if session['loggedin']%}
-                                            <li><a href="{{ url_for('logout') }}">Logout</a></li>
-                                            {%else%}
-                                            <li><a href="{{ url_for('login') }}">Sign in</a></li>
-                                            <li><a href="{{ url_for('signup') }}">Sign up</a></li>
-                                            {%endif%}
+                                            <li><a href="{{ url_for('contact') }}">Contact</a></li>                                          
+                                            <li><a href="{{ url_for('order')}}">My Orders</a></li>              
                                         </ul>
                                     </nav>
                                 </div>

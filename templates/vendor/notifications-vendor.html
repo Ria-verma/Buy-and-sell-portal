@@ -11,17 +11,17 @@
     
 
     <!-- CSS here -->
-        <link rel="stylesheet" href="static/css/bootstrap.min.css">
-        <link rel="stylesheet" href="static/css/owl.carousel.min.css">
-        <link rel="stylesheet" href="static/css/flaticon.css">
-        <link rel="stylesheet" href="static/css/slicknav.css">
-        <link rel="stylesheet" href="static/css/animate.min.css">
-        <link rel="stylesheet" href="static/css/magnific-popup.css">
-        <link rel="stylesheet" href="static/css/fontawesome-all.min.css">
-        <link rel="stylesheet" href="static/css/themify-icons.css">
-        <link rel="stylesheet" href="static/css/slick.css">
-        <link rel="stylesheet" href="static/css/nice-select.css">
-        <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.min.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/flaticon.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/slicknav.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/animate.min.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/magnific-popup.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/fontawesome-all.min.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/themify-icons.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/slick.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nice-select.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
 </head>
 
 <body>
@@ -48,11 +48,11 @@
                                     </ul>
                                 </div>
                                 <div class="header-info-right">
-                                   <ul>
-                                        <li><a href="{{ url_for('myAccount')}}">My Account </a></li>
-                                        <li><a href="{{ url_for('order')}}">My Orders  </a></li>
-                                        <li><a href="{{ url_for('cart') }}">Cart</a></li>
-                                   </ul>
+                                    <ul>
+                                        <li><a href="{{ url_for('home')}}">Home</a></li>
+                                        <li><a href="{{ url_for('vendororderhistory')}}">Order History</a></li>
+                                        <li><a href="{{ url_for('allProduct')}}">All Products </a></li>
+                                    </ul>
                                 </div>
                             </div>
                        </div>
@@ -64,18 +64,18 @@
                             <!-- Logo -->
                             <div class="col-xl-1 col-lg-1 col-md-1 col-sm-3">
                                 <div class="logo">
-                                  <a href="{{ url_for('home') }}"><img src="static/img/logo/logo.png" alt=""></a>
+                                  <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='img/logo/logo.png')}}" alt=""></a>
                                 </div>
                             </div>
-                            <div class="col-xl-6 col-lg-8 col-md-7 col-sm-5">
+                            <div class="col-xl-7 col-lg-8 col-md-7 col-sm-5">
                                 <!-- Main-menu -->
                                 <div class="main-menu f-right d-none d-lg-block">
                                     <nav>
                                         <ul id="navigation">
-                                            <li><a href="{{ url_for('home') }}">Home</a></li>
-                                            <li><a href="{{ url_for('catagories') }}">Catagories</a></li>
-                                            <li><a href="{{ url_for('contact') }}">Contact</a></li>
-                                            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                                            <li><a href="{{ url_for('addProduct')}}">Add Product</a></li>
+                                            <li><a href="{{ url_for('myProduct')}}">My Products</a></li>
+                                            <li><a href="{{ url_for('myOrder') }}">New Orders</a></li>
+                                            <li><a href="{{ url_for('notifications') }}">Notifications</a></li>
                                         </ul>
                                     </nav>
                                 </div>
@@ -96,7 +96,7 @@
     <!-- slider Area Start-->
     <div class="slider-area ">
         <!-- Mobile Menu -->
-        <div class="single-slider slider-height2 d-flex align-items-center" data-background="static/img/hero/category.jpg">
+        <div class="single-slider slider-height2 d-flex align-items-center" data-background="{{ url_for('static', filename='img/hero/category.jpg')}}">
             <div class="container">
                 <div class="row">
                     <div class="col-xl-12">
@@ -115,27 +115,23 @@
         <div class="progress-table-wrap">
             <div class="progress-table">
                 <div class="table-head">
-                    <div class="serial"> Order_ID </div>
+                    <div class="serial">RequestID</div>
                     <div class="serial">Product</div>
-                    <div class="serial">Quantity</div>
-                    <div class="serial">Price</div>
-                    <div class="serial">Status</div>
-                    <div class="serial">Date</div>
-                    <div class="serial">Review</div>
+                    <div class="country">Status</div>
+                    <div class="country">Date</div>
                 </div>
-                {%for order in orders%}
+                {%for messege in messages%}
                 <div class="table-row">
-                    <div class="serial">{{order[0]}}</div>
-                    <div class="serial" href="{{url_for('product_page',pro_id=order[2])}}">{{order[6]}}</div>
-                    <div class="serial">{{order[3]}}</div>
-                    <div class="serial">{{order[3]*order[4]}}</div>
-                    <div class="serial">Not Delivered</div>
-                    <div class="serial">{{order[5]}} </div>
-                    <form action=" {{url_for('review',proid=order[2])}}" method="GET">
-                        <div class="serial">
-                            <input type="submit"  name ="btn1" value="Review Product" class="genric-btn info radius"/>
-                        </div>
-                </form>
+                    <div class="serial">{{messege[0]}}</div>
+                    <div class="serial">{{messege[2]}}</div>
+                    {%if messege[3]=='Rejected'%}
+                    <div class="country"><a style='color: #ff3500'>This product is not accepted</a></div>
+                    {%elif messege[3]=='Pending'%}
+                    <div class="country"><a style='color: #0044ff'>Verfication Pending</a></div>
+                    {%else%}
+                    <div class="country"><a style='color:#00802b'>This product is accepted</a></div>
+                    {%endif%}
+                    <div class="country">{{messege[4]}} </div>
                 </div>   
                 {% endfor %}
             </div>
@@ -154,7 +150,7 @@
                              <div class="single-footer-caption mb-30">
                                   <!-- logo -->
                                  <div class="footer-logo">
-                                     <a href="index.html"><img src="static/img/logo/logo2_footer.png" alt=""></a>
+                                     <a href="index.html"><img src="{{ url_for('static', filename='img/logo/logo2_footer.png')}}" alt=""></a>
                                  </div>
                                  <div class="footer-tittle">
                                      <div class="footer-pera">
@@ -168,41 +164,26 @@
 
 <!-- JS here -->
 
-    <!-- All JS Custom Plugins Link Here here -->
-    <script src="./static/js/vendor/modernizr-3.5.0.min.js"></script>
-
-    <!-- Jquery, Popper, Bootstrap -->
-    <script src="./static/js/vendor/jquery-1.12.4.min.js"></script>
-    <script src="./static/js/popper.min.js"></script>
-    <script src="./static/js/bootstrap.min.js"></script>
-    <!-- Jquery Mobile Menu -->
-    <script src="./static/js/jquery.slicknav.min.js"></script>
-
-    <!-- Jquery Slick , Owl-Carousel Plugins -->
-    <script src="./static/js/owl.carousel.min.js"></script>
-    <script src="./static/js/slick.min.js"></script>
-
-    <!-- One Page, Animated-HeadLin -->
-    <script src="./static/js/wow.min.js"></script>
-    <script src="./static/js/animated.headline.js"></script>
-
-    <!-- Scrollup, nice-select, sticky -->
-    <script src="./static/js/jquery.scrollUp.min.js"></script>
-    <script src="./static/js/jquery.nice-select.min.js"></script>
-    <script src="./static/js/jquery.sticky.js"></script>
-    <script src="./static/js/jquery.magnific-popup.js"></script>
-
-    <!-- contact js -->
-    <script src="./static/js/contact.js"></script>
-    <script src="./static/js/jquery.form.js"></script>
-    <script src="./static/js/jquery.validate.min.js"></script>
-    <script src="./static/js/mail-script.js"></script>
-    <script src="./static/js/jquery.ajaxchimp.min.js"></script>
-
-    <!-- Jquery Plugins, main Jquery -->
-    <script src="./static/js/plugins.js"></script>
-    <script src="./static/js/main.js"></script>
-
+<script src="{{url_for('static',filename='js/vendor/modernizr-3.5.0.min.js')}}"></script>
+<script src="{{url_for('static',filename='js/vendor/jquery-1.12.4.min.js')}}"></script>
+<script src="{{url_for('static',filename='js/popper.min.js')}}"></script>
+<script src="{{url_for('static',filename='js/bootstrap.min.js')}}"></script>
+<script src="{{url_for('static',filename='js/jquery.slicknav.min.js')}}"></script>
+<script src="{{url_for('static',filename='js/owl.carousel.min.js')}}"></script>
+<script src="{{url_for('static',filename='js/slick.min.js')}}"></script>
+<script src="{{url_for('static',filename='js/wow.min.js')}}"></script>
+<script src="{{url_for('static',filename='js/animated.headline.js')}}"></script>
+<script src="{{url_for('static',filename='js/jquery.magnific-popup.js')}}"></script>
+<script src="{{url_for('static',filename='js/jquery.scrollUp.min.js')}}"></script>
+<script src="{{url_for('static',filename='js/jquery.nice-select.min.js')}}"></script>
+<script src="{{url_for('static',filename='js/jquery.sticky.js')}}"></script>
+<script src="{{url_for('static',filename='js/contact.js')}}"></script>
+<script src="{{url_for('static',filename='js/jquery.form.js')}}"></script>
+<script src="{{url_for('static',filename='js/jquery.validate.min.js')}}"></script>
+<script src="{{url_for('static',filename='js/mail-script.js')}}"></script>
+<script src="{{url_for('static',filename='js/jquery.ajaxchimp.min.js')}}"></script>
+<script src="{{url_for('static',filename='js/plugins.js')}}"></script>
+<script src="{{url_for('static',filename='js/main.js')}}"></script>
 </body>
 
 </html>

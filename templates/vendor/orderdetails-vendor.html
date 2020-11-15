@@ -66,7 +66,7 @@
                                   <a href="#"><img src="{{ url_for('static', filename='img/logo/logo.png')}}" alt=""></a>
                                 </div>
                             </div>
-                            <div class="col-xl-6 col-lg-8 col-md-7 col-sm-5">
+                            <div class="col-xl-7 col-lg-8 col-md-7 col-sm-5">
                                 <!-- Main-menu -->
                                 <div class="main-menu f-right d-none d-lg-block">
                                     <nav>
@@ -97,7 +97,7 @@
             <div class="row">
                 <div class="col-xl-12">
                     <div class="hero-cap text-center">
-                        <h2>product Details</h2>
+                        <h2>Order Details</h2>
                     </div>
                 </div>
             </div>
@@ -107,43 +107,82 @@
 <!-- slider Area End-->
 
 <!--================Single Product Area =================-->
-<div class="product_image_area">
-<div class="container">
-  <div class="row justify-content-center">
-    <div class="col-lg-5">
-      <div class="product_img_slide owl-carousel">
-        <div class="single_product_img">
-          <img src="{{ url_for('static', filename='img/categori/'+singleproduct[5]+'/'+ singleproduct[0]|string +'.png')}}" alt="#" class="img-fluid">
+<section class="confirmation_part section_padding">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="confirmation_tittle">
+            <span>Order details and customer address details</span>
+          </div>
         </div>
-        <div class="single_product_img">
-          <img src="{{ url_for('static', filename='img/categori/'+singleproduct[5]+'/'+ singleproduct[0]|string +'.png')}}" alt="#" class="img-fluid">
+        <div class="col-lg-6 col-lx-4">
+          <div class="single_confirmation_details">
+            <h4>order info</h4>
+            <ul>
+              <li>
+                <p>order number</p><span>: {{orderlist[0]}}</span>
+              </li>
+              <li>
+                <p>Date</p><span>: {{orderlist[5]}}</span>
+              </li>
+              <li>
+                <p>Quantity</p><span>: {{orderlist[3]}}</span>
+              </li>
+              <li>
+                <p>Total</p><span>: {{orderlist[3]*orderlist[4]}}  </span>
+              </li>
+              <li>
+                <p>Payment methord</p><span>: Cash on delivery</span>
+              </li>
+            </ul>
+          </div>
         </div>
-        <div class="single_product_img">
-          <img src="{{ url_for('static', filename='img/categori/'+singleproduct[5]+'/'+ singleproduct[0]|string +'.png')}}" alt="#" class="img-fluid">
+        <div class="col-lg-6 col-lx-4">
+          <div class="single_confirmation_details">
+            <h4>Shipping Details</h4>
+            <ul>
+              <li>
+                <p>Name</p><span>: {{orderdetails[1]}} {{orderdetails[2]}}</span>
+              </li>
+              <li>
+                <p>Phone Number</p><span>: {{orderdetails[4]}}</span>
+              </li>
+              <li>
+                <p>Email Address</p><span>:{{orderdetails[5]}}</span>
+              </li>
+              <li>
+                <p>Address</p><span>: {{orderdetails[6]}}</span>
+              </li>
+              
+              <li>
+                <p>Town/City</p><span>: {{orderdetails[8]}}</span>
+              </li>
+              <li>
+                <p>State</p><span>: {{orderdetails[9]}}</span>
+              </li>
+              <li>
+                <p>PINcode</p><span>: {{orderdetails[10]}}</span>
+              </li>
+              <li>
+                <p>Order Notes</p><span>: {{orderdetails[11]}}</span>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="col-lg-8">
-      <div class="single_product_text text-center">
-        <h3>{{singleproduct[1]}} <br><br></h3>
-          <h4>Selling Price: {{productlist[4]}} INR</h4>
-          <br>
-        
-          <h4>Current Stock: {{productlist[6]}}</h4>
-        <p>
-            Seamlessly empower fully researched growth strategies and interoperable internal or “organic” sources. Credibly innovate granular internal or “organic” sources whereas high standards in web-readiness. Credibly innovate granular internal or organic sources whereas high standards in web-readiness. Energistically scale future-proof core competencies vis-a-vis impactful experiences. Dramatically synthesize integrated schemas. with optimal networks.
-        </p>
-         <!---- <div class="add_to_cart"> class="btn_3 col-lg-3"
-              <a href="{{url_for('product_page', pro_id=singleproduct[0])}}" class="btn_3">Add to cart</a>
-              <a href="{{url_for('product_page', pro_id=singleproduct[0])}}" class="btn_3">Buy Now</a>
-          </div>-->
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-</div>
-<!--================End Single Product Area =================-->
+ </div>        
+  </section>
+  <!--================ confirmation part end =================-->
+
+
+
+
+
+
+
+
+
+
 <footer>
     <!-- Footer Start-->
         <div class="footer-area footer-padding">
