@@ -208,9 +208,6 @@ def signup():
 
 
 
-
-
-
 @app.route('/login', methods = ['GET', 'POST'])
 def login():
     if request.method == "POST":
@@ -240,6 +237,7 @@ def login():
                 elif account[2]==email and password==account[3]:
                     session["loggedin"] = True
                     session["id"]=account[0]
+                    session["username"]=account[1]
                     return render_template('index.html')
 
                 elif account[2]!=password:
@@ -296,7 +294,7 @@ def login():
 @app.route('/logout')
 def logout():
     session.clear()
-    return render_template('index.html')
+    return render_template('login.html')
 
 
 
@@ -307,6 +305,7 @@ def logout():
 @app.route('/')
 def home():
     cur = mysql.connection.cursor()
+
     # cur.execute('SELECT * FROM products WHERE category=%s',('clothing',))
     # account1 = cur.fetchall()
     category1 = []
@@ -661,42 +660,8 @@ def cart():
 
 
 
-@app.route('/myAccount', methods=['GET','POST'])
-def myAccount():
-    return render_template("myAccount.html")
 
 
-
-
-
-
-
-
-@app.route('/buynow/<int:proid>',methods=['GET','POST'])
-def buynow(proid):
-    now = datetime.now()
-    formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
-    cur = mysql.connection.cursor()
-    cur.execute("INSERT INTO order(userid, productid) Values(%s, %s)", [session['id'], proid])
-    mysql.connection.commit()
-    cur.close()
-    return "Your order is succesfully placed"
-
-
-
-
-
-@app.route('/orderHistory')
-def orderHistory():
-    return render_template("orderHistory.html")
-
-
-
-
-
-@app.route('/table')
-def table():
-    return render_template("table.html")
 
 
 
@@ -943,7 +908,7 @@ def confirmation1(pro_id, v_id, did):
     cur.execute("INSERT INTO orders( user_id, pro_id, quantity, price, datetime, vid, did) Values( %s, %s, %s, %s, %s, %s, %s)", [ session["id"], item[2], item[3], curr_price[3], formatted_date, item[4], details[0]])
     mysql.connection.commit()
 
-    return render_template("confirmation1.html", carts= cartlist, totalprice = tprice, totalquantity= tquantity, details = details)
+    return render_template("confirmation.html", carts= cartlist, totalprice = tprice, totalquantity= tquantity, details = details)
 
 
 
@@ -1006,71 +971,10 @@ def addProduct():
 
 
 
-
-
-
-
-
-
-
-
-@app.route('/display', methods=["GET", "POST"])
-def display():
-    if request.method == 'POST':
-        cur = mysql.connection.cursor()
-        cur.execute("DELETE FROM product WHERE productname='Cakes'")
-        mysql.connection.commit()
-        cur.close()
-        return render_template('display.html')
-    cur = mysql.connection.cursor()
-    result = cur.execute("SELECT * FROM product")
-    if result >0:
-        productDetails = cur.fetchall()
-        return render_template('display.html', productDetails= productDetails)
-
-
-
-
-# @app.route('/allProduct')
-# def allProduct():
-#     return render_template('product_list.html')
-
-
-
-
-@app.route('/allProduct')
-def allProduct():
-    cursor = mysql.connection.cursor()
-    cursor.execute('SELECT * FROM products WHERE category=%s',('homedecor',))
-    account1 = cursor.fetchall()
-    return render_template('product_list_vendor.html', item1=account1)
-
-
-
-
-@app.route('/wishlist')
-def wishlist():
-    return render_template('product_list.html',)
-
-
-
-
-@app.route('/myProduct')
-def myProduct():
-    return render_template('myProduct.html')
-
-
-
-
-
-@app.route('/order')
+@app.route('/order', methods=["GET", "POST"])
 def order():
-    mycursor = mysql.connection.cursor()
-    sql = "SELECT * FROM orders WHERE user_id = %s"
-    adr = (session['id'], )
-    mycursor.execute(sql, adr)
-    myresult = mycursor.fetchall()
-    return render_template("order.html",orders=myresult) 
+    return "fkhjdsp"
+
 
 
 
@@ -1081,47 +985,6 @@ def order():
 
 
 
-@app.route('/newProduct')
-def newProduct():
-    return render_template("newProduct.html")
-
-
-
-
-@app.route('/allProduct_admin')
-def allProduct_admin():
-    return render_template("allProduct_admin.html")
-
-
-
-@app.route('/vendorList')
-def vendorList():
-    return render_template("vendorList.html")
-
-
-
-@app.route('/buyerList')
-def buyerList():
-    return render_template("BuyerList.html")
-
-
-
-
-@app.route('/verifyProduct/<int:pro_id>' , methods=['GET','POST'])
-def verifyProduct(pro_id):
-    if request.method == "POST":
-        userDetails=request.form
-        quan=userDetails['quantity']
-        cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO cart(user_id, pid,quantity) Values(%s,%s,%s)", [session["id"],pro_id,quan])
-        mysql.connection.commit()
-        cur.close()
-    cur = mysql.connection.cursor()
-    cur.execute( "SELECT * FROM products WHERE pid LIKE %s", [pro_id] )
-    singleproduct = cur.fetchone()
-    return render_template('verify-product.html',singleproduct=singleproduct)
-    
-    
 
 
 if __name__=='__main__':
