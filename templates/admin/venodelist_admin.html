@@ -58,8 +58,9 @@
                                 </div>
                                 <div class="header-info-right">
                                     <ul>
-                                        <li><a href="{{ url_for('home') }}">Home</a></li>
-                                       </ul>
+                                        <li><a href="{{ url_for('logout') }}">Logout({{session['username']}})</a></li>
+                                        <li><a href="{{ url_for('usersadmin') }}">Users</a></li>
+                                    </ul>
                                 </div>
                             </div>
                        </div>
@@ -110,7 +111,7 @@
             <div class="row">
                 <div class="col-xl-12">
                     <div class="hero-cap text-center">
-                        <h2>Orders</h2>
+                        <h2>Vendor Orders</h2>
                     </div>
                 </div>
             </div>
@@ -164,6 +165,27 @@
   </section>
 
   <!--================End Cart Area =================-->
+  <footer>
+    <!-- Footer Start-->
+        <div class="footer-area footer-padding">
+            <div class="container">
+                <div class="row d-flex justify-content-between">
+                    <div class="col-xl-3 col-lg-3 col-md-5 col-sm-6">
+                       <div class="single-footer-caption mb-50">
+                         <div class="single-footer-caption mb-30">
+                              <!-- logo -->
+                             <div class="footer-logo">
+                                 <a href="#"><img src="{{ url_for('static', filename='img/logo/logo2_footer.png')}}" alt=""></a>
+                             </div>
+                             <div class="footer-tittle">
+                                 <div class="footer-pera">
+                                     <p>The one stop online destination</p>
+                                </div>
+                             </div>
+                         </div>
+                       </div>
+                    </div>
+                </footer>
 
 <!-- JS here -->
 <script src="{{url_for('static',filename='js/vendor/modernizr-3.5.0.min.js')}}"></script>

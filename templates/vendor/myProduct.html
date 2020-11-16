@@ -58,7 +58,7 @@
                                 </div>
                                 <div class="header-info-right">
                                   <ul>
-                                    <li><a href="{{ url_for('home')}}">Home</a></li>
+                                    <li><a href="{{ url_for('logout') }}">Logout({{session['username']}})</a></li>
                                     <li><a href="{{ url_for('vendororderhistory')}}">Order History</a></li>
                                     <li><a href="{{ url_for('allProduct')}}">All Products </a></li>
                                 </ul>
@@ -147,7 +147,7 @@
                       <img src="{{ url_for('static', filename='img/categori/'+product['category']+'/'+ product['pid']|string +'.png')}}" alt="">
                     </div>
                     <div class="media-body">
-                      <a href="{{url_for('productsvendor',pid=product['pid'])}}"><p>{{product['proname']}}</p></a>
+                      <a href="{{url_for('productpagevendor',pid=product['pid'])}}"><p>{{product['proname']}}</p></a>
                     </div>
                   </div>
                 </td>

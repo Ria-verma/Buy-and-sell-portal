@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS `temporary_product`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `temporary_product` (
-  `rid` int NOT NULL,
+  `rid` int NOT NULL AUTO_INCREMENT,
   `vid` int NOT NULL,
   `pname` varchar(45) NOT NULL,
   `price` varchar(45) DEFAULT NULL,
@@ -31,10 +31,11 @@ CREATE TABLE `temporary_product` (
   `disprice` varchar(45) DEFAULT NULL,
   `category` varchar(45) DEFAULT NULL,
   `stock` varchar(45) DEFAULT NULL,
+  `datetime` datetime NOT NULL,
   PRIMARY KEY (`rid`),
   KEY `fk_temporary_product_1_idx` (`vid`),
   CONSTRAINT `fk_temporary_product_1` FOREIGN KEY (`vid`) REFERENCES `seller` (`vid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,6 +44,7 @@ CREATE TABLE `temporary_product` (
 
 LOCK TABLES `temporary_product` WRITE;
 /*!40000 ALTER TABLE `temporary_product` DISABLE KEYS */;
+INSERT INTO `temporary_product` VALUES (1,1,'Abc','foifejfoiewj','fjdfoijd','fjewfi','pantry','3','2020-11-15 17:36:52'),(2,1,'Abc','foifejfoiewj','fjdfoijd','fjewfi','pantry','3','2020-11-15 17:37:16'),(3,1,'Abc','foifejfoiewj','fjdfoijd','fjewfi','pantry','3','2020-11-15 17:37:50'),(4,1,'Abc','foifejfoiewj','fjdfoijd','fjewfi','pantry','3','2020-11-15 17:41:25'),(5,1,'Abc','foifejfoiewj','fjdfoijd','fjewfi','pantry','3','2020-11-15 17:42:55'),(6,1,'Abc','foifejfoiewj','fjdfoijd','fjewfi','pantry','3','2020-11-15 17:43:06'),(7,1,'bfdb','fdgrdb','vsdb','rsbfdb','pantry','2','2020-11-15 22:10:24'),(8,1,'bfdb','fdgrdb','vsdb','rsbfdb','pantry','2','2020-11-15 22:14:27'),(9,1,'bfdb','fdgrdb','vsdb','rsbfdb','pantry','2','2020-11-15 22:14:32'),(10,1,'bfdb','fdgrdb','vsdb','rsbfdb','pantry','2','2020-11-15 22:24:35'),(11,1,'bfdb','fdgrdb','vsdb','rsbfdb','pantry','2','2020-11-15 22:24:39'),(12,1,'bfdb','fdgrdb','vsdb','rsbfdb','pantry','2','2020-11-15 22:27:20'),(13,1,'bfdb','fdgrdb','vsdb','rsbfdb','pantry','2','2020-11-15 22:27:24'),(14,1,'bfdb','fdgrdb','vsdb','rsbfdb','pantry','2','2020-11-15 22:27:54'),(15,1,'bfdb','fdgrdb','vsdb','rsbfdb','pantry','2','2020-11-15 22:28:11'),(16,1,'bfdb','fdgrdb','vsdb','rsbfdb','pantry','2','2020-11-15 22:28:49'),(17,1,'bfdb','fdgrdb','vsdb','rsbfdb','pantry','2','2020-11-15 22:29:04'),(18,1,'bfdb','fdgrdb','vsdb','rsbfdb','pantry','2','2020-11-15 22:30:36'),(19,1,'bfdb','fdgrdb','vsdb','rsbfdb','pantry','2','2020-11-15 22:30:48'),(20,1,'bfdb','fdgrdb','vsdb','rsbfdb','pantry','2','2020-11-15 22:35:13'),(21,1,'bfdb','fdgrdb','vsdb','rsbfdb','pantry','2','2020-11-15 22:37:11'),(22,1,'bfdb','fdgrdb','vsdb','rsbfdb','pantry','2','2020-11-15 22:37:32'),(23,1,'bfdb','fdgrdb','vsdb','rsbfdb','pantry','2','2020-11-15 22:37:48'),(24,1,'bfdb','fdgrdb','vsdb','rsbfdb','pantry','2','2020-11-15 22:39:30'),(25,1,'bfdb','fdgrdb','vsdb','rsbfdb','pantry','2','2020-11-15 22:41:00'),(26,1,'Abc','3446','abcdef','233','clothing','4','2020-11-16 22:15:47'),(27,1,'Abc','3446','abcdef','233','clothing','4','2020-11-16 22:16:48'),(28,1,'Abc','3446','abcdef','233','clothing','4','2020-11-16 22:16:56'),(29,1,'Abc','3446','abcdef','233','clothing','4','2020-11-16 22:23:39'),(30,1,'Abc','3446','abcdef','233','clothing','4','2020-11-16 22:23:57'),(31,1,'Abc','3446','abcdef','233','clothing','4','2020-11-16 22:24:39'),(32,1,'Abc','3446','abcdef','233','clothing','4','2020-11-16 22:32:17'),(33,1,'Abc','3446','abcdef','233','clothing','4','2020-11-16 22:34:19');
 /*!40000 ALTER TABLE `temporary_product` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -55,4 +57,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-15  9:46:25
+-- Dump completed on 2020-11-16 22:39:52

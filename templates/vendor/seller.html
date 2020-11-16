@@ -42,7 +42,7 @@
                                 </div>
                                 <div class="header-info-right">
                                     <ul>
-                                        <li><a href="{{ url_for('home')}}">Home</a></li>
+                                        <li><a href="{{ url_for('logout') }}">Logout({{session['username']}})</a></li>
                                         <li><a href="{{ url_for('vendororderhistory')}}">Order History</a></li>
                                         <li><a href="{{ url_for('allProduct')}}">All Products </a></li>
                                     </ul>
@@ -107,7 +107,7 @@
 
                 <br><br><br><br>
 
-                <form action="#" method="POST">
+                
                 <form action="#" method="POST" enctype="multipart/form-data">
                     <div class="mt-10">
                         <h6>Product Name</h6>
@@ -163,19 +163,17 @@
                             class="single-input border">
                     </div>
                     <div class="card-body" style="margin-right: 180px; margin-top: 50px;">
+                        <span><h6>Product Picture</h6></span>
                         <input type = "file" name = "file" />
                     </div>
-
                     <div class="button-group-area mt-10">
-                        <br>
-                       
                         <button type="submit" value="submit" class="genric-btn primary circle arrow large">
                             Add Product <span class="lnr lnr-arrow-right"></span>
                         </button>
                     </div>
 
                 </form>
-                </form>
+                
             </div>
         </div>
     </div>

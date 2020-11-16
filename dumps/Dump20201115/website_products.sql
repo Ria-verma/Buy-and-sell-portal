@@ -30,8 +30,8 @@ CREATE TABLE `products` (
   `new` varchar(45) DEFAULT 'NO',
   `category` varchar(45) NOT NULL,
   `Deleted` int DEFAULT NULL,
-  `rating` double DEFAULT '0',
-  `no_of_ppl` int DEFAULT '0',
+  `rating` double NOT NULL DEFAULT '0',
+  `no_of_ppl` int NOT NULL DEFAULT '0',
   `rid` int DEFAULT NULL,
   PRIMARY KEY (`pid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -43,7 +43,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (1,'Men\'s short',200,'qwe',NULL,'clothing',0,NULL,NULL,NULL),(2,'Mens\'s top',400,'qwe',NULL,'clothing',0,NULL,NULL,NULL),(3,'Women\'s top',400,'qwe',NULL,'clothing',0,NULL,NULL,NULL),(4,'Grey swetshirt',500,'qwe',NULL,'clothing',0,NULL,NULL,NULL),(5,'White Cushion',500,'soft cotten made',NULL,'homedecor',0,NULL,NULL,NULL),(6,'Purple Cushion',500,'beautiful and useful',NULL,'homedecor',0,NULL,NULL,NULL),(7,'Watch 1',500,NULL,NULL,'watches',0,NULL,NULL,NULL),(8,'Watch 2',500,NULL,NULL,'watches',0,NULL,NULL,NULL),(9,'Green Apple',500,NULL,NULL,'pantry',0,NULL,NULL,NULL),(10,'Pantry 1',500,NULL,NULL,'pantry',0,NULL,NULL,NULL),(11,'Pantry 3',500,NULL,NULL,'pantry',0,NULL,NULL,NULL);
+INSERT INTO `products` VALUES (1,'Men\'s short',200,'qwe',NULL,'clothing',0,0,0,NULL),(2,'Mens\'s top',400,'qwe',NULL,'clothing',0,0,0,NULL),(3,'Women\'s top',400,'qwe',NULL,'clothing',0,0,0,NULL),(4,'Grey swetshirt',500,'qwe',NULL,'clothing',0,0,0,NULL),(5,'White Cushion',500,'soft cotten made',NULL,'homedecor',0,0,0,NULL),(6,'Purple Cushion',500,'beautiful and useful',NULL,'homedecor',0,0,0,NULL),(7,'Watch 1',500,NULL,NULL,'watches',0,0,0,NULL),(8,'Watch 2',500,NULL,NULL,'watches',0,0,0,NULL),(9,'Green Apple',500,NULL,NULL,'pantry',0,0,0,NULL),(10,'Pantry 1',500,NULL,NULL,'pantry',0,0,0,NULL),(11,'Pantry 3',500,NULL,NULL,'pantry',0,0,0,NULL);
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-15  9:46:25
+-- Dump completed on 2020-11-16 22:39:52

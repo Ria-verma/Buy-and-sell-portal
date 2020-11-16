@@ -48,7 +48,7 @@
                                 </div>
                                 <div class="header-info-right">
                                     <ul>
-                                        <li><a href="{{ url_for('home')}}">Home</a></li>
+                                        <li><a href="{{ url_for('logout') }}">Logout({{session['username']}})</a></li>
                                         <li><a href="{{ url_for('vendororderhistory')}}">Order History</a></li>
                                         <li><a href="{{ url_for('allProduct')}}">All Products </a></li>
                                     </ul>
@@ -133,10 +133,30 @@
         <p>
             Seamlessly empower fully researched growth strategies and interoperable internal or “organic” sources. Credibly innovate granular internal or “organic” sources whereas high standards in web-readiness. Credibly innovate granular internal or organic sources whereas high standards in web-readiness. Energistically scale future-proof core competencies vis-a-vis impactful experiences. Dramatically synthesize integrated schemas. with optimal networks.
         </p>
-         <!---- <div class="add_to_cart"> class="btn_3 col-lg-3"
-              <a href="{{url_for('product_page', pro_id=singleproduct[0])}}" class="btn_3">Add to cart</a>
-              <a href="{{url_for('product_page', pro_id=singleproduct[0])}}" class="btn_3">Buy Now</a>
-          </div>-->
+        <br>
+        <h4>You can make changes below:</h4>
+        
+        <form action="{{url_for('productsvendor', pid=singleproduct[0])}}" method="POST">
+        <div class="mt-10">
+            <br>
+            <h6>Price</h6>
+            <input type="number" name="disprice" placeholder="Product Price"
+                onfocus="this.placeholder = ''" onblur="this.placeholder = 'Price'" required
+                class="single-input border">
+        </div>
+        <div class="mt-10">
+            <br>
+            <h6>Stock</h6>
+            <input type="number" name="stock" placeholder="Product Stock"
+                onfocus="this.placeholder = ''" onblur="this.placeholder = 'Price'" required
+                class="single-input border">
+        </div>
+        <br><br>
+        <button type="submit" value="submit" class="genric-btn primary circle arrow large">
+            Apply Changes <span class="lnr lnr-arrow-right"></span>
+        </button>
+    </form>
+    
         </div>
       </div>
     </div>

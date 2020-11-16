@@ -48,7 +48,7 @@
                                 </div>
                                 <div class="header-info-right">
                                     <ul>
-                                        <li><a href="{{ url_for('home')}}">Home</a></li>
+                                        <li><a href="{{ url_for('logout') }}">Logout({{session['username']}})</a></li>
                                         <li><a href="{{ url_for('vendororderhistory')}}">Order History</a></li>
                                         <li><a href="{{ url_for('allProduct')}}">All Products </a></li>
                                     </ul>
@@ -133,10 +133,6 @@
         <p>
             Seamlessly empower fully researched growth strategies and interoperable internal or “organic” sources. Credibly innovate granular internal or “organic” sources whereas high standards in web-readiness. Credibly innovate granular internal or organic sources whereas high standards in web-readiness. Energistically scale future-proof core competencies vis-a-vis impactful experiences. Dramatically synthesize integrated schemas. with optimal networks.
         </p>
-         <!---- <div class="add_to_cart"> class="btn_3 col-lg-3"
-              <a href="{{url_for('product_page', pro_id=singleproduct[0])}}" class="btn_3">Add to cart</a>
-              <a href="{{url_for('product_page', pro_id=singleproduct[0])}}" class="btn_3">Buy Now</a>
-          </div>-->
         </div>
       </div>
     </div>

@@ -26,7 +26,7 @@ CREATE TABLE `users` (
   `id` int NOT NULL AUTO_INCREMENT,
   `username` varchar(45) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `password` varchar(45) NOT NULL,
+  `password` varchar(250) NOT NULL,
   `join_date` date NOT NULL,
   `Deleted` int DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -42,7 +42,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Ria','cse190001051@iiti.ac.in','19285house','2001-11-02',NULL),(20,'Ria','riaverma1302@gmail.com','19285house','2020-11-14',NULL);
+INSERT INTO `users` VALUES (1,'Ria','cse190001051@iiti.ac.in','gAAAAABfsqevUDjaGYZX8Y7-u4MbecZ-5tAvs7um7-a0PSSwfkA8RfyIBTZE9EOQjQzw6vpX9bqMmNzFIIJ4ac0SiaOsnyV1OA==','2001-11-02',NULL),(20,'Ria','riaverma1302@gmail.com','19285house','2020-11-14',NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -55,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-15  9:46:25
+-- Dump completed on 2020-11-16 22:39:52

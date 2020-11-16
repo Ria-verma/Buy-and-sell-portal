@@ -48,8 +48,9 @@
                                 </div>
                                 <div class="header-info-right">
                                    <ul>
-                                    <li><a href="{{ url_for('home') }}">Home</a></li>
-                                   </ul>
+                                    <li><a href="{{ url_for('logout') }}">Logout({{session['username']}})</a></li>
+                                    <li><a href="{{ url_for('usersadmin') }}">Users</a></li>
+                                </ul>
                                 </div>
                                 
                             </div>
@@ -141,10 +142,7 @@
                 <input type="submit"  name ="btn2" value="Decline" class="btn_3 col-lg-3"/>
             </div>
             </form>
-         <!---- <div class="add_to_cart">
-              <a href="{{url_for('product_page', pro_id=singleproduct[0])}}" class="btn_3">Add to cart</a>
-              <a href="{{url_for('product_page', pro_id=singleproduct[0])}}" class="btn_3">Buy Now</a>
-          </div>-->
+         
         </div>
       </div>
     </div>

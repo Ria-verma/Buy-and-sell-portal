@@ -47,9 +47,10 @@
                                     </ul>
                                 </div>
                                 <div class="header-info-right">
-                                    <ul>
-                                        <li><a href="{{ url_for('home') }}">Home</a></li>
-                                       </ul>
+                                   <ul>
+                                    <li><a href="{{ url_for('logout') }}">Logout({{session['username']}})</a></li>
+                                    <li><a href="{{ url_for('usersadmin') }}">Users</a></li>
+                                </ul>
                                 </div>
                             </div>
                        </div>
@@ -61,7 +62,7 @@
                             <!-- Logo -->
                             <div class="col-xl-1 col-lg-1 col-md-1 col-sm-3">
                                 <div class="logo">
-                                  <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='static/img/logo/logo.png')}}" alt=""></a>
+                                  <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='img/logo/logo.png')}}" alt=""></a>
                                 </div>
                             </div>
                             <div class="col-xl-7 col-lg-8 col-md-7 col-sm-5">
@@ -73,7 +74,6 @@
                                               <li><a href="{{ url_for('newProduct') }}">New Products</a></li>
                                               <li><a href="{{ url_for('vendorList') }}">Vendor List</a></li>
                                               <li><a href="{{ url_for('ordersforadmin') }}">Orders</a></li>
-                                             
                                           </ul>
                                     </nav>
                                 </div>
@@ -90,7 +90,6 @@
        </div>
         <!-- Header End -->
     </header>
-
 
     <!-- slider Area Start-->
     <div class="slider-area ">
@@ -136,7 +135,7 @@
                             <input type="submit"  name ="btn1" value="Orders" class="genric-btn info radius"/>
                         </div>
                     </form>
-                    <form action="#" method="GET">
+                    <form action="{{url_for('vendordetails', vid=seller[0])}}" method="GET">
                         <div class="serial">
                             <input type="submit"  name ="btn1" value="Details" class="genric-btn info radius"/>
                         </div>

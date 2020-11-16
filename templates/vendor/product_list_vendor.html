@@ -44,7 +44,7 @@
                                 </div>
                                 <div class="header-info-right">
                                     <ul>
-                                        <li><a href="{{ url_for('home')}}">Home</a></li>
+                                        <li><a href="{{ url_for('logout') }}">Logout({{session['username']}})</a></li>
                                         <li><a href="{{ url_for('vendororderhistory')}}">Order History</a></li>
                                         <li><a href="{{ url_for('allProduct')}}">All Products </a></li>
                                     </ul>

@@ -48,8 +48,9 @@
                                 </div>
                                 <div class="header-info-right">
                                    <ul>
-                                    <li><a href="{{ url_for('home') }}">Home</a></li>
-                                   </ul>
+                                    <li><a href="{{ url_for('logout') }}">Logout({{session['username']}})</a></li>
+                                    <li><a href="{{ url_for('usersadmin') }}">Users</a></li>
+                                </ul>
                                 </div>
                             </div>
                        </div>
@@ -99,7 +100,7 @@
                 <div class="row">
                     <div class="col-xl-12">
                         <div class="hero-cap text-center">
-                            <h2>Product List</h2>
+                            <h2>Requested Product List</h2>
                         </div>
                     </div>
                 </div>
@@ -116,7 +117,7 @@
                 <div class="table-head">
                     <div class="serial">Request ID</div>
                     <div class="serial">Vendor ID</div>
-                    <div class="serial">Product name</div>
+                    <div class="country">Product name</div>
                     <div class="serial">Category</div>
                     <div class="serial">Details</div>
                 </div>
@@ -124,7 +125,7 @@
                 <div class="table-row">
                     <div class="serial">{{pros[0]}}</div>
                     <div class="serial">{{pros[1]}}</div>
-                    <div class="serial">{{pros[2]}}</div>
+                    <div class="country">{{pros[2]}}</div>
                     <div class="serial">{{pros[6]}}</div>
                     <form action="{{url_for('verifyProduct', req_id=pros[0])}}" method="GET">
                     <div class="add_to_cart">

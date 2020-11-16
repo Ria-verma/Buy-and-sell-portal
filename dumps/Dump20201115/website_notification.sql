@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS `notification`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `notification` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `person1_id` int NOT NULL,
   `pname` varchar(45) NOT NULL,
   `content` varchar(45) NOT NULL,
@@ -31,7 +31,7 @@ CREATE TABLE `notification` (
   PRIMARY KEY (`id`),
   KEY `fk_notification_1_idx` (`person1_id`),
   CONSTRAINT `fk_notification_1` FOREIGN KEY (`person1_id`) REFERENCES `seller` (`vid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,6 +40,7 @@ CREATE TABLE `notification` (
 
 LOCK TABLES `notification` WRITE;
 /*!40000 ALTER TABLE `notification` DISABLE KEYS */;
+INSERT INTO `notification` VALUES (1,1,'Abc','Pending','2020-11-15 17:37:50'),(2,1,'Abc','Pending','2020-11-15 17:41:25'),(3,1,'Abc','Pending','2020-11-15 17:42:55'),(4,1,'Abc','Pending','2020-11-15 17:43:06'),(5,1,'bfdb','Pending','2020-11-15 22:10:24'),(6,1,'bfdb','Pending','2020-11-15 22:14:27'),(7,1,'bfdb','Pending','2020-11-15 22:14:32'),(8,1,'bfdb','Pending','2020-11-15 22:24:35'),(9,1,'bfdb','Pending','2020-11-15 22:24:39'),(10,1,'bfdb','Pending','2020-11-15 22:27:20'),(11,1,'bfdb','Pending','2020-11-15 22:27:24'),(12,1,'bfdb','Pending','2020-11-15 22:27:54'),(13,1,'bfdb','Pending','2020-11-15 22:28:11'),(14,1,'bfdb','Pending','2020-11-15 22:28:49'),(15,1,'bfdb','Pending','2020-11-15 22:29:04'),(16,1,'bfdb','Pending','2020-11-15 22:30:36'),(17,1,'bfdb','Pending','2020-11-15 22:30:48'),(18,1,'bfdb','Pending','2020-11-15 22:35:13'),(19,1,'bfdb','Pending','2020-11-15 22:37:11'),(20,1,'bfdb','Pending','2020-11-15 22:37:32'),(21,1,'bfdb','Pending','2020-11-15 22:37:48'),(22,1,'bfdb','Pending','2020-11-15 22:39:30'),(23,1,'bfdb','Pending','2020-11-15 22:41:00'),(24,1,'Abc','Pending','2020-11-16 22:15:47'),(25,1,'Abc','Pending','2020-11-16 22:16:48'),(26,1,'Abc','Pending','2020-11-16 22:16:56'),(27,1,'Abc','Pending','2020-11-16 22:23:39'),(28,1,'Abc','Pending','2020-11-16 22:23:57'),(29,1,'Abc','Pending','2020-11-16 22:24:39'),(30,1,'Abc','Pending','2020-11-16 22:32:17'),(31,1,'Abc','Pending','2020-11-16 22:34:19');
 /*!40000 ALTER TABLE `notification` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -52,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-15  9:46:25
+-- Dump completed on 2020-11-16 22:39:52

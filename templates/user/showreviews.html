@@ -45,13 +45,13 @@
                                     <ul class="contact-now">
                                         <li>+91-9876543210</li>
                                     </ul>
-                                </div>
+                                </div>                  
                                 <div class="header-info-right">
-                                    <ul>
-                                        <li><a href="{{ url_for('logout') }}">Logout({{session['username']}})</a></li>
-                                        <li><a href="{{ url_for('usersadmin') }}">Users</a></li>
-                                    </ul>
-                                </div>
+                                   <ul>
+                                    <li><a href="{{ url_for('logout') }}">Logout({{session['username']}})</a></li>                                                                       
+                                    <li><a href="{{ url_for('cart') }}">Cart</a></li>
+                                   </ul>
+                                </div>                               
                             </div>
                        </div>
                    </div>
@@ -70,12 +70,11 @@
                                 <div class="main-menu f-right d-none d-lg-block">
                                     <nav>
                                         <ul id="navigation">
-                                            <li><a href="#">All Products</a></li>
-                                              <li><a href="{{ url_for('newProduct') }}">New Products</a></li>
-                                              <li><a href="{{ url_for('vendorList') }}">Vendor List</a></li>
-                                              <li><a href="{{ url_for('ordersforadmin') }}">Orders</a></li>
-                                              
-                                          </ul>
+                                            <li><a href="{{ url_for('home') }}">Home</a></li>
+                                            <li><a href="{{ url_for('catagories') }}">Catagories</a></li>
+                                            <li><a href="{{ url_for('contact') }}">Contact</a></li>                                          
+                                            <li><a href="{{ url_for('order')}}">My Orders</a></li>              
+                                        </ul>
                                     </nav>
                                 </div>
                             </div>
@@ -104,44 +103,61 @@
         </div>
     </div>
 </div>
-<!-- slider Area End-->
 
-<!--================Single Product Area =================-->
-<div class="product_image_area">
-<div class="container">
-  <div class="row justify-content-center">
-    <div class="col-lg-5">
-      <div class="product_img_slide owl-carousel">
-        <div class="single_product_img">
-          <img src="{{ url_for('static', filename='img/categori/'+singleproduct[5]+'/'+ singleproduct[0]|string +'.png')}}" alt="#" class="img-fluid">
+<div class="section-top-border">
+    <div class="progress-table-wrap">
+        <div class="progress-table">
+            <div class="table-head">
+                <div class="serial">ID</div>
+                <div class="serial">Review</div>
+                <div class="serial">Rating</div>
+                <div class="country">Date</div>
+            </div>
+            {%for rating in reviews%}
+            <div class="table-row">
+                <div class="serial">{{rating[0]}}</div>
+                <div class="serial">{{rating[3]}}</div>
+                <div class='serial'>
+                <div class="product-ratting">
+                    {% if rating[4] >= 1 %}
+                    <i class="far fa-star"></i>
+                    {% else %}
+                    <i class="far fa-star low-star"></i>
+                    {% endif %}
+
+                    {% if rating[4] >= 2 %}
+                    <i class="far fa-star"></i>
+                    {% else %}
+                    <i class="far fa-star low-star"></i>
+                    {% endif %}
+
+                    {% if rating[4] >= 3 %}
+                    <i class="far fa-star"></i>
+                    {% else %}
+                    <i class="far fa-star low-star"></i>
+                    {% endif %}
+
+                    {% if rating[4] >= 4 %}
+                    <i class="far fa-star"></i>
+                    {% else %}
+                    <i class="far fa-star low-star"></i>
+                    {% endif %}
+
+                    {% if rating[4] >= 5 %}
+                    <i class="far fa-star"></i>
+                    {% else %}
+                    <i class="far fa-star low-star"></i>
+                    {% endif %}
+                </div>
+                </div>
+                <div class="country">{{rating[5]}} </div>
+            </div>   
+            {% endfor %}
         </div>
-        <div class="single_product_img">
-          <img src="{{ url_for('static', filename='img/categori/'+singleproduct[5]+'/'+ singleproduct[0]|string +'.png')}}" alt="#" class="img-fluid">
-        </div>
-        <div class="single_product_img">
-          <img src="{{ url_for('static', filename='img/categori/'+singleproduct[5]+'/'+ singleproduct[0]|string +'.png')}}" alt="#" class="img-fluid">
-        </div>
-      </div>
     </div>
-    <div class="col-lg-8">
-      <div class="single_product_text text-center">
-        <h3>{{singleproduct[1]}} <br><br></h3>
-          <h4>Selling Price: {{productlist[4]}} INR</h4>
-          <br>
-        
-          <h4>Current Stock: {{productlist[6]}}</h4>
-        <p>
-            Seamlessly empower fully researched growth strategies and interoperable internal or “organic” sources. Credibly innovate granular internal or “organic” sources whereas high standards in web-readiness. Credibly innovate granular internal or organic sources whereas high standards in web-readiness. Energistically scale future-proof core competencies vis-a-vis impactful experiences. Dramatically synthesize integrated schemas. with optimal networks.
-        </p>
-        <br><br>
-        
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
-</div>
-<!--================End Single Product Area =================-->
+
+
 <footer>
     <!-- Footer Start-->
         <div class="footer-area footer-padding">
@@ -152,7 +168,7 @@
                          <div class="single-footer-caption mb-30">
                               <!-- logo -->
                              <div class="footer-logo">
-                                 <a href="#"><img src="{{ url_for('static', filename='img/logo/logo2_footer.png')}}" alt=""></a>
+                                 <a href="index.html"><img src="{{ url_for('static', filename='img/logo/logo2_footer.png')}}" alt=""></a>
                              </div>
                              <div class="footer-tittle">
                                  <div class="footer-pera">
@@ -162,27 +178,31 @@
                          </div>
                        </div>
                     </div>
-                </footer>
-                <script src="{{url_for('static',filename='js/vendor/modernizr-3.5.0.min.js')}}"></script>
-                <script src="{{url_for('static',filename='js/vendor/jquery-1.12.4.min.js')}}"></script>
-                <script src="{{url_for('static',filename='js/popper.min.js')}}"></script>
-                <script src="{{url_for('static',filename='js/bootstrap.min.js')}}"></script>
-                <script src="{{url_for('static',filename='js/jquery.slicknav.min.js')}}"></script>
-                <script src="{{url_for('static',filename='js/owl.carousel.min.js')}}"></script>
-                <script src="{{url_for('static',filename='js/slick.min.js')}}"></script>
-                <script src="{{url_for('static',filename='js/wow.min.js')}}"></script>
-                <script src="{{url_for('static',filename='js/animated.headline.js')}}"></script>
-                <script src="{{url_for('static',filename='js/jquery.magnific-popup.js')}}"></script>
-                <script src="{{url_for('static',filename='js/jquery.scrollUp.min.js')}}"></script>
-                <script src="{{url_for('static',filename='js/jquery.nice-select.min.js')}}"></script>
-                <script src="{{url_for('static',filename='js/jquery.sticky.js')}}"></script>
-                <script src="{{url_for('static',filename='js/contact.js')}}"></script>
-                <script src="{{url_for('static',filename='js/jquery.form.js')}}"></script>
-                <script src="{{url_for('static',filename='js/jquery.validate.min.js')}}"></script>
-                <script src="{{url_for('static',filename='js/mail-script.js')}}"></script>
-                <script src="{{url_for('static',filename='js/jquery.ajaxchimp.min.js')}}"></script>
-                <script src="{{url_for('static',filename='js/plugins.js')}}"></script>
-                <script src="{{url_for('static',filename='js/main.js')}}"></script>
-                    </body>
- </html>
- 
+ </footer>
+
+
+
+
+
+<script src="{{url_for('static',filename='js/vendor/modernizr-3.5.0.min.js')}}"></script>
+<script src="{{url_for('static',filename='js/vendor/jquery-1.12.4.min.js')}}"></script>
+<script src="{{url_for('static',filename='js/popper.min.js')}}"></script>
+<script src="{{url_for('static',filename='js/bootstrap.min.js')}}"></script>
+<script src="{{url_for('static',filename='js/jquery.slicknav.min.js')}}"></script>
+<script src="{{url_for('static',filename='js/owl.carousel.min.js')}}"></script>
+<script src="{{url_for('static',filename='js/slick.min.js')}}"></script>
+<script src="{{url_for('static',filename='js/wow.min.js')}}"></script>
+<script src="{{url_for('static',filename='js/animated.headline.js')}}"></script>
+<script src="{{url_for('static',filename='js/jquery.magnific-popup.js')}}"></script>
+<script src="{{url_for('static',filename='js/jquery.scrollUp.min.js')}}"></script>
+<script src="{{url_for('static',filename='js/jquery.nice-select.min.js')}}"></script>
+<script src="{{url_for('static',filename='js/jquery.sticky.js')}}"></script>
+<script src="{{url_for('static',filename='js/contact.js')}}"></script>
+<script src="{{url_for('static',filename='js/jquery.form.js')}}"></script>
+<script src="{{url_for('static',filename='js/jquery.validate.min.js')}}"></script>
+<script src="{{url_for('static',filename='js/mail-script.js')}}"></script>
+<script src="{{url_for('static',filename='js/jquery.ajaxchimp.min.js')}}"></script>
+<script src="{{url_for('static',filename='js/plugins.js')}}"></script>
+<script src="{{url_for('static',filename='js/main.js')}}"></script>
+</body>
+</html>

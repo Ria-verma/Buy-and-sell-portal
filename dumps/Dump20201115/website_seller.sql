@@ -33,7 +33,7 @@ CREATE TABLE `seller` (
   `state` varchar(45) NOT NULL,
   `pincode` int NOT NULL,
   `Deleted` int DEFAULT '0',
-  `password` varchar(45) DEFAULT NULL,
+  `password` varchar(250) DEFAULT NULL,
   PRIMARY KEY (`vid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -44,7 +44,7 @@ CREATE TABLE `seller` (
 
 LOCK TABLES `seller` WRITE;
 /*!40000 ALTER TABLE `seller` DISABLE KEYS */;
-INSERT INTO `seller` VALUES (1,'Sruthi','cse190001051@iiti.ac.in','glkdfjgrdoi','2001-11-01','djsoif','jfsdoif','fdldkasjfi',43,0,'19285house'),(2,'veromoda','riaverma135@gmail.com','fjerjo;igeroij','2001-11-01','vjsdo;ij','jcasiojc','jcasoijf',425,0,'19285house');
+INSERT INTO `seller` VALUES (1,'Sruthi','cse190001051@iiti.ac.in','glkdfjgrdoi','2001-11-01','djsoif','jfsdoif','fdldkasjfi',43,0,'gAAAAABfsqvGRixxgJaiqgosRnZMl2oO7jeTfnwJJCXD8pJQniekclqDGx-ReGPFPihjV83VrPstnvbL-gVbMWY7cFp_l5IjfA=='),(2,'veromoda','riaverma135@gmail.com','fjerjo;igeroij','2001-11-01','vjsdo;ij','jcasiojc','jcasoijf',425,0,'19285house');
 /*!40000 ALTER TABLE `seller` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -57,4 +57,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-15  9:46:25
+-- Dump completed on 2020-11-16 22:39:52

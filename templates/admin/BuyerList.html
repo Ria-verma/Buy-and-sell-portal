@@ -49,8 +49,9 @@
                                 </div>
                                 <div class="header-info-right">
                                    <ul>
-                                    <li><a href="{{ url_for('allProduct_admin') }}">All Product</a></li>
-                                   </ul>
+                                    <li><a href="{{ url_for('logout') }}">Logout({{session['username']}})</a></li>
+                                    <li><a href="{{ url_for('usersadmin') }}">Users</a></li>
+                                </ul>
                                 </div>
                             </div>
                        </div>
@@ -70,11 +71,11 @@
                                 <div class="main-menu f-right d-none d-lg-block">
                                     <nav>
                                         <ul id="navigation">
-                                            <li><a href="{{ url_for('newProduct') }}">New Product</a></li>
-                                            <li><a href="{{ url_for('buyerList') }}">User List</a></li>
-                                            <li><a href="{{ url_for('vendorList') }}">Vendor List</a></li>
-                                            <li><a href="#">Notification</a></li>
-                                        </ul>
+                                            <li><a href="#">All Products</a></li>
+                                              <li><a href="{{ url_for('newProduct') }}">New Products</a></li>
+                                              <li><a href="{{ url_for('vendorList') }}">Vendor List</a></li>
+                                              <li><a href="{{ url_for('ordersforadmin') }}">Orders</a></li>                                            
+                                          </ul>
                                     </nav>
                                 </div>
                             </div>
