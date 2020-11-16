@@ -539,7 +539,7 @@ def single_product_page(pro_id, v_id):
         cur.execute("SELECT * FROM seller WHERE vid = %s", [vid])
         vendor = cur.fetchone()
         Dict = {}
-        Dict["vid"] = vid
+        Dict["vid"] = vendor[0]
         Dict["s_name"] = vendor[1]
         Dict["sell_at_price"] = row[4]
         sellerList.append(Dict)
@@ -598,11 +598,14 @@ def single_product_page(pro_id, v_id):
             return redirect(url_for('checkout1', v_id=v_id, pro_id=pro_id))
 
         else:
-
-            return redirect(url_for('single_product_page', v_id=v_id, pro_id=pro_id))
+            vid=request.form.get('selectseller')
+            return redirect(url_for('single_product_page', v_id=vid, pro_id=pro_id))
 
     return render_template('user/single-product.html', singleproduct=curr_product, minprice=curr_price[4],
                            sellerList=sellerList, curr_seller=curr_seller, in_cart=in_cart, total_in_cart=total_in_cart)
+
+
+
 
 
 @app.route('/decrease_in_cart/<int:pro_id>/<int:v_id>')
@@ -658,65 +661,123 @@ def cart():
 
 @app.route('/checkout', methods=['GET', 'POST'])
 def checkout():
+
     if request.method == "POST":
-        if(request.form.get('tandc')!='done'):
+        
+        first_name = request.form['first']
+        last_name = request.form['last']
+        company = request.form['company']
+        number = request.form['number']
+        email = request.form['email']
+        add1 = request.form['add1']
+        add2 = request.form['add2']
+        city = request.form['city']
+        district = request.form['district']
+        Postcode = request.form['Postcode']
+        order_notes = request.form['message']
+        payment_method = request.form.get('selector')
+        tandc = request.form.get('tandc')
+
+        if len(request.form['first'])==0 or len(request.form['last'])==0 or len(request.form['number'])==0 or len(request.form['email'])==0 or len(request.form['add1'])==0 or len(request.form['add2'])==0 or len(request.form['city'])==0 or len(request.form['district'])==0 or len(request.form['Postcode'])==0:
+        
+            flash("Please Fill all the necessary details!")
+            cur = mysql.connection.cursor()
+            cur.execute("SELECT * FROM cart WHERE user_id LIKE %s", [session["id"]])
+            cartitems = cur.fetchall()
+            cartlist = []
+            tprice = 0
+            for item in cartitems:
+                cur = mysql.connection.cursor()
+                pid = int(item[2])
+                cur.execute("SELECT * FROM products WHERE pid LIKE %s", [pid])
+                allproducts = cur.fetchall()
+                Dict = {}
+                for products in allproducts:
+                    Dict['pid'] = products[0]
+                    Dict['proname'] = products[1]
+                    Dict['price'] = products[2]
+                    Dict['quantity'] = item[3]
+                    Dict['totalprice'] = item[3] * Dict['price']
+                    cur.execute("SELECT * FROM seller WHERE vid=%s", [item[4]])
+                    seller = cur.fetchone()
+                    Dict['seller'] = seller[1]
+                    Dict['seller_id'] = seller[0]
+                    Dict['category'] = products[5]
+                    cartlist.append(Dict)
+                    tprice = tprice + Dict['totalprice']
+                    print(tprice)
+            return render_template("user/checkout.html", carts=cartlist, totalprice=tprice)
+
+        elif payment_method == None:
+            flash("select Payment Method")
+            cur = mysql.connection.cursor()
+            cur.execute("SELECT * FROM cart WHERE user_id LIKE %s", [session["id"]])
+            cartitems = cur.fetchall()
+            cartlist = []
+            tprice = 0
+            for item in cartitems:
+                cur = mysql.connection.cursor()
+                pid = int(item[2])
+                cur.execute("SELECT * FROM products WHERE pid LIKE %s", [pid])
+                allproducts = cur.fetchall()
+                Dict = {}
+                for products in allproducts:
+                    Dict['pid'] = products[0]
+                    Dict['proname'] = products[1]
+                    Dict['price'] = products[2]
+                    Dict['quantity'] = item[3]
+                    Dict['totalprice'] = item[3] * Dict['price']
+                    cur.execute("SELECT * FROM seller WHERE vid=%s", [item[4]])
+                    seller = cur.fetchone()
+                    Dict['seller'] = seller[1]
+                    Dict['seller_id'] = seller[0]
+                    Dict['category'] = products[5]
+                    cartlist.append(Dict)
+                    tprice = tprice + Dict['totalprice']
+                    print(tprice)
+            return render_template("user/checkout.html", carts=cartlist, totalprice=tprice)
+            
+        elif tandc == None:
             flash("Please accept term and conditions")
+            cur = mysql.connection.cursor()
+            cur.execute("SELECT * FROM cart WHERE user_id LIKE %s", [session["id"]])
+            cartitems = cur.fetchall()
+            cartlist = []
+            tprice = 0
+            for item in cartitems:
+                cur = mysql.connection.cursor()
+                pid = int(item[2])
+                cur.execute("SELECT * FROM products WHERE pid LIKE %s", [pid])
+                allproducts = cur.fetchall()
+                Dict = {}
+                for products in allproducts:
+                    Dict['pid'] = products[0]
+                    Dict['proname'] = products[1]
+                    Dict['price'] = products[2]
+                    Dict['quantity'] = item[3]
+                    Dict['totalprice'] = item[3] * Dict['price']
+                    cur.execute("SELECT * FROM seller WHERE vid=%s", [item[4]])
+                    seller = cur.fetchone()
+                    Dict['seller'] = seller[1]
+                    Dict['seller_id'] = seller[0]
+                    Dict['category'] = products[5]
+                    cartlist.append(Dict)
+                    tprice = tprice + Dict['totalprice']
+                    print(tprice)
+            return render_template("user/checkout.html", carts=cartlist, totalprice=tprice)
+
+
         else:
-            first_name = request.form['first']
-            last_name = request.form['last']
-            company = request.form['company']
-            number = request.form['number']
-            email = request.form['email']
-            add1 = request.form['add1']
-            add2 = request.form['add2']
-            city = request.form['city']
-            district = request.form['district']
-            Postcode = request.form['Postcode']
-            order_notes = request.form['message']
-            payment_method = request.form.get('selector')
-
-            # if len(request.form['first'])==0 or len(request.form['last'])==0 or len(request.form['number'])==0 or len(request.form['email'])==0 or len(request.form['add1'])==0 or len(request.form['add2'])==0 or len(request.form['city'])==0 or len(request.form['district'])==0 or len(request.form['zip'])==0:
-            #     flash("Please Fill all the necessary details!")
-            # else:
-            if len(first_name) == 0:
-                flash("Please enter first name!")
-
-            if len(last_name) == 0:
-                flash("Please enter last name!")
-
-            if len(number) == 0:
-                flash("Please enter last name!")
-
-            if len(email) == 0:
-                flash("Please enter email!")
-
-            if len(add1) == 0:
-                flash("Invalid!")
-
-            if len(add2) == 0:
-                flash("Invalid!")
-
-            if len(city) == 0:
-                flash("Invalid!")
-
-            if len(district) == 0:
-                flash("Invalid!")
-
-            if len(Postcode) == 0:
-                flash("Invalid!")
-
-            if len(payment_method) == 0:
-                flash("Invalid!")
-
             cur = mysql.connection.cursor()
             now = datetime.now()
             formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
+
             # inserting into order details
 
             cur.execute(
                 "INSERT INTO order_details(first_name, last_name, company, number, email, add1, add2, city, district, Postcode, order_notes, payment_method, datetime) Values(%s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
                 (first_name, last_name, company, number, email, add1, add2, city, district, Postcode, order_notes,
-                 payment_method, formatted_date))
+                    payment_method, formatted_date))
             mysql.connection.commit()
 
             cur.execute("SELECT * FROM cart WHERE user_id LIKE %s", [session["id"]])
@@ -732,10 +793,13 @@ def checkout():
                 cur.execute(
                     "SELECT * FROM order_details WHERE first_name=%s AND last_name=%s AND company=%s AND number=%sAND email=%s AND add1=%s AND add2=%s AND city=%s AND district=%s AND Postcode=%s AND order_notes=%s AND payment_method=%s AND datetime=%s",
                     [first_name, last_name, company, number, email, add1, add2, city, district, Postcode, order_notes,
-                     payment_method, formatted_date])
+                        payment_method, formatted_date])
                 curr_order = cur.fetchone()
                 cur.close()
             return redirect(url_for('confirmation', did=curr_order[0]))
+
+
+
 
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM cart WHERE user_id LIKE %s", [session["id"]])
@@ -763,6 +827,8 @@ def checkout():
             tprice = tprice + Dict['totalprice']
             print(tprice)
     return render_template("user/checkout.html", carts=cartlist, totalprice=tprice)
+
+
 
 
 @app.route('/checkout1/<int:pro_id>/<int:v_id>', methods=['GET', 'POST'])

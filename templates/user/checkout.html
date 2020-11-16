@@ -117,61 +117,29 @@
             <form class="row contact_form" action="#" method="post" novalidate="novalidate">
               
               <div class="col-md-6 form-group p_star">
-                <input type="text" class="form-control" id="first" name="first" placeholder="First name"/>
-                {% with messages1 = get_flashed_messages() %}
-                                    {% if messages1 %}
-                                        <ul class=flashes>
-                                        {% for message in messages1 %}
-                                        <li>{{ message }}</li>
-                                        {% endfor %}
-                                        </ul>
-                                    {% endif %}
-                {% endwith %}
+                <input type="text" class="form-control" id="first" name="first" placeholder="First name" value=""/>
+               
                 <!-- <span class="placeholder" data-placeholder="First name"></span> -->
               </div>
               <div class="col-md-6 form-group p_star">
-                <input type="text" class="form-control" id="last" name="last" placeholder="Last Name"/>
-                {% with messages2 = get_flashed_messages() %}
-                                    {% if messages2 %}
-                                        <ul class=flashes>
-                                        {% for message in messages2 %}
-                                        <li>{{ message }}</li>
-                                        {% endfor %}
-                                        </ul>
-                                    {% endif %}
-                {% endwith %}
+                <input type="text" class="form-control" id="last" name="last" placeholder="Last Name" value=""/>
+                
                 <!-- <span class="placeholder" data-placeholder="Last name"></span> -->
               </div>
               
               <div class="col-md-12 form-group">
-                <input type="text" class="form-control" id="company" name="company" placeholder="Company name" />
+                <input type="text" class="form-control" id="company" name="company" placeholder="Company name" value = "" />
               </div>
               
               <div class="col-md-12 form-group p_star">
-                <input type="text" class="form-control" id="number" name="number" placeholder="Phone number" />
-                {% with messages3 = get_flashed_messages() %}
-                                    {% if messages3 %}
-                                        <ul class=flashes>
-                                        {% for message in messages3 %}
-                                        <li>{{ message }}</li>
-                                        {% endfor %}
-                                        </ul>
-                                    {% endif %}
-                {% endwith %}
+                <input type="text" class="form-control" id="number" name="number" placeholder="Phone number" value = "" />
+                
                 <!-- <span class="placeholder" data-placeholder="Phone number"></span> -->
               
               </div>
                 <div class="col-md-12 form-group p_star">
-                <input type="text" class="form-control" id="email" name="email" placeholder="Email Address" />
-                {% with messages4 = get_flashed_messages() %}
-                                    {% if messages4 %}
-                                        <ul class=flashes>
-                                        {% for message in messages4 %}
-                                        <li>{{ message }}</li>
-                                        {% endfor %}
-                                        </ul>
-                                    {% endif %}
-                {% endwith %}
+                <input type="text" class="form-control" id="email" name="email" placeholder="Email Address" value = "" />
+                
                 <!-- <span class="placeholder" data-placeholder="Email Address"></span> -->
               </div>
               <div class="col-md-12 form-group">
@@ -181,74 +149,34 @@
                 </div>
               </div>
               <div class="col-md-12 form-group p_star">
-                <input type="text" class="form-control" id="add1" name="add1" placeholder="Address line 01"/>
-                {% with messages5 = get_flashed_messages() %}
-                                    {% if messages5 %}
-                                        <ul class=flashes>
-                                        {% for message in messages5 %}
-                                        <li>{{ message }}</li>
-                                        {% endfor %}
-                                        </ul>
-                                    {% endif %}
-                {% endwith %}
+                <input type="text" class="form-control" id="add1" name="add1" placeholder="Address line 01" value = ""/>
+                
                 <!-- <span class="placeholder" data-placeholder="Address line 01"></span> -->
               </div>
               <div class="col-md-12 form-group p_star">
-                <input type="text" class="form-control" id="add2" name="add2" placeholder="Address line 02"/>
-                {% with messages6 = get_flashed_messages() %}
-                                    {% if messages6 %}
-                                        <ul class=flashes>
-                                        {% for message in messages6 %}
-                                        <li>{{ message }}</li>
-                                        {% endfor %}
-                                        </ul>
-                                    {% endif %}
-                {% endwith %}
+                <input type="text" class="form-control" id="add2" name="add2" placeholder="Address line 02" value = ""/>
+             
                 <!-- <span class="placeholder" data-placeholder="Address line 02"></span> -->
               </div>
               <div class="col-md-12 form-group p_star">
-                <input type="text" class="form-control" id="city" name="city" placeholder="Town/City"/>
-                {% with messages7 = get_flashed_messages() %}
-                                    {% if messages7 %}
-                                        <ul class=flashes>
-                                        {% for message in messages7 %}
-                                        <li>{{ message }}</li>
-                                        {% endfor %}
-                                        </ul>
-                                    {% endif %}
-                {% endwith %}
+                <input type="text" class="form-control" id="city" name="city" placeholder="Town/City" value = ""/>
+               
                 <!-- <span class="placeholder" data-placeholder="Town/City"></span> -->
               </div>
               <div class="col-md-12 form-group p_star">
-                <input type="text" class="form-control" id="district" name="district" placeholder="District"/>
-                {% with messages8 = get_flashed_messages() %}
-                                    {% if messages8 %}
-                                        <ul class=flashes>
-                                        {% for message in messages8 %}
-                                        <li>{{ message }}</li>
-                                        {% endfor %}
-                                        </ul>
-                                    {% endif %}
-                {% endwith %}
+                <input type="text" class="form-control" id="district" name="district" placeholder="District" value = ""/>
+                
                 <!-- <span class="placeholder" data-placeholder="district"></span> -->
               </div>
               
               <div class="col-md-12 form-group">
-                <input type="text" class="form-control" id="zip" name="Postcode" placeholder="Postcode/ZIP" />
-                {% with messages9 = get_flashed_messages() %}
-                                    {% if messages9 %}
-                                        <ul class=flashes>
-                                        {% for message in messages9 %}
-                                        <li>{{ message }}</li>
-                                        {% endfor %}
-                                        </ul>
-                                    {% endif %}
-                {% endwith %}
+                <input type="text" class="form-control" id="zip" name="Postcode" placeholder="Postcode/ZIP" value = "" />
+             
               </div>
               
               <div class="col-md-12 form-group">
                 <textarea class="form-control" name="message" id="message" rows="1"
-                  placeholder="Order Notes"></textarea>
+                  placeholder="Order Notes" value = ""></textarea>
               </div>
             </form>
           </div>
@@ -275,16 +203,7 @@
                 
               </ul>
               <ul class="list list_2">
-                <!-- <li>
-                  <a href="#">Subtotal
-                    <span>$2160.00</span>
-                  </a>
-                </li>
-                <li>
-                  <a href="#">Shipping
-                    <span>Flat rate: $50.00</span>
-                  </a>
-                </li> -->
+               
                 <li>
                   <a href="#">Total
                     <span>{{totalprice}} INR</span>
@@ -327,8 +246,8 @@
                 </p>
               </div>
               <div class="creat_account">
-                <input type="checkbox" id="f-option4" name="tandc" value="done"/>
-                <label for="f-option4">I’ve read and accept the </label>
+                <input type="checkbox" id="f-option4" name="tandc" />
+                <label for="f-option4" value = "done">I’ve read and accept the </label>
                 <a href="#">terms & conditions*</a>
               </div>
               <button type="submit" value="submit" class="btn_3 col-lg-12">
