@@ -137,7 +137,9 @@
                                             <div class="product-img">
                                                 <img src="{{ url_for('static', filename='img/categori/'+item['category']+'/'+ item['pid']|string +'.png')}}" alt="">
                                                 <div class="new-product">
+                                                    {% if item['new'] %}
                                                     <span>New</span>
+                                                    {% endif %}
                                                 </div>
                                             </div>
                                             <div class="product-caption">
@@ -171,6 +173,7 @@
                                                     {% else %}
                                                     <i class="far fa-star low-star"></i>
                                                     {% endif %}
+                                                    <span style="color: gray;">({{item['no_of_ppl']}})</span>
                                                 </div>
                                                 <h4><a href="{{url_for('single_product_page',pro_id=item['pid'], v_id = item['sellerid'])}}" target="_blank">{{ item['proname'] }}</a></h4>
                                                 <div class="price">
@@ -202,7 +205,9 @@
                                         <div class="product-img">
                                             <img src="{{ url_for('static', filename='img/categori/'+item['category']+'/'+ item['pid']|string +'.png')}}" alt="">
                                             <div class="new-product">
-                                                <span>New</span>
+                                                {% if item['new'] %}
+                                                    <span>New</span>
+                                                {% endif %}
                                             </div>
                                         </div>
                                         <div class="product-caption">
@@ -236,6 +241,7 @@
                                                 {% else %}
                                                 <i class="far fa-star low-star"></i>
                                                 {% endif %}
+                                                <span style="color: gray;">({{item['no_of_ppl']}})</span>
                                             </div>
                                             <h4><a href="{{url_for('single_product_page',pro_id=item['pid'], v_id = item['sellerid'])}}" target="_blank">{{ item['proname'] }}</a></h4>
                                             <div class="price">
@@ -267,7 +273,9 @@
                                         <div class="product-img">
                                             <img src="{{ url_for('static', filename='img/categori/'+item['category']+'/'+ item['pid']|string +'.png')}}" alt="">
                                             <div class="new-product">
-                                                <span>New</span>
+                                                {% if item['new'] %}
+                                                    <span>New</span>
+                                                {% endif %}
                                             </div>
                                         </div>
                                         <div class="product-caption">
@@ -301,6 +309,7 @@
                                                 {% else %}
                                                 <i class="far fa-star low-star"></i>
                                                 {% endif %}
+                                                <span style="color: gray;">({{item['no_of_ppl']}})</span>
                                             </div>
                                             <h4><a href="{{url_for('single_product_page',pro_id=item['pid'], v_id = item['sellerid'])}}" target="_blank">{{ item['proname'] }}</a></h4>
                                             <div class="price">
@@ -332,7 +341,9 @@
                                         <div class="product-img">
                                             <img src="{{ url_for('static', filename='img/categori/'+item['category']+'/'+ item['pid']|string +'.png')}}" alt="">
                                             <div class="new-product">
-                                                <span>New</span>
+                                                {% if item['new'] %}
+                                                    <span>New</span>
+                                                {% endif %}
                                             </div>
                                         </div>
                                         <div class="product-caption">
@@ -366,6 +377,7 @@
                                                 {% else %}
                                                 <i class="far fa-star low-star"></i>
                                                 {% endif %}
+                                                <span style="color: gray;">({{item['no_of_ppl']}})</span>
                                             </div>
                                             <h4><a href="{{url_for('single_product_page',pro_id=item['pid'], v_id = item['sellerid'])}}" target="_blank">{{ item['proname'] }}</a></h4>
                                             <div class="price">

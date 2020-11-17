@@ -16,35 +16,36 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `rating`
+-- Table structure for table `seller`
 --
 
-DROP TABLE IF EXISTS `rating`;
+DROP TABLE IF EXISTS `seller`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `rating` (
-  `pid` int NOT NULL AUTO_INCREMENT,
-  `pname` varchar(45) NOT NULL,
-  `price` double NOT NULL,
-  `pdetails` varchar(45) DEFAULT NULL,
-  `new` varchar(45) DEFAULT 'NO',
-  `category` varchar(45) NOT NULL,
-  `Deleted` int DEFAULT NULL,
-  `rid` int NOT NULL,
-  `rating` double DEFAULT NULL,
-  `no_of_ppl` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `seller` (
+  `vid` int NOT NULL AUTO_INCREMENT,
+  `seller_name` varchar(45) NOT NULL,
+  `email` varchar(45) NOT NULL,
+  `description` varchar(45) DEFAULT NULL,
+  `join_date` date NOT NULL,
+  `streetname` varchar(45) NOT NULL,
+  `city` varchar(45) NOT NULL,
+  `state` varchar(45) NOT NULL,
+  `pincode` int NOT NULL,
+  `Deleted` int DEFAULT '0',
+  `password` varchar(250) DEFAULT NULL,
+  PRIMARY KEY (`vid`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `rating`
+-- Dumping data for table `seller`
 --
 
-LOCK TABLES `rating` WRITE;
-/*!40000 ALTER TABLE `rating` DISABLE KEYS */;
-INSERT INTO `rating` VALUES (1,'Men\'s short',200,'qwe',NULL,'clothing',0,0,NULL,NULL),(2,'Mens\'s top',400,'qwe',NULL,'clothing',0,0,NULL,NULL),(3,'Women\'s top',400,'qwe',NULL,'clothing',0,0,NULL,NULL),(4,'Grey swetshirt',500,'qwe',NULL,'clothing',0,0,NULL,NULL),(5,'White Cushion',500,'soft cotten made',NULL,'homedecor',0,0,NULL,NULL),(6,'Purple Cushion',500,'beautiful and useful',NULL,'homedecor',0,0,NULL,NULL),(7,'Watch 1',500,NULL,NULL,'watches',0,0,NULL,NULL),(8,'Watch 2',500,NULL,NULL,'watches',0,0,NULL,NULL),(9,'Green Apple',500,NULL,NULL,'pantry',0,0,NULL,NULL),(10,'Pantry 1',500,NULL,NULL,'pantry',0,0,NULL,NULL),(11,'Pantry 3',500,NULL,NULL,'pantry',0,0,NULL,NULL);
-/*!40000 ALTER TABLE `rating` ENABLE KEYS */;
+LOCK TABLES `seller` WRITE;
+/*!40000 ALTER TABLE `seller` DISABLE KEYS */;
+INSERT INTO `seller` VALUES (1,'Sruthi','cse190001051@iiti.ac.in','glkdfjgrdoi','2001-11-01','djsoif','jfsdoif','fdldkasjfi',43,0,'19285house'),(2,'veromoda','riaverma135@gmail.com','fjerjo;igeroij','2001-11-01','vjsdo;ij','jcasiojc','jcasoijf',425,0,'19285house');
+/*!40000 ALTER TABLE `seller` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -56,4 +57,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-16 22:39:52
+-- Dump completed on 2020-11-17  7:51:23

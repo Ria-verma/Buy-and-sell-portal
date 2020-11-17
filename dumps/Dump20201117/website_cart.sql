@@ -16,36 +16,35 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `seller`
+-- Table structure for table `cart`
 --
 
-DROP TABLE IF EXISTS `seller`;
+DROP TABLE IF EXISTS `cart`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `seller` (
-  `vid` int NOT NULL AUTO_INCREMENT,
-  `seller_name` varchar(45) NOT NULL,
-  `email` varchar(45) NOT NULL,
-  `description` varchar(45) DEFAULT NULL,
-  `join_date` date NOT NULL,
-  `streetname` varchar(45) NOT NULL,
-  `city` varchar(45) NOT NULL,
-  `state` varchar(45) NOT NULL,
-  `pincode` int NOT NULL,
-  `Deleted` int DEFAULT '0',
-  `password` varchar(250) DEFAULT NULL,
-  PRIMARY KEY (`vid`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `cart` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `pid` int NOT NULL,
+  `quantity` int NOT NULL,
+  `vid` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `pid_idx` (`pid`),
+  KEY `username_idx` (`user_id`),
+  KEY `fk_cart_3_idx` (`vid`),
+  CONSTRAINT `fk_cart_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  CONSTRAINT `fk_cart_2` FOREIGN KEY (`pid`) REFERENCES `rating` (`pid`),
+  CONSTRAINT `fk_cart_3` FOREIGN KEY (`vid`) REFERENCES `seller` (`vid`)
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `seller`
+-- Dumping data for table `cart`
 --
 
-LOCK TABLES `seller` WRITE;
-/*!40000 ALTER TABLE `seller` DISABLE KEYS */;
-INSERT INTO `seller` VALUES (1,'Sruthi','cse190001051@iiti.ac.in','glkdfjgrdoi','2001-11-01','djsoif','jfsdoif','fdldkasjfi',43,0,'gAAAAABfsqvGRixxgJaiqgosRnZMl2oO7jeTfnwJJCXD8pJQniekclqDGx-ReGPFPihjV83VrPstnvbL-gVbMWY7cFp_l5IjfA=='),(2,'veromoda','riaverma135@gmail.com','fjerjo;igeroij','2001-11-01','vjsdo;ij','jcasiojc','jcasoijf',425,0,'19285house');
-/*!40000 ALTER TABLE `seller` ENABLE KEYS */;
+LOCK TABLES `cart` WRITE;
+/*!40000 ALTER TABLE `cart` DISABLE KEYS */;
+/*!40000 ALTER TABLE `cart` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -57,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-16 22:39:52
+-- Dump completed on 2020-11-17  7:51:23

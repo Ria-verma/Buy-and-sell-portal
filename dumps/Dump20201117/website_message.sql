@@ -16,34 +16,29 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `users`
+-- Table structure for table `message`
 --
 
-DROP TABLE IF EXISTS `users`;
+DROP TABLE IF EXISTS `message`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `users` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `username` varchar(45) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `password` varchar(250) NOT NULL,
-  `join_date` date NOT NULL,
-  `Deleted` int DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`),
-  UNIQUE KEY `email_UNIQUE` (`email`),
-  KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='contains information of users registered';
+CREATE TABLE `message` (
+  `mid` int NOT NULL,
+  `person1_id` int NOT NULL,
+  `person2_id` int NOT NULL,
+  `content` varchar(45) NOT NULL,
+  `date` varchar(45) NOT NULL,
+  PRIMARY KEY (`mid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `users`
+-- Dumping data for table `message`
 --
 
-LOCK TABLES `users` WRITE;
-/*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Ria','cse190001051@iiti.ac.in','gAAAAABfsqevUDjaGYZX8Y7-u4MbecZ-5tAvs7um7-a0PSSwfkA8RfyIBTZE9EOQjQzw6vpX9bqMmNzFIIJ4ac0SiaOsnyV1OA==','2001-11-02',NULL),(20,'Ria','riaverma1302@gmail.com','19285house','2020-11-14',NULL);
-/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+LOCK TABLES `message` WRITE;
+/*!40000 ALTER TABLE `message` DISABLE KEYS */;
+/*!40000 ALTER TABLE `message` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -55,4 +50,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-16 22:39:52
+-- Dump completed on 2020-11-17  7:51:23

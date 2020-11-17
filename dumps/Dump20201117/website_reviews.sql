@@ -16,36 +16,34 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `cart`
+-- Table structure for table `reviews`
 --
 
-DROP TABLE IF EXISTS `cart`;
+DROP TABLE IF EXISTS `reviews`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `cart` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `user_id` int NOT NULL,
+CREATE TABLE `reviews` (
+  `id` int NOT NULL,
   `pid` int NOT NULL,
-  `quantity` int NOT NULL,
-  `vid` int NOT NULL,
+  `uid` int NOT NULL,
+  `comment` varchar(500) DEFAULT NULL,
+  `rating` int DEFAULT NULL,
+  `datetime` datetime NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `pid_idx` (`pid`),
-  KEY `username_idx` (`user_id`),
-  KEY `fk_cart_3_idx` (`vid`),
-  CONSTRAINT `fk_cart_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-  CONSTRAINT `fk_cart_2` FOREIGN KEY (`pid`) REFERENCES `rating` (`pid`),
-  CONSTRAINT `fk_cart_3` FOREIGN KEY (`vid`) REFERENCES `seller` (`vid`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `fk_comments_1_idx` (`pid`),
+  KEY `fk_comments_2_idx` (`uid`),
+  CONSTRAINT `fk_comments_1` FOREIGN KEY (`pid`) REFERENCES `rating` (`pid`),
+  CONSTRAINT `fk_comments_2` FOREIGN KEY (`uid`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `cart`
+-- Dumping data for table `reviews`
 --
 
-LOCK TABLES `cart` WRITE;
-/*!40000 ALTER TABLE `cart` DISABLE KEYS */;
-INSERT INTO `cart` VALUES (14,1,6,1,1),(23,1,1,11,2),(24,1,1,5,1),(25,1,2,6,1);
-/*!40000 ALTER TABLE `cart` ENABLE KEYS */;
+LOCK TABLES `reviews` WRITE;
+/*!40000 ALTER TABLE `reviews` DISABLE KEYS */;
+/*!40000 ALTER TABLE `reviews` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -57,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-16 22:39:52
+-- Dump completed on 2020-11-17  7:51:23

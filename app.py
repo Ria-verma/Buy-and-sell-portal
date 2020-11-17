@@ -6,6 +6,7 @@ import random
 import os
 from cryptography.fernet import Fernet
 from PIL import Image
+import shutil
 from werkzeug.utils import secure_filename
 app=Flask(__name__)
 
@@ -29,6 +30,18 @@ mail = Mail(app)
 
 
 # -------------------------------------------------------USER---------------------------------------------------------
+
+# source = r'C:\Users\parul\Downloads\Ecommerce-master\Ecommerce-master\static\img\categori\temporaryProduct\1.jpg'
+  
+# # Destination path  
+# destination = r'C:\Users\parul\Downloads\Ecommerce-master\Ecommerce-master\static\img\categori\pantry\24.jpg'
+
+  
+# # Move the content of  
+# # source to destination  
+# dest = shutil.move(source, destination)
+
+
 
 
 # key is generated 
@@ -59,13 +72,19 @@ def send_otp_for_forgotPassword(reciever, otp):
 
 @app.route('/verify_to_reset_password', methods=['GET', 'POST'])
 def verify_to_reset_password():
+    if session['type'] == "buyer":
+        return redirect(url_for('home'))
+    if session['type'] == "seller":
+        return redirect(url_for('myOrder'))
+    if session['type'] == "admin":
+        return redirect(url_for('newProduct'))
     if request.method == "POST":
         if "otp" in session:
             if session["otp"] == int(request.form["otp"]):
                 session['verify']=True
                 return redirect('newpassword')
             else:
-                flash('otp is wrong')
+                flash('OTP is Wrong')
                 return render_template('user/verify_to_reset.html')
 
     return render_template('user/verify_to_reset.html')
@@ -74,6 +93,12 @@ def verify_to_reset_password():
 
 @app.route('/forgotPassword', methods=['GET', 'POST'])
 def forgotPassword():
+    if session['type'] == "buyer":
+        return redirect(url_for('home'))
+    if session['type'] == "seller":
+        return redirect(url_for('myOrder'))
+    if session['type'] == "admin":
+        return redirect(url_for('newProduct'))
     if request.method == "POST":
         email = request.form['email']
         recipent = request.form['recipent']
@@ -133,19 +158,27 @@ def forgotPassword():
 
 @app.route('/newpassword',methods=['GET','POST'])
 def newpassword():
+    if session['type'] == "buyer":
+        return redirect(url_for('home'))
+    if session['type'] == "seller":
+        return redirect(url_for('myOrder'))
+    if session['type'] == "admin":
+        return redirect(url_for('newProduct'))
     if(session['verify']!=True):
         return redirect('verify_to_reset_password')
 
     if(request.method=="POST"):
         a = request.form.get('new')
         b = request.form.get('confirm')
-        p = f.encrypt(a.encode('utf-8'))
+        p =a
+              
         if(a!=b):
             flash("PASSWORD DOES NOT MATCH")
             return render_template('user/newpassword.html')
         else:
             cur = mysql.connection.cursor()
             if session['type'] == "buyer":
+                print(p)
                 cur.execute("UPDATE users SET password=%s WHERE email=%s",(p,session['email']))
                 mysql.connection.commit()
                 cur.execute("SELECT *FROM users WHERE email=%s",(session['email'],))
@@ -153,8 +186,8 @@ def newpassword():
                 session['id']=person[0]
                 session['type']="buyer"
                 session['username']=person[1]
-                cur.close()
-                return render_template('user/index.html')
+                print(person[3])
+                return redirect(url_for('home'))
 
             if session['type'] == "seller":
                 cur.execute("UPDATE seller SET password=%s WHERE email=%s",(p,session['email']))
@@ -165,7 +198,7 @@ def newpassword():
                 session['type']="seller"
                 session['username']=person[1]
                 cur.close()
-                return render_template('user/index.html')
+                return redirect(url_for('myOrder'))
 
             if session['type'] == "admin":
                 cur.execute("UPDATE admin SET password=%s WHERE email=%s",(p,session['email']))
@@ -176,7 +209,7 @@ def newpassword():
                 session['type']="admin"
                 session['username']=person[5]
                 cur.close()
-                return render_template('user/index.html')
+                return redirect(url_for('newProduct'))
 
         
     return render_template('user/newpassword.html')
@@ -187,6 +220,12 @@ def newpassword():
 
 @app.route('/verify', methods=['GET', 'POST'])
 def verify():
+    if session['type'] == "buyer":
+        return redirect(url_for('home'))
+    if session['type'] == "seller":
+        return redirect(url_for('myOrder'))
+    if session['type'] == "admin":
+        return redirect(url_for('newProduct'))
     if request.method == "POST":
         if "otp" in session:
             if session["otp"] == int(request.form["otp"]):
@@ -195,29 +234,47 @@ def verify():
                 formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
                 if (session['recipent'] == 'buyer'):
                     cur.execute("INSERT INTO users(username, email, password, join_date) Values(%s,%s, %s, %s)",
-                                (session["username"], session["email"], f.encrypt(session["password"].encode('utf-8')), formatted_date))
+                                (session["username"], session["email"], (session["password"]), formatted_date))
+                    session['id'] = cur.execute("SELECT id FROM users WHERE username=%s AND email=%s AND password=%s AND join_date=%s"
+                                [session["username"], session["email"], (session["password"]), formatted_date])
+                    session['type'] = "buyer"
+                    return redirect(url_for('home'))
 
                 elif (session['recipent'] == 'seller'):
                     cur.execute("INSERT INTO seller(seller_name, email, password, join_date) Values(%s,%s, %s, %s)",
-                                (session["username"], session["email"], f.encrypt(session["password"].encode('utf-8')), formatted_date))
+                                (session["username"], session["email"], (session["password"]), formatted_date))
+                    session['id'] = cur.execute("SELECT vid FROM seller WHERE username=%s AND email=%s AND password=%s AND join_date=%s"
+                                [session["username"], session["email"], (session["password"]), formatted_date])
+                    session['type'] = "seller"
+                    return redirect(url_for('myOrder'))
 
-                elif (session['recipent'] == 'admin'):
+
+                else: 
                     cur.execute("INSERT INTO admin(username, email, password, join_date) Values(%s,%s, %s, %s)",
-                                (session["username"], session["email"], f.encrypt(session["password"].encode('utf-8')), formatted_date))
+                                (session["username"], session["email"], (session["password"]), formatted_date))
+                    session['id'] = cur.execute("SELECT aid FROM admin WHERE username=%s AND email=%s AND password=%s AND join_date=%s"
+                                [session["username"], session["email"], (session["password"]), formatted_date])
+                    session['type'] = "admin"
+                    return redirect(url_for('newProduct'))
 
                 mysql.connection.commit()
                 cur.close()
-                session['loggedin'] = True
-                session['filled'] = False
-                return render_template('user/index.html')
+                
             else:
-                return "otp is wrong"
+                flash("OTP is Wrong")
     return render_template('user/verify.html')
 
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
+    if session['type'] == "buyer":
+        return redirect(url_for('home'))
+    if session['type'] == "seller":
+        return redirect(url_for('myOrder'))
+    if session['type'] == "admin":
+        return redirect(url_for('newProduct'))
     session.clear()
+    session['type'] = "none"
     if request.method == "POST":
         # Fetch form data
         userDetails = request.form
@@ -285,17 +342,26 @@ def signup():
 
 
 
+
+
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    if session['type'] == "buyer":
+        return redirect(url_for('home'))
+    if session['type'] == "seller":
+        return redirect(url_for('myOrder'))
+    if session['type'] == "admin":
+        return redirect(url_for('newProduct'))
     session.clear()
+    session['type'] = "none"
     if request.method == "POST":
         if len(request.form['email']) == 0 or len(request.form['password']) == 0:
             flash("Invalid credentials!")
 
         else:
             email = request.form['email']
-            password = f.encrypt(request.form['password'])
+            password = (request.form['password'])
             recipent = request.form['recipent']
 
             # Check if account exists using MySQL
@@ -311,7 +377,8 @@ def login():
                 elif account[2] == email and password == account[3]:
                     session["id"] = account[0]
                     session["username"] = account[1]
-                    return render_template('user/index.html')
+                    session['type'] = "buyer"
+                    return redirect(url_for('home'))
 
                 elif account[3] != password:
                     flash("Wrong password!")
@@ -330,7 +397,8 @@ def login():
                     session["loggedin"] = True
                     session["id"] = account[0]
                     session['username']=account[1]
-                    return render_template('vendor/myProduct.html')
+                    session['type'] = "seller"
+                    return redirect(url_for('myOrder'))
 
                 elif account[10] != password:
                     flash("Wrong password!")
@@ -348,7 +416,8 @@ def login():
                     session["loggedin"] = True
                     session["id"] = account[0]
                     session['username']=account[5]
-                    return render_template('admin/vendorList.html')
+                    session['type'] = "admin"
+                    return redirect(url_for('newProduct'))
 
                 elif account[3] != password:
                     flash("Wrong password!")
@@ -359,13 +428,19 @@ def login():
 @app.route('/logout')
 def logout():
     session.clear()
+    session['type']="none"
     return redirect(url_for('login'))
 
 
 @app.route('/home')
 def home():
+    if session['type'] == "none":
+        return redirect(url_for('login'))
+    if session['type'] == "seller":
+        return redirect(url_for('myOrder'))
+    if session['type'] == "admin":
+        return redirect(url_for('newProduct'))
     cur = mysql.connection.cursor()
-
     # cur.execute('SELECT * FROM products WHERE category=%s',('clothing',))
     # account1 = cur.fetchall()
     category1 = []
@@ -377,6 +452,11 @@ def home():
         Dict['proname'] = products[1]
         Dict['price'] = products[2]
         Dict['category'] = products[5]
+        Dict['new']=products[4]
+        Dict['rating']=int(products[7])
+        # Dict['rating'] = 4
+        Dict['no_of_ppl']=int(products[8])
+        # Dict['no_of_ppl'] = 6
         cur.execute("SELECT * FROM price WHERE pid=%s ORDER BY disprice", [products[0]])
 
         if cur.rowcount != 0:
@@ -391,6 +471,12 @@ def home():
 
 @app.route('/contact')
 def contact():
+    if session['type'] == "none":
+        return redirect(url_for('login'))
+    if session['type'] == "seller":
+        return redirect(url_for('myOrder'))
+    if session['type'] == "admin":
+        return redirect(url_for('newProduct'))
     return render_template("user/contact.html")
 
 
@@ -400,6 +486,12 @@ def contact():
 
 @app.route('/Catagories')
 def catagories():
+    if session['type'] == "none":
+        return redirect(url_for('login'))
+    if session['type'] == "seller":
+        return redirect(url_for('myOrder'))
+    if session['type'] == "admin":
+        return redirect(url_for('newProduct'))
     cur = mysql.connection.cursor()
     # cur.execute('SELECT * FROM products WHERE category=%s',('clothing',))
     # account1 = cur.fetchall()
@@ -412,6 +504,7 @@ def catagories():
         Dict['proname'] = products[1]
         Dict['price'] = products[2]
         Dict['category'] = products[5]
+        Dict['new']=products[4]
         Dict['rating']=int(products[7])
         # Dict['rating'] = 4
         Dict['no_of_ppl']=int(products[8])
@@ -435,6 +528,7 @@ def catagories():
         Dict['proname'] = products[1]
         Dict['price'] = products[2]
         Dict['category'] = products[5]
+        Dict['new']=products[4]
         Dict['rating']=int(products[7])
         # Dict['rating'] = 4
         Dict['no_of_ppl']=int(products[8])
@@ -458,6 +552,7 @@ def catagories():
         Dict['proname'] = products[1]
         Dict['price'] = products[2]
         Dict['category'] = products[5]
+        Dict['new']=products[4]
         Dict['rating']=int(products[7])
         # Dict['rating'] = 4
         Dict['no_of_ppl']=int(products[8])
@@ -481,6 +576,7 @@ def catagories():
         Dict['proname'] = products[1]
         Dict['price'] = products[2]
         Dict['category'] = products[5]
+        Dict['new']=products[4]
         Dict['rating']=int(products[7])
         # Dict['rating'] = 4
         Dict['no_of_ppl']=int(products[8])
@@ -527,6 +623,12 @@ def update_cart(user_id):
 
 @app.route('/single_product_page/<int:pro_id>/<int:v_id>', methods=['GET', 'POST'])
 def single_product_page(pro_id, v_id):
+    if session['type'] == "none":
+        return redirect(url_for('login'))
+    if session['type'] == "seller":
+        return redirect(url_for('myOrder'))
+    if session['type'] == "admin":
+        return redirect(url_for('newProduct'))
     # updates cart first
     update_cart(session['id'])
 
@@ -626,6 +728,12 @@ def single_product_page(pro_id, v_id):
 
 @app.route('/decrease_in_cart/<int:pro_id>/<int:v_id>')
 def decrease_in_cart(pro_id, v_id):
+    if session['type'] == "none":
+        return redirect(url_for('login'))
+    if session['type'] == "seller":
+        return redirect(url_for('myOrder'))
+    if session['type'] == "admin":
+        return redirect(url_for('newProduct'))
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM cart WHERE user_id = %s AND pid=%s AND vid = %s", [session["id"], pro_id, v_id])
     row = cur.fetchone()
@@ -641,6 +749,12 @@ def decrease_in_cart(pro_id, v_id):
 
 @app.route('/delete_in_cart/<int:pro_id>/<int:v_id>')
 def delete_in_cart(pro_id, v_id):
+    if session['type'] == "none":
+        return redirect(url_for('login'))
+    if session['type'] == "seller":
+        return redirect(url_for('myOrder'))
+    if session['type'] == "admin":
+        return redirect(url_for('newProduct'))
     cur = mysql.connection.cursor()
     cur.execute("DELETE FROM cart WHERE user_id = %s AND pid=%s AND vid = %s", [session["id"], pro_id, v_id])
     mysql.connection.commit()
@@ -653,7 +767,14 @@ def delete_in_cart(pro_id, v_id):
 
 @app.route('/cart', methods=['GET', 'POST'])
 def cart():
+    if session['type'] == "none":
+        return redirect(url_for('login'))
+    if session['type'] == "seller":
+        return redirect(url_for('myOrder'))
+    if session['type'] == "admin":
+        return redirect(url_for('newProduct'))
     cur = mysql.connection.cursor()
+    update_cart(session['id'])
     cur.execute("SELECT * FROM cart WHERE user_id LIKE %s", [session["id"]])
     cartitems = cur.fetchall()
     cartlist = []
@@ -686,7 +807,12 @@ def cart():
 
 @app.route('/checkout', methods=['GET', 'POST'])
 def checkout():
-
+    if session['type'] == "none":
+        return redirect(url_for('login'))
+    if session['type'] == "seller":
+        return redirect(url_for('myOrder'))
+    if session['type'] == "admin":
+        return redirect(url_for('newProduct'))
     if request.method == "POST":
         
         first_name = request.form['first']
@@ -860,6 +986,12 @@ def checkout():
 
 @app.route('/checkout1/<int:pro_id>/<int:v_id>', methods=['GET', 'POST'])
 def checkout1(pro_id, v_id):
+    if session['type'] == "none":
+        return redirect(url_for('login'))
+    if session['type'] == "seller":
+        return redirect(url_for('myOrder'))
+    if session['type'] == "admin":
+        return redirect(url_for('newProduct'))
     if request.method == "POST":
         
         first_name = request.form['first']
@@ -1011,8 +1143,13 @@ def checkout1(pro_id, v_id):
 
 @app.route('/confirmation/<int:did>', methods=['GET', 'POST'])
 def confirmation(did):
+    if session['type'] == "none":
+        return redirect(url_for('login'))
+    if session['type'] == "seller":
+        return redirect(url_for('myOrder'))
+    if session['type'] == "admin":
+        return redirect(url_for('newProduct'))
     cur = mysql.connection.cursor()
-
     now = datetime.now()
     formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
 
@@ -1053,6 +1190,12 @@ def confirmation(did):
             "INSERT INTO orders( user_id, pro_id, quantity, price, datetime, vid, did) Values( %s, %s, %s, %s, %s, %s, %s)",
             [session["id"], item[2], item[3], curr_price[3], formatted_date, item[4], details[0]])
         mysql.connection.commit()
+        
+        cur.execute("UPDATE price SET stock=%s WHERE vid=%s AND pid=%s", [curr_price[6]-item[3],item[4], item[2]])
+        mysql.connection.commit()
+    cur.execute("DELETE FROM cart WHERE user_id LIKE %s", [session["id"]])
+    mysql.connection.commit()
+    cur.close()
 
     return render_template("user/confirmation.html", carts=cartlist, totalprice=tprice, totalquantity=tquantity,
                            details=details)
@@ -1065,13 +1208,16 @@ def confirmation(did):
 
 @app.route('/confirmation1/<int:pro_id>/<int:v_id>/<int:did>', methods=['GET', 'POST'])
 def confirmation1(pro_id, v_id, did):
+    if session['type'] == "none":
+        return redirect(url_for('login'))
+    if session['type'] == "seller":
+        return redirect(url_for('myOrder'))
+    if session['type'] == "admin":
+        return redirect(url_for('newProduct'))
     cur = mysql.connection.cursor()
 
     now = datetime.now()
     formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
-
-    cur.execute("SELECT * FROM cart WHERE user_id LIKE %s", [session["id"]])
-    cartitems = cur.fetchall()
 
     cur.execute("SELECT * FROM order_details WHERE did = %s", [did])
     details = cur.fetchone()
@@ -1097,23 +1243,33 @@ def confirmation1(pro_id, v_id, did):
         cartlist.append(Dict)
         tprice = tprice + Dict['totalprice']
 
-    for item in cartitems:
-        cur.execute("SELECT * FROM price WHERE vid=%s AND pid=%s", [item[4], item[2]])
-        curr_price = cur.fetchone()
+    
+    cur.execute("SELECT * FROM price WHERE vid=%s AND pid=%s", [v_id, pro_id])
+    curr_price = cur.fetchone()
 
     cur.execute(
         "INSERT INTO orders( user_id, pro_id, quantity, price, datetime, vid, did) Values( %s, %s, %s, %s, %s, %s, %s)",
-        [session["id"], item[2], item[3], curr_price[3], formatted_date, item[4], details[0]])
+        [session["id"], pro_id, 1, curr_price[3], formatted_date, v_id, did])
     mysql.connection.commit()
-
+    cur.execute("UPDATE price SET stock=%s WHERE vid=%s AND pid=%s", [curr_price[6]-1,v_id, pro_id])
+    mysql.connection.commit()
+    
     return render_template("user/confirmation.html", carts=cartlist, totalprice=tprice, totalquantity=tquantity)
      
 
 
 
 
+
+
 @app.route('/order')
 def order():
+    if session['type'] == "none":
+        return redirect(url_for('login'))
+    if session['type'] == "seller":
+        return redirect(url_for('myOrder'))
+    if session['type'] == "admin":
+        return redirect(url_for('newProduct'))
     mycursor = mysql.connection.cursor()
     sql = "SELECT * FROM orders WHERE user_id = %s"
     adr = (session['id'], )
@@ -1143,6 +1299,12 @@ def order():
 
 @app.route('/review/<int:proid>',methods=['GET','POST'])
 def review(proid):
+    if session['type'] == "none":
+        return redirect(url_for('login'))
+    if session['type'] == "seller":
+        return redirect(url_for('myOrder'))
+    if session['type'] == "admin":
+        return redirect(url_for('newProduct'))
     cursor = mysql.connection.cursor()
     cursor.execute('SELECT * FROM reviews WHERE pid=%s and uid=%s',[proid,session['id']])
     account = cursor.fetchone()
@@ -1182,6 +1344,12 @@ def review(proid):
 
 @app.route('/showreview/<int:pid>', methods=['POST','GET'])
 def showreview(pid):
+    if session['type'] == "none":
+        return redirect(url_for('login'))
+    if session['type'] == "seller":
+        return redirect(url_for('myOrder'))
+    if session['type'] == "admin":
+        return redirect(url_for('newProduct'))
     cursor = mysql.connection.cursor()
     cursor.execute('SELECT * FROM reviews WHERE pid=%s',[pid])
     reviews = cursor.fetchall()
@@ -1203,50 +1371,14 @@ def showreview(pid):
 
 
 
-# @app.route('/addProduct', methods=["GET", "POST"])
-# def addProduct():
-#     session['id']=1
-#     if request.method == 'POST':
-#         productDetails=request.form
-#         pname= productDetails['pname']
-#         category= productDetails['category']
-#         price= productDetails['price']
-#         disprice= productDetails['disprice']
-#         pdetails=productDetails['pdetails']
-#         stock=productDetails['stock']
-#         cur = mysql.connection.cursor()
-#         cur.execute("INSERT INTO temporary_product(pname, vid, category, pdetails, price, disprice,stock) VALUES(%s, %s, %s, %s, %s, %s,%s)", (pname, session['id'], category, pdetails, price, disprice,stock))
-#         mysql.connection.commit()
-#         rid=cur.execute("SELECT rid FROM temporary_product WHERE pname=%s AND vid=%s AND  category=%s AND pdetails=%s AND price=%s AND disprice,stock=%S",(pname, session['id'], category, pdetails, price, disprice,stock))
-#         cur.close()
-
-#         file = request.files['file']
-#         if (file and file.filename != ''):
-#             if (os.path.isfile('C:\\Users\\kumar\\PycharmProjects\\fllask\\static\\img\\users\\' + str(rid) + '.jpg')):
-#                 os.remove('C:\\Users\\kumar\\PycharmProjects\\fllask\\static\\img\\users\\' + str(rid) + '.jpg')
-#             l = file.filename.split('.')
-#             file.filename = str(rid) + '1' + '.' + str(l[-1])
-#             filename = secure_filename(file.filename)
-#             file.save(os.path.join('C:\\Users\\kumar\\PycharmProjects\\fllask\\static\\img\\users', filename))
-#             s = 'C:\\Users\\kumar\\PycharmProjects\\fllask\\static\\img\\users\\' + str(filename)
-#             img1 = Image.open(s)
-#             img2 = img1.convert('RGB')
-#             s = 'C:\\Users\\kumar\\PycharmProjects\\fllask\\static\\img\\users\\' + str(rid) + '.jpg'
-#             img2.save(s)
-#             os.remove('C:\\Users\\kumar\\PycharmProjects\\fllask\\static\\img\\users\\' + filename)
-#         return redirect(url_for('myProduct'))
-#     return render_template('seller.html')
-
-
-
-
-
-
-
-
 @app.route('/addProduct', methods=["GET", "POST"])                           
 def addProduct():
-    session['id']=1
+    if session['type'] == "buyer":
+        return redirect(url_for('home'))
+    if session['type'] == "none":
+        return redirect(url_for('login'))
+    if session['type'] == "admin":
+        return redirect(url_for('newProduct'))
     if request.method == 'POST':
         productDetails=request.form
         pname= productDetails['pname']
@@ -1269,19 +1401,20 @@ def addProduct():
 
         file = request.files['file']
         if (file and file.filename != ''):
-            if (os.path.isfile('home//ria//Project//Doubts//static//img//categori//temporaryProduct' + str(rid) + '.png')):
-                os.remove('home//ria//Project//Doubts//static//img//categori//temporaryProduct' + str(rid) + '.jpg')
-            l = file.filename.split('.')
-            file.filename = str(rid) + '1' + '.' + str(l[-1])
-            filename = secure_filename(file.filename)
-            file.save(os.path.join('hos.path.join(home/ria/Project/Doubts/static/img/categori/temporaryProduct', filename))
-            s = 'home//ria//Project//Doubts//static//img//categori//temporaryProduct' + str(filename)
-            img1 = Image.open(s)
-            img2 = img1.convert('RGB')
-            s = 'home//ria//Project//Doubts//static//img//categori//temporaryProduct' + str(rid) + '.jpg'
-            img2.save(s)
-            os.remove('home//ria//Project//Doubts//static//img//categori//temporaryProduct' + filename)
-        return redirect(url_for('notifications'))
+             if (os.path.isfile('C:\\Users\\parul\\Downloads\\Ecommerce-master\\Ecommerce-master\\static\\img\\categori\\temporaryProduct\\' + str(rid) + '.jpg')):
+                 os.remove('C:\\Users\\parul\\Downloads\\Ecommerce-master\\Ecommerce-master\\static\\img\\categori\\temporaryProduct\\' + str(rid) + '.jpg')
+             l = file.filename.split('.')
+             file.filename = str(rid) + '1' + '.' + str(l[-1])
+             filename = secure_filename(file.filename)
+             file.save(os.path.join('C:\\Users\\parul\\Downloads\\Ecommerce-master\\Ecommerce-master\\static\\img\\categori\\temporaryProduct', filename))
+             s = 'C:\\Users\\parul\\Downloads\\Ecommerce-master\\Ecommerce-master\\static\\img\\categori\\temporaryProduct\\' + str(filename)
+             img1 = Image.open(s)
+             img2 = img1.convert('RGB')
+             s = 'C:\\Users\\parul\\Downloads\\Ecommerce-master\\Ecommerce-master\\static\\img\\categori\\temporaryProduct\\' + str(rid) + '.jpg'
+             img2.save(s)
+             os.remove('C:\\Users\\parul\\Downloads\\Ecommerce-master\\Ecommerce-master\\static\\img\\categori\\temporaryProduct\\' + filename)
+        return redirect(url_for('myProduct'))
+        
     return render_template('vendor/seller.html')
 
 
@@ -1290,6 +1423,12 @@ def addProduct():
 
 @app.route('/allProduct')
 def allProduct():
+    if session['type'] == "buyer":
+        return redirect(url_for('home'))
+    if session['type'] == "none":
+        return redirect(url_for('login'))
+    if session['type'] == "admin":
+        return redirect(url_for('newProduct'))
     cursor = mysql.connection.cursor()
     cursor.execute('SELECT * FROM products WHERE category=%s',('homedecor',))
     account1 = cursor.fetchall()
@@ -1299,6 +1438,12 @@ def allProduct():
 
 @app.route('/myProduct')
 def myProduct():
+    if session['type'] == "buyer":
+        return redirect(url_for('home'))
+    if session['type'] == "none":
+        return redirect(url_for('login'))
+    if session['type'] == "admin":
+        return redirect(url_for('newProduct'))
     cursor = mysql.connection.cursor()
     cursor.execute('SELECT * FROM price WHERE vid=%s',[session['id']])
     productlist = cursor.fetchall()
@@ -1321,6 +1466,12 @@ def myProduct():
 
 @app.route('/productsvendor/<int:pid>', methods=['POST','GET'])
 def productsvendor(pid):
+    if session['type'] == "buyer":
+        return redirect(url_for('home'))
+    if session['type'] == "none":
+        return redirect(url_for('login'))
+    if session['type'] == "admin":
+        return redirect(url_for('newProduct'))
     cursor = mysql.connection.cursor()
     cursor.execute('SELECT * FROM price WHERE vid=%s and pid=%s',[session['id'],pid])
     productlist = cursor.fetchone()
@@ -1343,6 +1494,12 @@ def productsvendor(pid):
 
 @app.route('/deliver/<int:oid>',methods=['POST','GET'])
 def deliver(oid):
+    if session['type'] == "buyer":
+        return redirect(url_for('home'))
+    if session['type'] == "none":
+        return redirect(url_for('login'))
+    if session['type'] == "admin":
+        return redirect(url_for('newProduct'))
     if request.method=='POST':
         mycursor = mysql.connection.cursor()
         sql = "UPDATE orders SET delivery_status = %s WHERE (order_id = %s)"
@@ -1355,6 +1512,12 @@ def deliver(oid):
 
 @app.route('/myOrder')
 def myOrder():
+    if session['type'] == "buyer":
+        return redirect(url_for('home'))
+    if session['type'] == "none":
+        return redirect(url_for('login'))
+    if session['type'] == "admin":
+        return redirect(url_for('newProduct'))
     mycursor = mysql.connection.cursor()
     sql = "SELECT * FROM orders WHERE vid = %s and delivery_status = %s ORDER BY order_id"
     adr = (session['id'],'Not Delivered' )
@@ -1366,6 +1529,12 @@ def myOrder():
 
 @app.route('/productpagevendor/<int:pid>' ,methods=['POST','GET'])
 def productpagevendor(pid):
+    if session['type'] == "buyer":
+        return redirect(url_for('home'))
+    if session['type'] == "none":
+        return redirect(url_for('login'))
+    if session['type'] == "admin":
+        return redirect(url_for('newProduct'))
     cursor = mysql.connection.cursor()
     cursor.execute('SELECT * FROM price WHERE vid=%s and pid=%s',[session['id'],pid])
     productlist = cursor.fetchone()
@@ -1378,6 +1547,12 @@ def productpagevendor(pid):
 
 @app.route('/orderdetailsvendor/<int:oid>',methods=['POST','GET'])
 def orderdetailsvendor(oid):
+    if session['type'] == "buyer":
+        return redirect(url_for('home'))
+    if session['type'] == "none":
+        return redirect(url_for('login'))
+    if session['type'] == "admin":
+        return redirect(url_for('newProduct'))
     cursor = mysql.connection.cursor()
     cursor.execute('SELECT * FROM orders WHERE order_id=%s',[oid])
     orderlist = cursor.fetchone()
@@ -1393,6 +1568,12 @@ def orderdetailsvendor(oid):
 
 @app.route('/vendororderhistory')
 def vendororderhistory():
+    if session['type'] == "buyer":
+        return redirect(url_for('home'))
+    if session['type'] == "none":
+        return redirect(url_for('login'))
+    if session['type'] == "admin":
+        return redirect(url_for('newProduct'))
     mycursor = mysql.connection.cursor()
     sql = "SELECT * FROM orders WHERE vid = %s and delivery_status = %s"
     adr = (session['id'],'Delivered' )
@@ -1404,6 +1585,12 @@ def vendororderhistory():
 
 @app.route('/notifications')
 def notifications():
+    if session['type'] == "buyer":
+        return redirect(url_for('home'))
+    if session['type'] == "none":
+        return redirect(url_for('login'))
+    if session['type'] == "admin":
+        return redirect(url_for('newProduct'))
     mycursor = mysql.connection.cursor()
     sql = "SELECT * FROM notification WHERE person1_id = %s ORDER BY date DESC"
     adr = (session['id'],)
@@ -1421,11 +1608,23 @@ def notifications():
 
 @app.route('/allProduct_admin')
 def allProduct_admin():
+    if session['type'] == "buyer":
+        return redirect(url_for('home'))
+    if session['type'] == "none":
+        return redirect(url_for('login'))
+    if session['type'] == "seller":
+        return redirect(url_for('myOrder'))
     return "eifjei"
 
 
 @app.route('/usersadmin')
 def usersadmin():
+    if session['type'] == "buyer":
+        return redirect(url_for('home'))
+    if session['type'] == "none":
+        return redirect(url_for('login'))
+    if session['type'] == "seller":
+        return redirect(url_for('myOrder'))
     cur = mysql.connection.cursor()
     cur.execute( "SELECT * FROM users" )
     users = cur.fetchall()
@@ -1434,6 +1633,12 @@ def usersadmin():
 
 @app.route('/vendorList')
 def vendorList():
+    if session['type'] == "buyer":
+        return redirect(url_for('home'))
+    if session['type'] == "none":
+        return redirect(url_for('login'))
+    if session['type'] == "seller":
+        return redirect(url_for('myOrder'))
     cur = mysql.connection.cursor()
     cur.execute( "SELECT * FROM seller WHERE deleted=0" )
     sellers = cur.fetchall()
@@ -1443,6 +1648,12 @@ def vendorList():
 
 @app.route('/vendorproducts/<int:vid>')
 def vendorproducts(vid):
+    if session['type'] == "buyer":
+        return redirect(url_for('home'))
+    if session['type'] == "none":
+        return redirect(url_for('login'))
+    if session['type'] == "seller":
+        return redirect(url_for('myOrder'))
     cursor = mysql.connection.cursor()
     cursor.execute('SELECT * FROM price WHERE vid=%s',[vid])
     productlist = cursor.fetchall()
@@ -1465,6 +1676,12 @@ def vendorproducts(vid):
 
 @app.route('/productpageadmin/<int:vid>/<int:pid>' , methods=['POST','GET'])
 def productpageadmin(vid,pid):
+    if session['type'] == "buyer":
+        return redirect(url_for('home'))
+    if session['type'] == "none":
+        return redirect(url_for('login'))
+    if session['type'] == "seller":
+        return redirect(url_for('myOrder'))
     cursor = mysql.connection.cursor()
     cursor.execute('SELECT * FROM price WHERE vid=%s and pid=%s',[vid,pid])
     productlist = cursor.fetchone()
@@ -1477,6 +1694,12 @@ def productpageadmin(vid,pid):
 
 @app.route('/vendororders/<int:vid>')
 def vendororders(vid):
+    if session['type'] == "buyer":
+        return redirect(url_for('home'))
+    if session['type'] == "none":
+        return redirect(url_for('login'))
+    if session['type'] == "seller":
+        return redirect(url_for('myOrder'))
     cursor = mysql.connection.cursor()
     cursor.execute('SELECT * FROM orders WHERE vid=%s',[vid])
     orderslist = cursor.fetchall()
@@ -1486,6 +1709,12 @@ def vendororders(vid):
 
 @app.route('/vendordetails/<int:vid>', methods=['POST','GET'])
 def vendordetails(vid):
+    if session['type'] == "buyer":
+        return redirect(url_for('home'))
+    if session['type'] == "none":
+        return redirect(url_for('login'))
+    if session['type'] == "seller":
+        return redirect(url_for('myOrder'))
     cursor = mysql.connection.cursor()
     cursor.execute('SELECT * FROM seller WHERE vid=%s',[vid])
     vendor = cursor.fetchone()
@@ -1500,6 +1729,12 @@ def vendordetails(vid):
 
 @app.route('/removevendor/<int:vid>', methods=['POST','GET'])
 def removevendor(vid):
+    if session['type'] == "buyer":
+        return redirect(url_for('home'))
+    if session['type'] == "none":
+        return redirect(url_for('login'))
+    if session['type'] == "seller":
+        return redirect(url_for('myOrder'))
     mycursor = mysql.connection.cursor()
     sql = "UPDATE seller SET deleted = %s WHERE (vid = %s)"
     adr = (1,vid )
@@ -1519,6 +1754,12 @@ def removevendor(vid):
 
 @app.route('/ordersforadmin')
 def ordersforadmin():
+    if session['type'] == "buyer":
+        return redirect(url_for('home'))
+    if session['type'] == "none":
+        return redirect(url_for('login'))
+    if session['type'] == "seller":
+        return redirect(url_for('myOrder'))
     cursor = mysql.connection.cursor()
     cursor.execute('SELECT * FROM orders ORDER BY datetime DESC')
     orderslist = cursor.fetchall()
@@ -1529,12 +1770,24 @@ def ordersforadmin():
 
 @app.route('/buyerList')
 def buyerList():
+    if session['type'] == "buyer":
+        return redirect(url_for('home'))
+    if session['type'] == "none":
+        return redirect(url_for('login'))
+    if session['type'] == "seller":
+        return redirect(url_for('myOrder'))
     return render_template("admin/BuyerList.html")
 
 
 
 @app.route('/newProduct')
 def newProduct():
+    if session['type'] == "buyer":
+        return redirect(url_for('home'))
+    if session['type'] == "none":
+        return redirect(url_for('login'))
+    if session['type'] == "seller":
+        return redirect(url_for('myOrder'))
     mycursor = mysql.connection.cursor()
     sql = "SELECT * FROM temporary_product"
     mycursor.execute(sql)
@@ -1545,6 +1798,12 @@ def newProduct():
 
 @app.route('/verifyProduct/<int:req_id>' , methods=['GET','POST'])
 def verifyProduct(req_id):
+    if session['type'] == "buyer":
+        return redirect(url_for('home'))
+    if session['type'] == "none":
+        return redirect(url_for('login'))
+    if session['type'] == "seller":
+        return redirect(url_for('myOrder'))
     cur = mysql.connection.cursor()
     cur.execute( "SELECT * FROM temporary_product WHERE rid LIKE %s", [req_id] )
     singleproduct = cur.fetchone()

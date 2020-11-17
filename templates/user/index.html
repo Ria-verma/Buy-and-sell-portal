@@ -168,11 +168,36 @@
                                             </div>
                                             <div class="product-caption">
                                                 <div class="product-ratting">
+                                                    {% if item['rating'] >= 1 %}
                                                     <i class="far fa-star"></i>
-                                                    <i class="far fa-star"></i>
-                                                    <i class="far fa-star"></i>
+                                                    {% else %}
                                                     <i class="far fa-star low-star"></i>
+                                                    {% endif %}
+    
+                                                    {% if item['rating'] >= 2 %}
+                                                    <i class="far fa-star"></i>
+                                                    {% else %}
                                                     <i class="far fa-star low-star"></i>
+                                                    {% endif %}
+    
+                                                    {% if item['rating'] >= 3 %}
+                                                    <i class="far fa-star"></i>
+                                                    {% else %}
+                                                    <i class="far fa-star low-star"></i>
+                                                    {% endif %}
+    
+                                                    {% if item['rating'] >= 4 %}
+                                                    <i class="far fa-star"></i>
+                                                    {% else %}
+                                                    <i class="far fa-star low-star"></i>
+                                                    {% endif %}
+    
+                                                    {% if item['rating'] >= 5 %}
+                                                    <i class="far fa-star"></i>
+                                                    {% else %}
+                                                    <i class="far fa-star low-star"></i>
+                                                    {% endif %}
+                                                    <span style="color: gray;">({{item['no_of_ppl']}})</span>
                                                 </div>
                                                 <h4><a href="{{url_for('single_product_page',pro_id=item['pid'], v_id = item['sellerid'])}}" target="_blank">{{ item['proname'] }}</a></h4>
                                                 <div class="price">
@@ -190,7 +215,7 @@
                                         </div>
                                     </div>
                             {% endfor %}
-                            
+                                
                         </div>
                     
                     </div>
