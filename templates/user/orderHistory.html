@@ -131,7 +131,7 @@
                     <div class="serial">{{order['status']}}</div>
                     <div class="serial">{{order['date']}} </div>
                     {%if order['status']=='Delivered'%}
-                    <form action=" {{url_for('review',proid=order['id'])}}" method="GET">
+                    <form action=" {{url_for('review',proid=order['pid'])}}" method="GET">
                         <div class="serial">
                             <input type="submit"  name ="btn1" value="Review Product" class="genric-btn info radius"/>
                         </div>

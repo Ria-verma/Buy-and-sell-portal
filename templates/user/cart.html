@@ -176,8 +176,12 @@
             </tbody>
           </table>
           <div class="checkout_btn_inner float-right">
-            
+            {% if cnt>0 %}
             <a class="btn_1 checkout_btn_1" href="{{ url_for('checkout') }}">Proceed to checkout</a>
+            {% else %}
+            <a class="btn_1 checkout_btn_1" href="#">Proceed to checkout</a>
+            {% endif %}
+
           </div>
         </div>
       </form>

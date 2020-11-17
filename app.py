@@ -241,16 +241,23 @@ def verify():
                 formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
                 if (session['recipent'] == 'buyer'):
                     cur.execute("INSERT INTO users(username, email, password, join_date) Values(%s,%s, %s, %s)",
-                                (session["username"], session["email"], (session["password"]), formatted_date))
-                    session['id'] = cur.execute("SELECT id FROM users WHERE username=%s AND email=%s AND password=%s AND join_date=%s"
+                                (session["username"], session["email"], session["password"], formatted_date))
+                    mysql.connection.commit()
+                    session['id'] = cur.execute("SELECT id FROM users WHERE username=%s AND email=%s AND password=%s AND join_date=%s",
                                 [session["username"], session["email"], (session["password"]), formatted_date])
+                    
+                    session['Email'] = cur.execute("SELECT email FROM users WHERE username=%s AND email=%s AND password=%s AND join_date=%s",
+                                [session["username"], session["email"], (session["password"]), formatted_date])
+                    print("gjroigjodfsdfg")
+                    print(session['Email'])
                     session['type'] = "buyer"
                     return redirect(url_for('home'))
 
                 elif (session['recipent'] == 'seller'):
                     cur.execute("INSERT INTO seller(seller_name, email, password, join_date) Values(%s,%s, %s, %s)",
                                 (session["username"], session["email"], (session["password"]), formatted_date))
-                    session['id'] = cur.execute("SELECT vid FROM seller WHERE username=%s AND email=%s AND password=%s AND join_date=%s"
+                    mysql.connection.commit()        
+                    session['id'] = cur.execute("SELECT vid FROM seller WHERE username=%s AND email=%s AND password=%s AND join_date=%s",
                                 [session["username"], session["email"], (session["password"]), formatted_date])
                     session['type'] = "seller"
                     return redirect(url_for('myOrder'))
@@ -259,7 +266,8 @@ def verify():
                 else: 
                     cur.execute("INSERT INTO admin(username, email, password, join_date) Values(%s,%s, %s, %s)",
                                 (session["username"], session["email"], (session["password"]), formatted_date))
-                    session['id'] = cur.execute("SELECT aid FROM admin WHERE username=%s AND email=%s AND password=%s AND join_date=%s"
+                    mysql.connection.commit()
+                    session['id'] = cur.execute("SELECT aid FROM admin WHERE username=%s AND email=%s AND password=%s AND join_date=%s",
                                 [session["username"], session["email"], (session["password"]), formatted_date])
                     session['type'] = "admin"
                     return redirect(url_for('newProduct'))
@@ -270,6 +278,7 @@ def verify():
             else:
                 flash("OTP is Wrong")
     return render_template('user/verify.html')
+
 
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -791,6 +800,9 @@ def cart():
     update_cart(session['id'])
     cur.execute("SELECT * FROM cart WHERE user_id LIKE %s", [session["id"]])
     cartitems = cur.fetchall()
+    cnt = cur.rowcount
+   
+    print(cnt)
     cartlist = []
     tprice = 0
     for item in cartitems:
@@ -812,7 +824,7 @@ def cart():
             Dict['category'] = products[5]
             cartlist.append(Dict)
             tprice = tprice + Dict['totalprice']
-    return render_template('user/cart.html', carts=cartlist, totalprice=tprice)
+    return render_template('user/cart.html', carts=cartlist, totalprice=tprice, cnt = cnt)
 
 
 
@@ -1297,6 +1309,7 @@ def order():
         Dict={}
         Dict['id']=result[0]
         Dict['pname']=account[1]
+        Dict['pid'] = account[0]
         Dict['quantity']=result[3]
         Dict['price']=result[4]
         Dict['status']=result[6]
@@ -1304,6 +1317,7 @@ def order():
         Dict['category']=account[5]
         orderlist.append(Dict)
     return render_template("user/orderHistory.html",orders=orderlist) 
+
 
 
 
