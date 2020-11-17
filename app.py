@@ -1401,10 +1401,10 @@ def showreview(pid):
 
 @app.route('/addProduct', methods=["GET", "POST"])                           
 def addProduct():
+    if session['type'] == "buyer":
+        return redirect(url_for('home'))
     if session['type'] == "none":
         return redirect(url_for('login'))
-    if session['type'] == "seller":
-        return redirect(url_for('myOrder'))
     if session['type'] == "admin":
         return redirect(url_for('newProduct'))
     if request.method == 'POST':
@@ -1424,9 +1424,8 @@ def addProduct():
         cur.execute("INSERT INTO notification(person1_id,pname,content,date) VALUES(%s, %s, %s, %s)", (session['id'],pname,"Pending",formatted_date))
         mysql.connection.commit()
 
-        rid=cur.execute("SELECT rid FROM temporary_product WHERE pname=%s AND vid=%s AND  category=%s AND pdetails=%s AND price=%s AND disprice=%s AND stock=%s AND datetime=%s",(pname, session['id'], category, pdetails, price, disprice,stock, formatted_date))
-        print("foiejegpijerg9fjoirjgopwejgfw")
-        print(rid)
+        rid = cur.execute("SELECT rid FROM temporary_product WHERE pname=%s AND vid=%s AND  category=%s AND pdetails=%s AND price=%s AND disprice=%s AND stock=%s AND datetime=%s",(pname, session['id'], category, pdetails, price, disprice,stock, formatted_date))
+        rid = cur.fetchone()
         cur.close()
 
         file = request.files['file']
@@ -1447,7 +1446,6 @@ def addProduct():
         return redirect(url_for('myProduct'))
         
     return render_template('vendor/seller.html')
-
 
 
 
@@ -1638,6 +1636,57 @@ def notifications():
 #--------------------------------------------------- ADMIN PAGE -------------------------------------------------
 
 
+
+
+    cur = mysql.connection.cursor()
+    cur.execute( "SELECT * FROM temporary_product WHERE rid LIKE %s", [req_id] )
+    singleproduct = cur.fetchone()
+    if request.method == "POST":
+        if request.form['btn2'] == "Accept":
+            cur = mysql.connection.cursor()
+            cur.execute("INSERT INTO products(pname,price,pdetails,category) Values(%s,%s,%s,%s)", [singleproduct[2],singleproduct[3],singleproduct[4],singleproduct[6]])
+            mysql.connection.commit()
+            prodtid = cur.lastrowid
+            cur.close()
+            now = datetime.now()
+            formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
+            cur = mysql.connection.cursor()
+            cur.execute("INSERT INTO price(pid,vid,price,disprice,dateadded,stock) Values(%s,%s,%s,%s,%s,%s)", [prodtid,singleproduct[1],singleproduct[3],singleproduct[5],formatted_date,singleproduct[7]])
+            mysql.connection.commit()
+            cur.close()
+            cur = mysql.connection.cursor()
+            cur.execute("INSERT INTO notification(person1_id,pname,content,date) Values(%s,%s,%s,%s)", [singleproduct[1],singleproduct[2],"Accepted",formatted_date])
+            mysql.connection.commit()
+            cur.close()
+            source = r'C:\\Users\\parul\Downloads\\Ecommerce-master\\Ecommerce-master\\static\\img\\categori\\temporaryProduct\\(' + str(req_id) + ',).jpg'
+  
+            # Destination path  
+            destination = r'C:\\Users\\parul\\Downloads\\Ecommerce-master\\Ecommerce-master\\static\\img\\categori\\' + str(singleproduct[6]) +'\\'+ str(req_id) + '.jpg'
+
+  
+            # Move the content of source to destination  
+            dest = shutil.move(source, destination)
+            cur = mysql.connection.cursor()
+            cur.execute("DELETE FROM temporary_product WHERE rid = %s",[singleproduct[0]])
+            mysql.connection.commit()
+            cur.close()
+        else:
+            now = datetime.now()
+            formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
+            cur = mysql.connection.cursor()
+            cur.execute("INSERT INTO notification(person1_id,pname,content,date) Values(%s,%s,%s,%s)", [singleproduct[1],singleproduct[2],"Rejected",formatted_date])
+            mysql.connection.commit()
+            cur.close()
+            cur = mysql.connection.cursor()
+            cur.execute("DELETE FROM temporary_product WHERE rid = %s",[singleproduct[0]])
+            mysql.connection.commit()
+            cur.close()
+        return redirect(url_for("newProduct"))
+    return render_template('admin/verify-product.html',singleproduct=singleproduct)
+
+
+    
+
 @app.route('/allProduct_admin')
 def allProduct_admin():
     if session['type'] == "buyer":
@@ -1679,59 +1728,32 @@ def vendorList():
 
 
 
-@app.route('/verifyProduct/<int:req_id>' , methods=['GET','POST'])
-def verifyProduct(req_id):
+@app.route('/vendorproducts/<int:vid>')
+def vendorproducts(vid):
     if session['type'] == "buyer":
         return redirect(url_for('home'))
     if session['type'] == "none":
         return redirect(url_for('login'))
     if session['type'] == "seller":
         return redirect(url_for('myOrder'))
-    cur = mysql.connection.cursor()
-    cur.execute( "SELECT * FROM temporary_product WHERE rid LIKE %s", [req_id] )
-    singleproduct = cur.fetchone()
-    if request.method == "POST":
-        if request.form['btn2'] == "Accept":
-            cur = mysql.connection.cursor()
-            cur.execute("INSERT INTO products(pname,price,pdetails,category) Values(%s,%s,%s,%s)", [singleproduct[2],singleproduct[3],singleproduct[4],singleproduct[6]])
-            mysql.connection.commit()
-            prodtid = cur.lastrowid
-            cur.close()
-            now = datetime.now()
-            formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
-            cur = mysql.connection.cursor()
-            cur.execute("INSERT INTO price(pid,vid,price,disprice,dateadded,stock) Values(%s,%s,%s,%s,%s,%s)", [prodtid,singleproduct[1],singleproduct[3],singleproduct[5],formatted_date,singleproduct[7]])
-            mysql.connection.commit()
-            cur.close()
-            cur = mysql.connection.cursor()
-            cur.execute("INSERT INTO notification(person1_id,pname,content,date) Values(%s,%s,%s,%s)", [singleproduct[1],singleproduct[2],"Accepted",formatted_date])
-            mysql.connection.commit()
-            cur.close()
-            source = r'C:\\Users\\parul\Downloads\\Ecommerce-master\\Ecommerce-master\\static\\img\\categori\\temporaryProduct\\1.jpg'
-  
-            # Destination path  
-            destination = r'C:\\Users\\parul\\Downloads\\Ecommerce-master\\Ecommerce-master\\static\\img\\categori\\' + str(singleproduct[6]) +'\\'+ str(singleproduct[3] + '.jpg')
-
-  
-            # Move the content of source to destination  
-            dest = shutil.move(source, destination)
-            cur = mysql.connection.cursor()
-            cur.execute("DELETE FROM temporary_product WHERE rid = %s",[singleproduct[0]])
-            mysql.connection.commit()
-            cur.close()
-        else:
-            now = datetime.now()
-            formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
-            cur = mysql.connection.cursor()
-            cur.execute("INSERT INTO notification(person1_id,pname,content,date) Values(%s,%s,%s,%s)", [singleproduct[1],singleproduct[2],"Rejected",formatted_date])
-            mysql.connection.commit()
-            cur.close()
-            cur = mysql.connection.cursor()
-            cur.execute("DELETE FROM temporary_product WHERE rid = %s",[singleproduct[0]])
-            mysql.connection.commit()
-            cur.close()
-        return redirect(url_for("newProduct"))
-    return render_template('admin/verify-product.html',singleproduct=singleproduct)
+    cursor = mysql.connection.cursor()
+    cursor.execute('SELECT * FROM price WHERE vid=%s',[vid])
+    productlist = cursor.fetchall()
+    prodlist = []
+    for product in productlist:
+        cur = mysql.connection.cursor()
+        cur.execute( "SELECT * FROM products WHERE pid LIKE %s", [product[1]] )
+        products = cur.fetchone()
+        Dict = {}
+        Dict['vid']=vid
+        Dict['proname']=products[1]
+        Dict['pid']=products[0]
+        Dict['price']=products[2]
+        Dict['disprice']=product[4]
+        Dict['category']=products[5]
+        Dict['stock']=product[6]
+        prodlist.append(Dict)
+    return render_template("admin/venprolist_admin.html",prodlist=prodlist)
 
 
 @app.route('/productpageadmin/<int:vid>/<int:pid>' , methods=['POST','GET'])
