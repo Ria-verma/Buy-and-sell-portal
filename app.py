@@ -1637,7 +1637,14 @@ def notifications():
 
 
 
-
+# @app.route('/verifyProduct/<int:req_id>' , methods=['GET','POST'])
+# def verifyProduct(req_id):
+#     if session['type'] == "buyer":
+#         return redirect(url_for('home'))
+#     if session['type'] == "none":
+#         return redirect(url_for('login'))
+    if session['type'] == "seller":
+        return redirect(url_for('myOrder'))    
     cur = mysql.connection.cursor()
     cur.execute( "SELECT * FROM temporary_product WHERE rid LIKE %s", [req_id] )
     singleproduct = cur.fetchone()
@@ -1685,7 +1692,7 @@ def notifications():
     return render_template('admin/verify-product.html',singleproduct=singleproduct)
 
 
-    
+
 
 @app.route('/allProduct_admin')
 def allProduct_admin():
@@ -1875,57 +1882,6 @@ def newProduct():
     mycursor.execute(sql)
     tempproducts = mycursor.fetchall()
     return render_template("admin/newProduct.html",tempproducts=tempproducts)
-
-
-
-@app.route('/verifyProduct/<int:req_id>' , methods=['GET','POST'])
-def verifyProduct(req_id):
-    if session['type'] == "buyer":
-        return redirect(url_for('home'))
-    if session['type'] == "none":
-        return redirect(url_for('login'))
-    if session['type'] == "seller":
-        return redirect(url_for('myOrder'))
-    cur = mysql.connection.cursor()
-    cur.execute( "SELECT * FROM temporary_product WHERE rid LIKE %s", [req_id] )
-    singleproduct = cur.fetchone()
-    if request.method == "POST":
-        if request.form['btn2'] == "Accept":
-            cur = mysql.connection.cursor()
-            cur.execute("INSERT INTO products(pname,price,pdetails,category) Values(%s,%s,%s,%s)", [singleproduct[2],singleproduct[3],singleproduct[4],singleproduct[6]])
-            mysql.connection.commit()
-            prodtid = cur.lastrowid
-            cur.close()
-            now = datetime.now()
-            formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
-            cur = mysql.connection.cursor()
-            cur.execute("INSERT INTO price(pid,vid,price,disprice,dateadded,stock) Values(%s,%s,%s,%s,%s,%s)", [prodtid,singleproduct[1],singleproduct[3],singleproduct[5],formatted_date,singleproduct[7]])
-            mysql.connection.commit()
-            cur.close()
-            cur = mysql.connection.cursor()
-            cur.execute("INSERT INTO notification(person1_id,pname,content,date) Values(%s,%s,%s,%s)", [singleproduct[1],singleproduct[2],"Accepted",formatted_date])
-            mysql.connection.commit()
-            cur.close()
-            cur = mysql.connection.cursor()
-            cur.execute("DELETE FROM temporary_product WHERE rid = %s",[singleproduct[0]])
-            mysql.connection.commit()
-            cur.close()
-        else:
-            now = datetime.now()
-            formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
-            cur = mysql.connection.cursor()
-            cur.execute("INSERT INTO notification(person1_id,pname,content,date) Values(%s,%s,%s,%s)", [singleproduct[1],singleproduct[2],"Rejected",formatted_date])
-            mysql.connection.commit()
-            cur.close()
-            cur = mysql.connection.cursor()
-            cur.execute("DELETE FROM temporary_product WHERE rid = %s",[singleproduct[0]])
-            mysql.connection.commit()
-            cur.close()
-        return redirect(url_for("newProduct"))
-    return render_template('admin/verify-product.html',singleproduct=singleproduct)
-
-
-
 
 
 
