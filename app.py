@@ -8,6 +8,7 @@ from cryptography.fernet import Fernet
 from PIL import Image
 import shutil
 from werkzeug.utils import secure_filename
+
 app=Flask(__name__)
 
 # Configure db
@@ -24,6 +25,7 @@ app.config['MAIL_USERNAME'] = 'cs207courseproject@gmail.com'
 app.config['MAIL_PASSWORD'] = 'cs207dbms'
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
+
 
 mysql = MySQL(app)
 mail = Mail(app)
@@ -78,6 +80,7 @@ def verify_to_reset_password():
         return redirect(url_for('myOrder'))
     if session['type'] == "admin":
         return redirect(url_for('newProduct'))
+
     if request.method == "POST":
         if "otp" in session:
             if session["otp"] == int(request.form["otp"]):
@@ -93,12 +96,15 @@ def verify_to_reset_password():
 
 @app.route('/forgotPassword', methods=['GET', 'POST'])
 def forgotPassword():
+    print("oifihroingo;isnhnb;oithboinjfd")
+    print(session['type'])
     if session['type'] == "buyer":
         return redirect(url_for('home'))
     if session['type'] == "seller":
         return redirect(url_for('myOrder'))
     if session['type'] == "admin":
         return redirect(url_for('newProduct'))
+
     if request.method == "POST":
         email = request.form['email']
         recipent = request.form['recipent']
@@ -115,7 +121,7 @@ def forgotPassword():
                 otp = random.randrange(111111, 999999)
                 session["otp"] = otp
                 session['email']=email
-                session['type']=request.form.get('recipent')
+                session['recipent']=request.form.get('recipent')
                 session['verify'] = False
                 Y = send_otp_for_forgotPassword(email, otp)
                 return Y
@@ -131,7 +137,7 @@ def forgotPassword():
                 otp = random.randrange(111111, 999999)
                 session["otp"] = otp
                 session['email']=email
-                session['type']=request.form.get('recipent')
+                session['recipent']=request.form.get('recipent')
                 session['verify'] = False
                 Y = send_otp_for_forgotPassword(email, otp)
                 return Y
@@ -146,7 +152,7 @@ def forgotPassword():
                 otp = random.randrange(111111, 999999)
                 session["otp"] = otp
                 session['email']=email
-                session['type']=request.form.get('recipent')
+                session['recipent']=request.form.get('recipent')
                 session['verify'] = False
                 Y = send_otp_for_forgotPassword(email, otp)
                 return Y
@@ -164,6 +170,7 @@ def newpassword():
         return redirect(url_for('myOrder'))
     if session['type'] == "admin":
         return redirect(url_for('newProduct'))
+
     if(session['verify']!=True):
         return redirect('verify_to_reset_password')
 
@@ -177,7 +184,7 @@ def newpassword():
             return render_template('user/newpassword.html')
         else:
             cur = mysql.connection.cursor()
-            if session['type'] == "buyer":
+            if session['recipent'] == "buyer":
                 print(p)
                 cur.execute("UPDATE users SET password=%s WHERE email=%s",(p,session['email']))
                 mysql.connection.commit()
@@ -189,7 +196,7 @@ def newpassword():
                 print(person[3])
                 return redirect(url_for('home'))
 
-            if session['type'] == "seller":
+            if session['recipent'] == "seller":
                 cur.execute("UPDATE seller SET password=%s WHERE email=%s",(p,session['email']))
                 mysql.connection.commit()
                 cur.execute("SELECT *FROM users WHERE email=%s",(session['email'],))
@@ -200,7 +207,7 @@ def newpassword():
                 cur.close()
                 return redirect(url_for('myOrder'))
 
-            if session['type'] == "admin":
+            if session['recipent'] == "admin":
                 cur.execute("UPDATE admin SET password=%s WHERE email=%s",(p,session['email']))
                 mysql.connection.commit()
                 cur.execute("SELECT *FROM admin WHERE email=%s",(session['email'],))
@@ -434,6 +441,8 @@ def logout():
 
 @app.route('/home')
 def home():
+    print("oiroijgfipjgerpojg")
+    print(session['type'])
     if session['type'] == "none":
         return redirect(url_for('login'))
     if session['type'] == "seller":
@@ -688,6 +697,8 @@ def single_product_page(pro_id, v_id):
             quan = 1
             # if cart me exist nahi karta
             if row_cnt == 0:
+                in_cart = 1
+                total_in_cart += 1
                 cur = mysql.connection.cursor()
                 # saath me vid me daal dena idhar.....
                 cur.execute("INSERT INTO cart(user_id, pid, quantity, vid) Values( %s, %s, %s, %s)",
@@ -740,6 +751,9 @@ def decrease_in_cart(pro_id, v_id):
     count = row[3] - 1
     cur.execute("UPDATE cart SET quantity = %s WHERE user_id = %s AND pid = %s AND vid = %s",
                 [count, session["id"], pro_id, v_id])
+    mysql.connection.commit()
+    if count == 0:
+        cur.execute("DELETE FROM cart WHERE user_id = %s AND pid=%s AND vid = %s", [session["id"], pro_id, v_id])
     mysql.connection.commit()
     cur.close()
     return redirect(url_for('cart'))
