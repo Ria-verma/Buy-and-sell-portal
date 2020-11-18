@@ -1,13 +1,13 @@
   // swiper js code start
   var galleryTop = new Swiper('.gallery-top', {
     spaceBetween: 0,
-    
+
     navigation: {
       nextEl: '.navigationHide',
       prevEl: '.navigationHide',
     },
     // autoplay: true,
-     loop: true,
+    loop: true,
     loopedSlides: 4
   });
   var galleryThumbs = new Swiper('.gallery-thumbs', {
