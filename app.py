@@ -33,24 +33,7 @@ mail = Mail(app)
 
 # -------------------------------------------------------USER---------------------------------------------------------
 
-# source = r'C:\Users\parul\Downloads\Ecommerce-master\Ecommerce-master\static\img\categori\temporaryProduct\1.jpg'
-  
-# # Destination path  
-# destination = r'C:\Users\parul\Downloads\Ecommerce-master\Ecommerce-master\static\img\categori\pantry\24.jpg'
 
-  
-# # Move the content of  
-# # source to destination  
-# dest = shutil.move(source, destination)
-
-
-
-
-# key is generated 
-key = Fernet.generate_key() 
-  
-# value of key is assigned to a variable 
-f = Fernet(key) 
 
 
 
@@ -363,14 +346,8 @@ def signup():
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if session['type'] == "buyer":
-        return redirect(url_for('home'))
-    if session['type'] == "seller":
-        return redirect(url_for('myOrder'))
-    if session['type'] == "admin":
-        return redirect(url_for('newProduct'))
     session.clear()
-    session['type'] = "none"
+    session["type"] = "none"
     if request.method == "POST":
         if len(request.form['email']) == 0 or len(request.form['password']) == 0:
             flash("Invalid credentials!")
@@ -459,8 +436,6 @@ def home():
     if session['type'] == "admin":
         return redirect(url_for('newProduct'))
     cur = mysql.connection.cursor()
-    # cur.execute('SELECT * FROM products WHERE category=%s',('clothing',))
-    # account1 = cur.fetchall()
     category1 = []
     cur.execute('SELECT * FROM products WHERE category=%s', ('clothing',))
     allproducts = cur.fetchall()
@@ -992,12 +967,12 @@ def checkout():
         for products in allproducts:
             Dict['pid'] = products[0]
             Dict['proname'] = products[1]
-            Dict['price'] = products[2]
             Dict['quantity'] = item[3]
-            Dict['totalprice'] = item[3] * Dict['price']
             cur.execute("SELECT * FROM seller WHERE vid=%s", [item[4]])
             seller = cur.fetchone()
             Dict['seller'] = seller[1]
+            Dict['price'] = seller[4]
+            Dict['totalprice'] = item[3] * Dict['price']
             Dict['seller_id'] = seller[0]
             Dict['category'] = products[5]
             cartlist.append(Dict)
@@ -1048,12 +1023,12 @@ def checkout1(pro_id, v_id):
             for products in allproducts:
                 Dict['pid'] = products[0]
                 Dict['proname'] = products[1]
-                Dict['price'] = products[2]
                 Dict['quantity'] = 1
-                Dict['totalprice'] = 1 * Dict['price']
                 cur.execute("SELECT * FROM seller WHERE vid=%s", [v_id])
                 seller = cur.fetchone()
                 Dict['seller'] = seller[1]
+                Dict['price'] = seller[4]
+                Dict['totalprice'] = 1 * Dict['price']
                 Dict['seller_id'] = seller[0]
                 Dict['category'] = products[5]
                 cartlist.append(Dict)
@@ -1073,12 +1048,12 @@ def checkout1(pro_id, v_id):
             for products in allproducts:
                 Dict['pid'] = products[0]
                 Dict['proname'] = products[1]
-                Dict['price'] = products[2]
                 Dict['quantity'] = 1
-                Dict['totalprice'] = 1 * Dict['price']
                 cur.execute("SELECT * FROM seller WHERE vid=%s", [v_id])
                 seller = cur.fetchone()
                 Dict['seller'] = seller[1]
+                Dict['price'] = seller[4]
+                Dict['totalprice'] = 1 * Dict['price']
                 Dict['seller_id'] = seller[0]
                 Dict['category'] = products[5]
                 cartlist.append(Dict)
@@ -1101,12 +1076,12 @@ def checkout1(pro_id, v_id):
                 for products in allproducts:
                     Dict['pid'] = products[0]
                     Dict['proname'] = products[1]
-                    Dict['price'] = products[2]
                     Dict['quantity'] = item[3]
-                    Dict['totalprice'] = item[3] * Dict['price']
                     cur.execute("SELECT * FROM seller WHERE vid=%s", [item[4]])
                     seller = cur.fetchone()
                     Dict['seller'] = seller[1]
+                    Dict['price'] = seller[4]
+                    Dict['totalprice'] = item[3] * Dict['price']
                     Dict['seller_id'] = seller[0]
                     Dict['category'] = products[5]
                     cartlist.append(Dict)
@@ -1149,12 +1124,12 @@ def checkout1(pro_id, v_id):
     for products in allproducts:
         Dict['pid'] = products[0]
         Dict['proname'] = products[1]
-        Dict['price'] = products[2]
         Dict['quantity'] = 1
-        Dict['totalprice'] = 1 * Dict['price']
         cur.execute("SELECT * FROM seller WHERE vid=%s", [v_id])
         seller = cur.fetchone()
         Dict['seller'] = seller[1]
+        Dict['price'] = seller[4]
+        Dict['totalprice'] = 1 * Dict['price']
         Dict['seller_id'] = seller[0]
         Dict['category'] = products[5]
         cartlist.append(Dict)
@@ -1196,13 +1171,13 @@ def confirmation(did):
         for products in allproducts:
             Dict['pid'] = products[0]
             Dict['proname'] = products[1]
-            Dict['price'] = products[2]
             Dict['quantity'] = item[3]
             tquantity += item[3]
-            Dict['totalprice'] = item[3] * Dict['price']
             cur.execute("SELECT * FROM seller WHERE vid=%s", [item[4]])
             seller = cur.fetchone()
             Dict['seller'] = seller[1]
+            Dict['price'] = seller[4]
+            Dict['totalprice'] = item[3] * Dict['price']
             Dict['sellerid'] = seller[0]
             Dict['category'] = products[5]
             cartlist.append(Dict)
@@ -1257,13 +1232,13 @@ def confirmation1(pro_id, v_id, did):
     for products in allproducts:
         Dict['pid'] = products[0]
         Dict['proname'] = products[1]
-        Dict['price'] = products[2]
         Dict['quantity'] = 1
         tquantity += 1
-        Dict['totalprice'] = 1 * Dict['price']
         cur.execute("SELECT * FROM seller WHERE vid=%s", [v_id])
         seller = cur.fetchone()
         Dict['seller'] = seller[1]
+        Dict['price'] = seller[4]
+        Dict['totalprice'] = 1 * Dict['price']
         Dict['sellerid'] = seller[0]
         Dict['category'] = products[5]
         cartlist.append(Dict)
@@ -1383,9 +1358,6 @@ def showreview(pid):
     reviews = cursor.fetchall()
     return render_template('user/showreviews.html',reviews=reviews)
 
-
-
-
 #----------------------------------------------------- VENDOR PAGE ------------------------------------------------
 
 
@@ -1430,8 +1402,8 @@ def addProduct():
 
         file = request.files['file']
         if (file and file.filename != ''):
-             if (os.path.isfile('C:\\Users\\parul\\Downloads\\Ecommerce-master\\Ecommerce-master\\static\\img\\categori\\temporaryProduct\\' + str(rid) + '.jpg')):
-                 os.remove('C:\\Users\\parul\\Downloads\\Ecommerce-master\\Ecommerce-master\\static\\img\\categori\\temporaryProduct\\' + str(rid) + '.jpg')
+             if (os.path.isfile('C:\\Users\\parul\\Downloads\\Ecommerce-master\\Ecommerce-master\\static\\img\\categori\\temporaryProduct\\' + str(rid) + '.png')):
+                 os.remove('C:\\Users\\parul\\Downloads\\Ecommerce-master\\Ecommerce-master\\static\\img\\categori\\temporaryProduct\\' + str(rid) + '.png')
              l = file.filename.split('.')
              file.filename = str(rid) + '1' + '.' + str(l[-1])
              filename = secure_filename(file.filename)
@@ -1439,7 +1411,7 @@ def addProduct():
              s = 'C:\\Users\\parul\\Downloads\\Ecommerce-master\\Ecommerce-master\\static\\img\\categori\\temporaryProduct\\' + str(filename)
              img1 = Image.open(s)
              img2 = img1.convert('RGB')
-             s = 'C:\\Users\\parul\\Downloads\\Ecommerce-master\\Ecommerce-master\\static\\img\\categori\\temporaryProduct\\' + str(rid) + '.jpg'
+             s = 'C:\\Users\\parul\\Downloads\\Ecommerce-master\\Ecommerce-master\\static\\img\\categori\\temporaryProduct\\' + str(rid) + '.png'
              img2.save(s)
              os.remove('C:\\Users\\parul\\Downloads\\Ecommerce-master\\Ecommerce-master\\static\\img\\categori\\temporaryProduct\\' + filename)
 
@@ -1637,12 +1609,12 @@ def notifications():
 
 
 
-# @app.route('/verifyProduct/<int:req_id>' , methods=['GET','POST'])
-# def verifyProduct(req_id):
-#     if session['type'] == "buyer":
-#         return redirect(url_for('home'))
-#     if session['type'] == "none":
-#         return redirect(url_for('login'))
+@app.route('/verifyProduct/<int:req_id>' , methods=['GET','POST'])
+def verifyProduct(req_id):
+    if session['type'] == "buyer":
+         return redirect(url_for('home'))
+    if session['type'] == "none":
+         return redirect(url_for('login'))
     if session['type'] == "seller":
         return redirect(url_for('myOrder'))    
     cur = mysql.connection.cursor()
@@ -1650,6 +1622,7 @@ def notifications():
     singleproduct = cur.fetchone()
     if request.method == "POST":
         if request.form['btn2'] == "Accept":
+            
             cur = mysql.connection.cursor()
             cur.execute("INSERT INTO products(pname,price,pdetails,category) Values(%s,%s,%s,%s)", [singleproduct[2],singleproduct[3],singleproduct[4],singleproduct[6]])
             mysql.connection.commit()
@@ -1665,10 +1638,10 @@ def notifications():
             cur.execute("INSERT INTO notification(person1_id,pname,content,date) Values(%s,%s,%s,%s)", [singleproduct[1],singleproduct[2],"Accepted",formatted_date])
             mysql.connection.commit()
             cur.close()
-            source = r'C:\\Users\\parul\Downloads\\Ecommerce-master\\Ecommerce-master\\static\\img\\categori\\temporaryProduct\\(' + str(req_id) + ',).jpg'
+            source = r'C:\\Users\\parul\Downloads\\Ecommerce-master\\Ecommerce-master\\static\\img\\categori\\temporaryProduct\\(' + str(req_id) + ',).png'
   
             # Destination path  
-            destination = r'C:\\Users\\parul\\Downloads\\Ecommerce-master\\Ecommerce-master\\static\\img\\categori\\' + str(singleproduct[6]) +'\\'+ str(req_id) + '.jpg'
+            destination = r'C:\\Users\\parul\\Downloads\\Ecommerce-master\\Ecommerce-master\\static\\img\\categori\\' + str(singleproduct[6]) +'\\'+ str(prodtid) + '.png'
 
   
             # Move the content of source to destination  
