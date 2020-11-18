@@ -69,7 +69,6 @@ def verify_to_reset_password():
 
 @app.route('/forgotPassword', methods=['GET', 'POST'])
 def forgotPassword():
-    print("oifihroingo;isnhnb;oithboinjfd")
     print(session['type'])
     if session['type'] == "buyer":
         return redirect(url_for('home'))
@@ -1243,7 +1242,7 @@ def allProduct():
     if session['type'] == "admin":
         return redirect(url_for('newProduct'))
     cursor = mysql.connection.cursor()
-    cursor.execute('SELECT * FROM products WHERE category=%s',('homedecor',))
+    cursor.execute('SELECT * FROM products ')
     account1 = cursor.fetchall()
     return render_template('vendor/product_list_vendor.html', item1=account1)
 
