@@ -149,21 +149,15 @@
                 <h5>In Cart(From current seller): <span style="color: grey;">{{in_cart}}N </span> </h5>
 
             <br><br><br>
-            <!-- <div class="card_area">
-                <div class="product_count_area">
-                    <p>Quantity<br></p>
-                    <div class="product_count d-inline-block">
-                        <span class="product_count_item inumber-decrement"> <i class="ti-minus"></i></span>
-                        <input class="product_count_item input-number" type="int" name="quantity" value="1" min="0" max="10">
-                        <span class="product_count_item number-increment"> <i class="ti-plus"></i></span>
-                    </div>
-            </div> -->
+            
             <div class="add_to_cart">
                 <!-- if can add to cart  -->
                 <input type="submit" name ="btn1" value="Add to cart" class="btn_3 col-lg-3" />
                 
                 <input type="submit"  name ="btn1" value="Buy now" class="btn_3 col-lg-3"/>
             </div>
+            <br>
+            <a href="{{ url_for('showreview', pid= singleproduct[0]) }}" class="btn_3 col-lg-6">Reviews</a>
         </form>
          
         </div>
